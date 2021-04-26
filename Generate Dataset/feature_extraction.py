@@ -107,7 +107,6 @@ class Extractor():
         except TypeError:
                 print("Cant get web traffic")
                 return 1
-        except 
         if rank <100000:
             return 0
         else:
@@ -225,7 +224,7 @@ class Extractor():
                 dns = 1
 
             features.append(dns)
-            features.append(self.web_traffic(url))
+            #features.append(self.web_traffic(url))
             features.append(1 if dns == 1 else self.domainAge(domain_name))
             features.append(1 if dns == 1 else self.domainEnd(domain_name))
             

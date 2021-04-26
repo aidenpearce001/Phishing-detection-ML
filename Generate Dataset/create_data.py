@@ -30,7 +30,7 @@ def crawl_info(threadName):
                 print("Have been crawled {} urls".format(len(visited)))
             else:
                 continue
-
+resultLock = threading.Lock()
 results = {}
 def get_result(threadName):
    while not exitFlag:
@@ -40,14 +40,17 @@ def get_result(threadName):
          continue
       url, features = resultQueue.get()
       print("Result dict have {} urls".format(len(results)))
-      results[url] = features
-      print("Thread {} trigger {} url remained".format(threadName, resultQueue.qsize()))
-      df_last = pd.DataFrame(results.items(), columns=["urls", "features"])
-      df_last.to_csv("chongluadao_dataset.csv", index = False)
+      with resultLock:
+         results[url] = features
+         print("Thread {} trigger {} url remained".format(threadName, resultQueue.qsize()))
+         df_last = pd.DataFrame(results.items(), columns=["urls", "features"])
+         df_last.to_csv("chongluadao_dataset.csv", index = False)
    if(resultQueue.empty()):
-      print("hahahahahaha")
-      pd.DataFrame(results.items(), columns=["urls", "features"]).to_csv("chongluadao_dataset_final.csv", index = False)
+      with resultLock:
+         print("hahahahahaha")
+         pd.DataFrame(results.items(), columns=["urls", "features"]).to_csv("chongluadao_dataset_final.csv", index = False)
 
+# result lock
 exitFlag = 0
 start = time.time()
 class myThread (threading.Thread):
