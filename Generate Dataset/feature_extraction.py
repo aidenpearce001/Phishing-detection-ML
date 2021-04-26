@@ -10,17 +10,18 @@ import urllib.request
 from datetime import datetime
 import requests
 
+
 class Extractor():
     def __init__(self):
-        self.feature_names = ['Have_IP', 'Have_At', 'URL_Length', 'URL_Depth','Redirection', 
+        self.feature_names = ['Have_IP', 'Have_At', 'URL_Depth','Redirection', 
                         'https_Domain', 'TinyURL', 'Prefix/Suffix', 'DNS_Record', 'Web_Traffic', 
-                        'Domain_Age', 'Domain_End', 'iFrame', 'Mouse_Over','Right_Click', 'Web_Forwards']
+                        'Domain_Age', 'Domain_End', 'iFrame', 'Mouse_Over','Right_Click', 'Web_Forwards','Punny_Code']
     # 2.Checks for IP address in URL (Have_IP)
     @staticmethod
     def havingIP(url):
         try:
-            ipaddress.ip_address(url)
-            ip = 1
+            if ipaddress.ip_address(url) and Extractor.getLength(url) == 1 :
+                ip = 1
         except:
             ip = 0
         return ip
@@ -28,7 +29,7 @@ class Extractor():
     # 3.Checks the presence of @ in URL (Have_At)
     @staticmethod
     def haveAtSign(url):
-        if "@" in url:
+        if "@" in url and Extractor.getLength(url) == 1:
             at = 1    
         else:
             at = 0    
@@ -66,8 +67,8 @@ class Extractor():
     # 7.Existence of “HTTPS” Token in the Domain Part of the URL (https_Domain)
     @staticmethod
     def httpDomain(url):
-        domain = urlparse(url).netloc
-        if 'https' in domain:
+        # domain = urlparse(url).netloc
+        if 'https' or 'http' in url[5:] and Extractor.getLength(url) == 1:
             return 1
         else:
             return 0
@@ -200,6 +201,18 @@ class Extractor():
                 return 0
             else:
                 return 1
+
+    # 19.Punny code 
+    @staticmethod
+    def punnycode(url):
+
+        vaild_regex = "/^(http|https|ftp):\/\/([A-Z0-9][A-Z0-9_-]*(?:\.[A-Z0-9][A-Z0-9_-]*)+):?(\d+)?\/?/i"
+        if re.match(vaild_regex,url):
+            punny = 1 
+        else:
+            punny = 0
+
+        return punny
     #Function to extract features
     def __call__(self, url):
         if isinstance(url, str):
@@ -207,7 +220,7 @@ class Extractor():
             features = []
             features.append(self.havingIP(url))
             features.append(self.haveAtSign(url))
-            features.append(self.getLength(url))
+            # features.append(self.getLength(url))
             features.append(self.getDepth(url))
             features.append(self.redirection(url))
             features.append(self.httpDomain(url))
@@ -238,6 +251,8 @@ class Extractor():
             features.append(self.mouseOver(response))
             features.append(self.rightClick(response))
             features.append(self.forwarding(response))
+
+            features.append(self.punnycode(url))
             print(features)
             return features
         return []
