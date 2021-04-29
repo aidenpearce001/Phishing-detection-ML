@@ -38,17 +38,26 @@ def get_result(threadName):
       if(resultQueue.empty()):
          time.sleep(1)
          continue
-      url, features = resultQueue.get()
-      print("Result dict have {} urls".format(len(results)))
-      with resultLock:
+      while not resultQueue.empty():
+         url, features = resultQueue.get()
+         print("Result dict have {} urls".format(len(results)))
          results[url] = features
-         print("Thread {} trigger {} url remained".format(threadName, resultQueue.qsize()))
-         df_last = pd.DataFrame(results.items(), columns=["urls", "features"])
-         df_last.to_csv("chongluadao_dataset.csv", index = False)
+      
+      print("Thread {} trigger {} url remained".format(threadName, resultQueue.qsize()))
+      resultLock.acquire()
+      print("Thread {} acquire lock".format(threadName))
+      df_last = pd.DataFrame(results.items(), columns=["urls", "features"])
+      df_last.to_csv("chongluadao_dataset.csv", index = False)
+      resultLock.release()
+      print("Thread {} release lock".format(threadName))
+      print("Thread {} waiting for {} secs".format(threadName, 2))
+      time.sleep(2)
    if(resultQueue.empty()):
-      with resultLock:
-         print("hahahahahaha")
-         pd.DataFrame(results.items(), columns=["urls", "features"]).to_csv("chongluadao_dataset_final.csv", index = False)
+      print("Thread {} acquire lock".format(threadName))
+      resultLock.acquire()
+      pd.DataFrame(results.items(), columns=["urls", "features"]).to_csv("chongluadao_dataset_final.csv", index = False)
+      resultLock.release()
+
 
 # result lock
 exitFlag = 0
@@ -59,7 +68,7 @@ class myThread (threading.Thread):
       self.threadID = str(threadID)
    def run(self):
       print ("Starting thread " + self.threadID)
-      if(int(self.threadID) < 2):
+      if(int(self.threadID) < 1):
         print("Get result")
         get_result(self.threadID)
       else:
