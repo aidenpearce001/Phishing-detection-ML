@@ -1,16 +1,16 @@
 
 body {
-  font-family: 'Bungee Hairline';
+  font-family: 'Source Code Pro', monospace;
   background-color :#f5f5f5;
   width: 600px;
   margin: 0 auto;
-  padding: 0;
+  padding: 1;
 }
 
 .parent {
 display: grid;
 grid-template-columns: 1fr;
-grid-template-rows: 0.3fr 1fr;
+grid-template-rows: 0.4fr 1fr;
 grid-column-gap: 0px;
 grid-row-gap: 0px;
 }
@@ -38,7 +38,7 @@ grid-row-gap: 0px;
 .search-wrapper.active .input-holder {
     width:450px;
     border-radius: 50px;
-    background: rgba(0,0,0,0.6);
+    background: rgba(0,0,0,0.3);
     transition: all .5s cubic-bezier(0.000, 0.105, 0.035, 1.570);
 }
 .search-wrapper .input-holder .search-input {
@@ -53,7 +53,7 @@ grid-row-gap: 0px;
     box-sizing: border-box;
     border:none;
     outline:none;
-    font-family: 'Bungee Hairline';
+    font-family: 'Source Code Pro', monospace;
     font-size: 16px;
     font-weight: 400;
     line-height: 20px;
