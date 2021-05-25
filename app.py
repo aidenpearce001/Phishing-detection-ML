@@ -8,7 +8,7 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.preprocessing.text import Tokenizer
 import tensorflow as tf
 import label_data
-import flask
+from flask import Flask, redirect, url_for, render_template, request
 import json
 import pickle
 import time 
@@ -32,7 +32,7 @@ with tf.device('/cpu:0'):
     model.load_weights(model_pre)
 
 
-app = flask.Flask(__name__)
+app = Flask(__name__)
 
 def preprocess_url(url, tokenizer):
     url = url.strip()
@@ -42,6 +42,10 @@ def preprocess_url(url, tokenizer):
     
     return url_prepped
 
+@app.route('/survey')
+def survey():
+    return render_template('index.html')
+
 @app.route("/predict", methods=["GET"])
 def predict():
 
@@ -49,10 +53,10 @@ def predict():
     data = {"success": False}
 
     # Check if POST request.
-    if flask.request.method == "GET":
+    if request.method == "GET":
         # Grab and process the incoming json.
         start = time.time()
-        incoming = flask.request.get_json()
+        incoming = request.get_json()
         url = incoming["url"]
         data["predictions"] = []
         if(isinstance(url, str)):
@@ -81,7 +85,7 @@ def predict():
             data["time_elapsed"] = end
 
     # Return the data as a JSON response.
-    return flask.jsonify(data)
+    return jsonify(data)
 
 # Start the server.
 if __name__ == "__main__":

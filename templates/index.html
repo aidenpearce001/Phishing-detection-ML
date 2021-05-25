@@ -1,18 +1,18 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
+{% block links %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 <link href='https://fonts.googleapis.com/css?family=Bungee Hairline' rel='stylesheet'>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="./style.css">
 
-</script>
+{% endblock %} {% block content %}
+
 <body>
 <div class="parent">
-  <div class="div1"> 
+  <div class="div1">
+  	<i style="margin-top : 10px; float: right" class="fa fa-envelope-o fa-2x"></i>
+  </div>
+  <div class="div2"> 
    <div class="search-wrapper">
     <div class="input-holder">
         <input type="text" class="search-input" placeholder="Type to search" />
@@ -21,7 +21,7 @@
         <span class="close" onclick="searchToggle(this, event);"></span>
     </div>
   </div>
-  <div class="div2"> 
+  <div class="div3"> 
     <div class="row">
         <div class="square_box box_three"></div>
         <div class="square_box box_four"></div>
@@ -168,8 +168,10 @@
 
     </div>
 </section> -->
-<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script><script  src="./script.js"></script>
 
 
-</body>
-</html>
+{% endblock %} {% block scripts %}
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
+{% endblock %}
+
