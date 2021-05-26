@@ -7,20 +7,42 @@ body {
   padding: 1;
 }
 
-.parent {
-float: left;
-display: grid;
-width: 60vw;
-/* height: 100vh; */
-grid-template-columns: 1fr;
-grid-template-rows: 0.1fr 0.1fr 1fr;
-grid-column-gap: 0px;
-grid-row-gap: 0px;
+#flexbox {
+  display: flex;
+  flex-wrap: wrap;
+  /* width: 100%; */
+  row-gap: 100px;
 }
 
-.div1 { grid-area: 1 / 1 / 2 / 2; }
-.div2 { grid-area: 2 / 1 / 3 / 2; }
-.div3 { grid-area: 3 / 1 / 4 / 2; }
+#flexbox > div {
+  /* border: 1px solid green; */
+  /* background-color: lime; */
+  flex: 1 1 auto;
+  /* width: 100px; */
+  /* height: 10%; */
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.1fr 0.1fr 0.11fr 1fr;
+  gap: 0px 0px;
+  grid-template-areas:
+}
+
+
+/* For presentation only, no need to copy the code below */
+.grid-container * {
+  position: relative;
+}
+
+.grid-container *:after {
+  content:attr(class);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 .search-wrapper {
     position: absolute;
     transform: translate(-50%, -50%);
@@ -375,7 +397,7 @@ span.scheme {
 span.domain {
   float: left;
   display: inline-block;
-  background-color: yellow; 
+  background-color: #749F9F; 
 }
 span.port {
   float: left;
@@ -385,15 +407,82 @@ span.port {
 span.path {
   float: left;
   display: inline-block;
-  background-color: yellow; 
+  background-color: #F49907; 
 }
 span.param {
   float: left;
   display: inline-block;
-  background-color: yellow; 
+  background-color: #D3DCF5; 
 }
 span.anchor {
   float: left;
   display: inline-block;
-  background-color: yellow; 
+  background-color: #CF97C3; 
+}
+
+/* Tooltip */
+
+.container {
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px 0 rgba(153, 153, 153, 0.35);
+  padding: 1em;
+  border: 1px solid #eee;
+  display: block;
+  width: 200px;
+  margin: 0 auto;
+}
+/* .label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.label-text {
+  margin-left: 0.5em;
+} */
+.tooltip-toggle {
+  cursor: pointer;
+  position: relative;
+}
+.tooltip-toggle span {
+  height: 18px;
+  width: 18px;
+}
+.tooltip-toggle::before {
+  position: absolute;
+  top: -80px;
+  left: -80px;
+  background-color: #2b222a;
+  border-radius: 5px;
+  color: #fff;
+  content: attr(aria-label);
+  padding: 1rem;
+  text-transform: none;
+  transition: all 0.5s ease;
+  width: 160px;
+}
+.tooltip-toggle::after {
+  position: absolute;
+  top: -12px;
+  left: 9px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #2b222a;
+  content: " ";
+  font-size: 0;
+  line-height: 0;
+  margin-left: -5px;
+  width: 0;
+}
+.tooltip-toggle::before, .tooltip-toggle::after {
+  color: #efefef;
+  font-family: monospace;
+  font-size: 16px;
+  opacity: 0;
+  pointer-events: none;
+  text-align: center;
+}
+.tooltip-toggle:focus::before, .tooltip-toggle:focus::after, .tooltip-toggle:hover::before, .tooltip-toggle:hover::after {
+  opacity: 1;
+  transition: all 0.75s ease;
 }

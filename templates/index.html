@@ -10,12 +10,13 @@
 
 </script>
 <body>
-<div class="parent">
-  <div class="div1">
-  	<i style="margin-top : 10px; float: right" class="fa fa-envelope-o fa-2x"></i>
+<div id="flexbox">
+
+  <div>
+  	<i class="fa fa-envelope-o fa-2x"></i>
   </div>
-  <div class="div2"> 
-    
+
+  <div> 
     <div class="search-wrapper">
     <div class="input-holder">
       <form id="form" method="post">
@@ -27,17 +28,50 @@
         <span class="close" onclick="searchToggle(this, event);"></span>
         <!-- <button class="search-icon" onclick="alert(searchTxt.value)"></button>  -->
     </div>
-    <span class="scheme" style="color:black; font-size: 100%;">http</span>
-    <span class="normal" style="color:black; font-size: 100%;">://</span>
-    <span class="domain"  style="color:black; font-size: 100%;">www.example.com</span>
-    <span class="normal" style="color:black; font-size: 100%;">:</span>
-    <span class="port" style="color:black; font-size: 100%;">80</span>
-    <span class="path" style="color:black; font-size: 100%;">/path/to/myfile.html</span>
-    <span class="param" style="color:black; font-size: 100%;">?key1=value1&key2=value2</span>
-    <span class="anchor" style="color:black; font-size: 100%;">#SomeWhereInTheDocument</span>
   </div>
-  <div class="div3"> 
-    <div class="row">
+
+  <div> 
+    <span class="tooltip-toggle" aria-label="Sample text for your tooltip!" tabindex="0"></span>
+    <span class="scheme label-text" style="color:black; font-size: 150%;">http</span>
+    <span class="normal" style="color:black; font-size: 150%;">://</span>
+    <span class="domain"  style="color:black; font-size: 150%;">www.example.com</span>
+    <span class="normal" style="color:black; font-size: 150%;">:</span>
+    <span class="port" style="color:black; font-size: 150%;">80</span>
+    <span class="path" style="color:black; font-size: 150%;">/path/file.html</span>
+    <span class="param" style="color:black; font-size: 150%;">?key1=value1&key2=value2</span>
+    <span class="anchor" style="color:black; font-size: 150%;">#SomeWhere</span>
+
+    <span class="tooltip-toggle" aria-label="Sample text for your tooltip!" tabindex="0">
+      <svg viewBox="0 0 27 27" xmlns="http://www.w3.org/2000/svg"><g fill="#ED3E44" fill-rule="evenodd"><path d="M13.5 27C20.956 27 27 20.956 27 13.5S20.956 0 13.5 0 0 6.044 0 13.5 6.044 27 13.5 27zm0-2C7.15 25 2 19.85 2 13.5S7.15 2 13.5 2 25 7.15 25 13.5 19.85 25 13.5 25z"/><path d="M12.05 7.64c0-.228.04-.423.12-.585.077-.163.185-.295.32-.397.138-.102.298-.177.48-.227.184-.048.383-.073.598-.073.203 0 .398.025.584.074.186.05.35.126.488.228.14.102.252.234.336.397.084.162.127.357.127.584 0 .22-.043.412-.127.574-.084.163-.196.297-.336.4-.14.106-.302.185-.488.237-.186.053-.38.08-.584.08-.215 0-.414-.027-.597-.08-.182-.05-.342-.13-.48-.235-.135-.104-.243-.238-.32-.4-.08-.163-.12-.355-.12-.576zm-1.02 11.517c.134 0 .275-.013.424-.04.148-.025.284-.08.41-.16.124-.082.23-.198.313-.35.085-.15.127-.354.127-.61v-5.423c0-.238-.042-.43-.127-.57-.084-.144-.19-.254-.318-.332-.13-.08-.267-.13-.415-.153-.148-.024-.286-.036-.414-.036h-.21v-.95h4.195v7.463c0 .256.043.46.127.61.084.152.19.268.314.35.125.08.263.135.414.16.15.027.29.04.418.04h.21v.95H10.82v-.95h.21z"/></g></svg>
+    </span>
+    <span class="label-text">Hover over the "i"!</span>
+    <!-- <div class="label"> -->
+      <!-- <span class="tooltip-toggle" aria-label="Sample text for your tooltip!" tabindex="0">
+        <svg viewBox="0 0 27 27" xmlns="http://www.w3.org/2000/svg"><g fill="#ED3E44" fill-rule="evenodd"><path d="M13.5 27C20.956 27 27 20.956 27 13.5S20.956 0 13.5 0 0 6.044 0 13.5 6.044 27 13.5 27zm0-2C7.15 25 2 19.85 2 13.5S7.15 2 13.5 2 25 7.15 25 13.5 19.85 25 13.5 25z"/><path d="M12.05 7.64c0-.228.04-.423.12-.585.077-.163.185-.295.32-.397.138-.102.298-.177.48-.227.184-.048.383-.073.598-.073.203 0 .398.025.584.074.186.05.35.126.488.228.14.102.252.234.336.397.084.162.127.357.127.584 0 .22-.043.412-.127.574-.084.163-.196.297-.336.4-.14.106-.302.185-.488.237-.186.053-.38.08-.584.08-.215 0-.414-.027-.597-.08-.182-.05-.342-.13-.48-.235-.135-.104-.243-.238-.32-.4-.08-.163-.12-.355-.12-.576zm-1.02 11.517c.134 0 .275-.013.424-.04.148-.025.284-.08.41-.16.124-.082.23-.198.313-.35.085-.15.127-.354.127-.61v-5.423c0-.238-.042-.43-.127-.57-.084-.144-.19-.254-.318-.332-.13-.08-.267-.13-.415-.153-.148-.024-.286-.036-.414-.036h-.21v-.95h4.195v7.463c0 .256.043.46.127.61.084.152.19.268.314.35.125.08.263.135.414.16.15.027.29.04.418.04h.21v.95H10.82v-.95h.21z"/></g></svg>
+      </span>
+      <span class="label-text">Hover over the "i"!</span>
+    </div> -->
+  </div>
+
+    <!-- <div class="container">
+      <div class="label">
+        <span class="tooltip-toggle" aria-label="Sample text for your tooltip!" tabindex="0">
+          <svg viewBox="0 0 27 27" xmlns="http://www.w3.org/2000/svg"><g fill="#ED3E44" fill-rule="evenodd"><path d="M13.5 27C20.956 27 27 20.956 27 13.5S20.956 0 13.5 0 0 6.044 0 13.5 6.044 27 13.5 27zm0-2C7.15 25 2 19.85 2 13.5S7.15 2 13.5 2 25 7.15 25 13.5 19.85 25 13.5 25z"/><path d="M12.05 7.64c0-.228.04-.423.12-.585.077-.163.185-.295.32-.397.138-.102.298-.177.48-.227.184-.048.383-.073.598-.073.203 0 .398.025.584.074.186.05.35.126.488.228.14.102.252.234.336.397.084.162.127.357.127.584 0 .22-.043.412-.127.574-.084.163-.196.297-.336.4-.14.106-.302.185-.488.237-.186.053-.38.08-.584.08-.215 0-.414-.027-.597-.08-.182-.05-.342-.13-.48-.235-.135-.104-.243-.238-.32-.4-.08-.163-.12-.355-.12-.576zm-1.02 11.517c.134 0 .275-.013.424-.04.148-.025.284-.08.41-.16.124-.082.23-.198.313-.35.085-.15.127-.354.127-.61v-5.423c0-.238-.042-.43-.127-.57-.084-.144-.19-.254-.318-.332-.13-.08-.267-.13-.415-.153-.148-.024-.286-.036-.414-.036h-.21v-.95h4.195v7.463c0 .256.043.46.127.61.084.152.19.268.314.35.125.08.263.135.414.16.15.027.29.04.418.04h.21v.95H10.82v-.95h.21z"/></g></svg>
+        </span>
+        <span class="label-text">Hover over the "i"!</span>
+      </div>
+    </div> -->
+    <!-- <span class="scheme" data-text="Thanks for hovering! I'm a tooltip"  style="color:black; font-size: 150%;" >http</span>
+    <span class="normal" style="color:black; font-size: 150%;">://</span>
+    <span class="domain"  style="color:black; font-size: 150%;">www.example.com</span>
+    <span class="normal" style="color:black; font-size: 150%;">:</span>
+    <span class="port" style="color:black; font-size: 150%;">80</span>
+    <span class="path" style="color:black; font-size: 150%;">/path/file.html</span>
+    <span class="param" style="color:black; font-size: 150%;">?key1=value1&key2=value2</span>
+    <span class="anchor" style="color:black; font-size: 150%;">#SomeWhere</span> -->
+
+  <div> 
+    <!-- <div class="row"> -->
         <div class="square_box box_three"></div>
         <div class="square_box box_four"></div>
           {% for i in data%}
@@ -53,155 +87,12 @@
 
           </div>
           {% endfor %}
-          <!-- <div class="col-sm-12">
-            <div class="alert fade alert-simple alert-primary alert-dismissible brk-library-rendered rendered show" role="alert" data-brk-library="component__alert">
-            <button type="button" class="" data-dismiss="alert">
-
-            <span class="sr-only">Close</span>
-            </button>
-            <strong class="">Heads up!</strong> This alert needs your attention, but it's not super important.
-            </div>
-
-          </div>
-
-            <div class="col-sm-12">
-                <div class="alert fade alert-simple alert-success alert-dismissible text-left font__family-montserrat font__size-16 font__weight-light brk-library-rendered rendered show">
-                <button type="button" class="close font__size-18" data-dismiss="alert">
-                <span class="sr-only">Close</span> 
-                </button>
-                <i class="start-icon far fa-check-circle faa-tada animated"></i>
-                <strong class="font__weight-semibold">Well done!</strong> You successfullyread this important.
-                </div>
-            </div>
-
-            <div class="col-sm-12">
-                <div class="alert fade alert-simple alert-success alert-dismissible brk-library-rendered rendered show" role="alert" data-brk-library="component__alert">
-                <button type="button" class="" data-dismiss="alert">
-
-                <span class="sr-only">Close</span>
-                </button>
-                <strong class="">Heads up!</strong> This alert needs your attention, but it's not super important.
-                </div>
-
-            </div>
-
-            <div class="col-sm-12">
-                <div class="alert alert-simple alert-success" role="alert" data-brk-library="component__alert">
-                <strong class="">Heads up!</strong> This alert needs your attention, but it's not super important.
-                </div>
-
-            </div>
-            <div class="col-sm-12">
-                <div class="alert fade alert-simple alert-info alert-dismissible text-left font__family-montserrat font__size-16 font__weight-light brk-library-rendered rendered show" role="alert" data-brk-library="component__alert">
-                  <button type="button" class="close font__size-18" data-dismiss="alert">
-                                            <span aria-hidden="true">
-                                                <i class="fa fa-times blue-cross"></i>
-                                            </span>
-                                            <span class="sr-only">Close</span>
-                                        </button>
-                  <i class="start-icon fa fa-times-circle faa-shake animated"></i>
-                  <strong class="font__weight-semibold">Heads up!</strong> This alert needs your attention, but it's not super important.
-                </div>
-
-            </div> -->
-
-        </div>
-    </div>
+         
+        
+  </div>
 </div>
-</div>
-
-<!-- <div class="container mt-5"> -->
-    <!-- <div class="row">
-        <div class="search-wrapper">
-            <div class="input-holder">
-                <input type="text" class="search-input" placeholder="Type to search" />
-                <button class="search-icon" onclick="searchToggle(this, event);"><span></span></button>
-            </div>
-            <span class="close" onclick="searchToggle(this, event);"></span>
-        </div>
-    </div>
-
-    <div class="row">
-        <h1>hello</h1>
-    </div> -->
-
-    <!-- <div class="row"> -->
-
-<!-- <div class="search-wrapper">
-    <div class="input-holder">
-        <input type="text" class="search-input" placeholder="Type to search" />
-        <button class="search-icon" onclick="searchToggle(this, event);"><span></span></button>
-    </div>
-    <span class="close" onclick="searchToggle(this, event);"></span>
-</div>
-
-<section>
-    <div class="square_box box_three"></div>
-    <div class="square_box box_four"></div>
-    <div class="container mt-5">
-
-
-    <div class="row">
-
-      <div class="col-sm-12">
-        <div class="alert fade alert-simple alert-success alert-dismissible text-left font__family-montserrat font__size-16 font__weight-light brk-library-rendered rendered show">
-          <button type="button" class="close font__size-18" data-dismiss="alert">
-                    </a></span>
-                                    <span class="sr-only">Close</span> 
-                                </button>
-          <i class="start-icon far fa-check-circle faa-tada animated"></i>
-          <strong class="font__weight-semibold">Well done!</strong> You successfullyread this important.
-        </div>
-      </div>
-
-      <div class="col-sm-12">
-        <div class="alert fade alert-simple alert-success alert-dismissible brk-library-rendered rendered show" role="alert" data-brk-library="component__alert">
-          <button type="button" class="" data-dismiss="alert">
-                                    
-                                    <span class="sr-only">Close</span>
-                                </button>
-          <strong class="">Heads up!</strong> This alert needs your attention, but it's not super important.
-        </div>
-
-      </div>
-
-      <div class="col-sm-12">
-        <div class="alert alert-simple alert-success" role="alert" data-brk-library="component__alert">
-          <strong class="">Heads up!</strong> This alert needs your attention, but it's not super important.
-        </div>
-
-      </div>
-
-      <div class="col-sm-12">
-        <div class="alert fade alert-simple alert-warning alert-dismissible text-left font__family-montserrat font__size-16 font__weight-light brk-library-rendered rendered show" role="alert" data-brk-library="component__alert">
-          <button type="button" class="close font__size-18" data-dismiss="alert">
-                                    <span aria-hidden="true">
-                                        <i class="fa fa-times warning"></i>
-                                    </span>
-                                    <span class="sr-only">Close</span>
-                                </button>
-          <i class="start-icon fa fa-exclamation-triangle faa-flash animated"></i>
-          <strong class="font__weight-semibold">Warning!</strong> Better check yourself, you're not looking too good.
-        </div>
-      </div>
-
-      <div class="col-sm-12">
-        <div class="alert fade alert-simple alert-danger alert-dismissible text-left font__family-montserrat font__size-16 font__weight-light brk-library-rendered rendered show" role="alert" data-brk-library="component__alert">
-          <button type="button" class="close font__size-18" data-dismiss="alert">
-                                    <span aria-hidden="true">
-                                        <i class="fa fa-times danger "></i>
-                                    </span>
-                                    <span class="sr-only">Close</span>
-                                </button>
-          <i class="start-icon far fa-times-circle faa-pulse animated"></i>
-          <strong class="font__weight-semibold">Oh snap!</strong> Change a few things up and try submitting again.
-        </div>
-      </div>
-
-
-    </div>
-</section> -->
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script src="{{ url_for('static', filename='js/script.js') }}" ></script>
 
 
