@@ -42,9 +42,17 @@ def preprocess_url(url, tokenizer):
     
     return url_prepped
 
-@app.route('/survey')
+@app.route('/survey', methods=["GET","POST"])
 def survey():
-    return render_template('index.html')
+
+    features =  ['Chứa địa chỉ IP trong URL', 'Chứa ký tự @ trong URL', 'Địa chỉ trang web chứa nhiều path','Có ký tự // trong tên miền', 
+    'HTTPS hoặc HTTP trong tên miền', 'Sử dụng địa chỉ rút gọn', 'Có chứa ký tự - trong domain', 'Kiểm tra xem DNS có nhận được website không', 
+    'Tuổi thọ của tên miền có dưới 6 tháng', 'Tên miền đã hết hạn', 'Website có sử dụng Iframe', 'Website có sử dụng Mouse_Over','Website tắt chức năng Right_Click', 'Sô lần bị forward có quá 2 lần khi vào trang web','Địa chỉ Website có chứa punny code']
+    if request.method == "POST":
+        print(request.form['url'])
+
+        return render_template('index.html', data=features)
+    return render_template('index.html',data=features)
 
 @app.route("/predict", methods=["GET"])
 def predict():

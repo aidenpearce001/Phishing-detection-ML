@@ -50,7 +50,7 @@ class Extractor():
         for j in range(len(s)):
             if len(s[j]) != 0:
                 depth = depth+1
-        return depth
+        return depth 
 
     # 6.Checking for redirection '//' in the url (Redirection)
     @staticmethod
