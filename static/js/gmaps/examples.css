@@ -1,0 +1,97 @@
+#simplemap{
+	display: block;
+	width: 100%;
+	height: 350px;
+	margin: 0 auto;
+	-moz-box-shadow: 0px 5px 20px #ccc;
+	-webkit-box-shadow: 0px 5px 20px #ccc;
+	box-shadow: 0px 5px 20px #ccc;
+}
+#simplemap.large {
+	height: 500px;
+}
+#mapmarker{
+	display: block;
+	width: 100%;
+	height: 350px;
+	margin: 0 auto;
+	-moz-box-shadow: 0px 5px 20px #ccc;
+	-webkit-box-shadow: 0px 5px 20px #ccc;
+	box-shadow: 0px 5px 20px #ccc;
+}
+#mapmarker.large {
+	height: 500px;
+}
+#polyline{
+	display: block;
+	width: 100%;
+	height: 350px;
+	margin: 0 auto;
+	-moz-box-shadow: 0px 5px 20px #ccc;
+	-webkit-box-shadow: 0px 5px 20px #ccc;
+	box-shadow: 0px 5px 20px #ccc;
+}
+#polyline.large {
+	height: 350px;
+}
+#polyline img{
+	width:100%;
+	height:100%
+}
+#styled{
+	display: block;
+	width: 100%;
+	height: 350px;
+	margin: 0 auto;
+	-moz-box-shadow: 0px 5px 20px #ccc;
+	-webkit-box-shadow: 0px 5px 20px #ccc;
+	box-shadow: 0px 5px 20px #ccc;
+}
+#styled.large {
+	height: 350px;
+}
+#overlaylayer{
+	display: block;
+	width: 100%;
+	height: 350px;
+	margin: 0 auto;
+	-moz-box-shadow: 0px 5px 20px #ccc;
+	-webkit-box-shadow: 0px 5px 20px #ccc;
+	box-shadow: 0px 5px 20px #ccc;
+}
+#overlaylayer.large {
+	height: 500px;
+}
+.overlay {
+	display: block;
+	text-align: center;
+	color: #fff;
+	font-size: 16px;
+	line-height: 40px;
+	opacity: 1;
+	background: #5867dd;
+	border: solid 3px #5867dd;
+	border-radius: 4px;
+	box-shadow: 2px 2px 10px #5867dd;
+	text-shadow: 1px 1px 1px #5867dd;
+	padding: 0 20px;
+}
+.overlay_arrow {
+	left: 50%;
+	margin-left: -16px;
+	width: 0;
+	height: 0;
+	position: absolute;
+}
+.overlay_arrow.above {
+	bottom: -15px;
+	border-left: 16px solid transparent;
+	border-right: 16px solid transparent;
+	border-top: 16px solid #5867dd;
+}
+.overlay_arrow.below {
+	top: -15px;
+	border-left: 16px solid transparent;
+	border-right: 16px solid transparent;
+	border-bottom: 16px solid #5867dd;
+}

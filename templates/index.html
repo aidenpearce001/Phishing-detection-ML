@@ -1,80 +1,224 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title></title>
-</head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<title>Phishing Detection</title>
+
+<!-- Google Font -->
+
+<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
+
+<!-- Template Styles -->
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome/css/font-awesome.min.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/Simple-Line-Icons-Webfont/simple-line-icons.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/et-line-font/et-line-font.csss') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='js/tooltip/tooltip.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='js/bootstrap-switch/bootstrap-switch.css') }}" />
 
-</script>
+<!-- Base MasterSlider style sheet -->
+
+<link rel="stylesheet" href="{{ url_for('static', filename='js/masterslider/style/masterslider.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='js/masterslider/skins/default/style.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='js/masterslider/style/style.css') }}" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/masterslider/style/ms-tablet-style.css') }}" />
+
+<!-- Responsive Devices Styles -->
+<link rel="stylesheet"  media="screen" href="{{ url_for('static', filename='css/responsive-leyouts.css') }}" />
+<!-- Mega Menu -->
+<link rel="stylesheet" href="{{ url_for('static', filename='js/megamenu/stylesheets/screen.css') }}" />
+
+</head>
 <body>
-<div id="flexbox">
-
-  <div>
-  	<i class="fa fa-envelope-o fa-2x"></i>
-  </div>
-
-  <div> 
-    <div class="search-wrapper">
-    <div class="input-holder">
-      <form id="form" method="post">
-        <input id="searchTxt" name="url" type="text" class="search-input" placeholder="Nhập địa chỉ"/>
-        <!-- <button class="search-icon" onclick="alert(searchTxt.value)"></button> -->
-        <button id="submit" class="search-icon" onclick="searchToggle(this, event);"><span></span></button>
-      </form>
+<div class="site-wrapper">
+  <div class="temp-header sty1">
+    <div class="top-bar solid-dark">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6"><i style="color: black" class="fa fa-envelope-o" data-toggle="modal" data-target="#reportModal"></i> <a data-toggle="modal" data-target="#reportModal"><b style="color: black">Hòm thư góp ý</b></a>  </div>
+        </div>
+        <!--end of row--> 
+      </div>
     </div>
-        <span class="close" onclick="searchToggle(this, event);"></span>
-        <!-- <button class="search-icon" onclick="alert(searchTxt.value)"></button>  -->
-    </div>
+    <!--end menu--> 
   </div>
+  <div class="clearfix"></div>
+  
+  <style>
 
-  <div> 
-    <span class="tooltip-toggle" aria-label="Sample text for your tooltip!" tabindex="0"></span>
-    <span class="scheme label-text" style="color:black; font-size: 150%;">http</span>
-    <span class="normal" style="color:black; font-size: 150%;">://</span>
-    <span class="domain"  style="color:black; font-size: 150%;">www.example.com</span>
-    <span class="normal" style="color:black; font-size: 150%;">:</span>
-    <span class="port" style="color:black; font-size: 150%;">80</span>
-    <span class="path" style="color:black; font-size: 150%;">/path/file.html</span>
-    <span class="param" style="color:black; font-size: 150%;">?key1=value1&key2=value2</span>
-    <span class="anchor" style="color:black; font-size: 150%;">#SomeWhere</span>
-
-    
-    <!-- <div class="label"> -->
-      <!-- <span class="tooltip-toggle" aria-label="Sample text for your tooltip!" tabindex="0">
-        <span>test</span>
-      </span>
-      <span class="label-text">Hover over the "i"!</span>
-    </div> -->
-  </div>
-   
-  <div> 
-        <div class="square_box box_three"></div>
-        <div class="square_box box_four"></div>
-          {% for i in data%}
-
-          <div class="col-sm-12">
-            <div class="alert fade alert-simple alert-primary alert-dismissible brk-library-rendered rendered show" role="alert" data-brk-library="component__alert">
-            <!-- <button type="button" class="" data-dismiss="alert"> -->
-
-            <span class="sr-only">Close</span>
-            </button>
-            <strong style="text-align: center;" class="">{{i}}</strong> 
+  </style>
+  <!-- Modal -->
+<div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Hòm thư góp ý</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group col-md-12">
+            <div class="dropdown">
+              <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown">Chủ đề đóng góp
+              <span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                <li><a href="#">Giao Diện</a></li>
+                <li><a href="#">Thêm Đặc Trưng</a></li>
+                <li><a href="#">Khác...</a></li>
+              </ul>
             </div>
-
           </div>
-          {% endfor %}
-         
-        
+          <div class="form-group col-md-12">
+            <!-- <input type="text" class="form-control" id="searchTxt" name="url" aria-describedby="urlHelp" placeholder="Nội dung góp ý"> -->
+            <textarea placeholder="This is an awesome comment box" rows="20" name="comment[text]" id="comment_text" cols="40" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
   </div>
 </div>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<script src="{{ url_for('static', filename='js/script.js') }}" ></script>
+  <div class="clearfix"></div>
+  <div class="section-lg">
+    <div class="container">
+      
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <div class="m-bot-6">
+            <h1 class="f-35 font-bold uppercase">Phishing detection</h1>
+            <div class="hr-line blue-color m-bot-2"></div>
+            <p>Điền Link Website</p>
+            <form>
+              <row>
+                <div class="form-group col-md-11">
+                  <input type="text" class="form-control" id="searchTxt" name="url" aria-describedby="urlHelp" placeholder="https://www.google.com/">
+                </div>
+                <button type="button" class="col-md-1 btn btn-primary"><i class="fa fa-check"></i> Check</button>
+              </row>
+              
+            </form>
+          </div>
+        </div>
+        
+        <div class="col-md-12 col-sm-12 col-xs-12 m-bot-3 animate-in" data-anim-type="fade-in-down" data-anim-delay="100">
+      
+      </div>
+      
+    </div>
+  </div>
+  <div class="section-lg bg-grey m-top-20">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-8 col-sm-offset-2 text-center m-bot-4">
+          <h3 class="f-30 font-bold">Các thành phần của một đường link</h3>
+          <div class="container">
+            
+          </div>
+          <p class="f-18"><a class="js-mytooltip "
+            data-mytooltip-custom-class="align-center"
+            data-mytooltip-content="Protocol" style="color: black;background-color: #96be25; ">http </a><a class="js-mytooltip"
+            data-mytooltip-custom-class="align-center"
+            data-mytooltip-content="" style="color: black;">:// </a><a class="js-mytooltip"
+            data-mytooltip-custom-class="align-center"
+            data-mytooltip-content="Domain" style="color: black;background-color: #749F9F;">www.example.com </a><a class="js-mytooltip"
+            data-mytooltip-custom-class="align-center"
+            data-mytooltip-content="" style="color:black;">:</a><a class="js-mytooltip"
+            data-mytooltip-custom-class="align-center"
+            data-mytooltip-content="Port" style="color:black;background-color: yellow;">80 </a><a class="js-mytooltip"
+            data-mytooltip-custom-class="align-center"
+            data-mytooltip-content="Link path" style="color: black;background-color: #F49907">/path/file.html </a><a class="js-mytooltip"
+            data-mytooltip-custom-class="align-center"
+            data-mytooltip-content="Paramter" style="color: black;background-color: #D3DCF5; ">?key1=value1&key2=value2 </a><a class="js-mytooltip"
+            data-mytooltip-custom-class="align-center"
+            data-mytooltip-content="Anchor" style="color: black;background-color: #CF97C3; ">#SomeWhere </a>
+          </p>
+        </div>
+       
+      </div>
+    </div>
+  </div>
+  <div class="section-lg">
+    <div class="container">
+      <div style="width:100%">
+        <div class="sec-title">
+          <h2>Các đặc trưng Model sử dụng</h2>
+        </div>
+    <div class="container1">
+      <div class="card item">
+        <h1>testtesttesttesttesttesttesttest</h1>
+      </div>
+      <div class="card item">
+        <h1>test</h1>
+      </div>
+      <div class="card item">
+        <h1>test</h1>
+      </div>
+    </div>
+    <div class="card item">
+        <h1>test</h1>
+      </div>
+    </div>
 
+    
+   
+  </div>
+  
+  <!-- end features Section 01 -->
+  
+  <footer class="footer black-bg">
+  
+    <div class="copyright sty-one">
+      <div class="container">
+        <div class="text-center">Copyright © 2021 Aiden Pearce. Design by MrNA All rights reserved.</div>
+      </div>
+    </div>
+  </footer>
+  <!-- end footer --> 
+  <!-- end site wrapper--> 
+</div>
 
+<a href="#" class="scrollup"></a> 
+<!-- end scroll to top of the page--> 
+
+<!-- jQuery first, then Tether, then Bootstrap JS. --> 
+<script src="{{ url_for('static', filename='js/jquery.js') }}" ></script>
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}" ></script>
+
+<!-- Mega Menu --> 
+<script src="{{ url_for('static', filename='js/jquery.js') }}" ></script>
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}" ></script>
+<script type="text/javascript" src="js/megamenu/js/main.js"></script> 
+<script type="text/javascript" src="js/megamenu/js/onepage.js"></script> 
+
+<!-- MasterSlider --> 
+<script src="{{ url_for('static', filename='js/masterslider/jquery.easing.min.js') }}" ></script>
+<script src="{{ url_for('static', filename='js/masterslider/masterslider.min.js') }}" ></script>
+<script src="{{ url_for('static', filename='js/masterslider/masterslider.int.js') }}" ></script>
+
+<!-- Counters --> 
+<script src="{{ url_for('static', filename='js/aninum/jquery.animateNumber.min.js') }}" ></script>
+
+<!-- Scroll Up --> 
+<script src="{{ url_for('static', filename='js/scrolltotop/totop.js') }}" ></script>
+
+<!-- tooltip --> 
+<script src="{{ url_for('static', filename='js/js/tooltip/tooltip.js') }}" ></script>
+<script src="{{ url_for('static', filename='js/tooltip/script.js') }}" ></script>
+
+<!-- bootstrap-switch --> 
+<script src="{{ url_for('static', filename='js/bootstrap-switch/bootstrap-switch.js') }}" ></script>
+<script src="{{ url_for('static', filename='js/bootstrap-switch/highlight.js') }}" ></script>
+<script src="{{ url_for('static', filename='js/bootstrap-switch/main.js') }}" ></script>
 </body>
 </html>
-  
