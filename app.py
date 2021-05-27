@@ -27,13 +27,13 @@ max_words = 20000\
 
 from feature_extraction import *
 
-classifier = joblib.load('rf_final.pkl')
-ext = Extractor()
-# with tf.device('/cpu:0'):
-#     model_pre = "./checkpointModel/bestModelCNN"
-#     model = ConvModel(num_chars, embedding_vector_length, maxlen)
-#     model.built = True
-#     model.load_weights(model_pre)
+# classifier = joblib.load('rf_final.pkl')
+# ext = Extractor()
+with tf.device('/cpu:0'):
+    model_pre = "./checkpointModel/bestModelCNN"
+    model = ConvModel(num_chars, embedding_vector_length, maxlen)
+    model.built = True
+    model.load_weights(model_pre)
 
 
 app = Flask(__name__)
@@ -53,13 +53,21 @@ def survey():
     'HTTPS hoặc HTTP trong tên miền', 'Sử dụng địa chỉ rút gọn', 'Có chứa ký tự - trong domain', 'Kiểm tra xem DNS có nhận được website không', 
     'Tuổi thọ của tên miền có dưới 6 tháng', 'Tên miền đã hết hạn', 'Website có sử dụng Iframe', 'Website có sử dụng Mouse_Over','Website tắt chức năng Right_Click', 'Sô lần bị forward có quá 2 lần khi vào trang web','Địa chỉ Website có chứa punny code']
     if request.method == "POST" and request.form['url'] != None:
-        print(request.form['url'])
-        Vector = np.array(ext(request.form['url'])).reshape(1, -1)
-    
-        prediction = classifier.predict(Vector )
-        print(prediction)
 
-        return render_template('index.html', data=features)
+        data = []
+        print(request.form['url'])
+        url = request.form['url']
+        if(isinstance(url, str)):
+            url_prepped = preprocess_url(url, tokenizer)
+            prediction = model.predict(url_prepped)
+        if prediction > 0.5:
+            data.append("phishing")
+        else:
+            data.append("legit")
+
+        data.append(prediction[0][0])
+        print(data)
+        return render_template('index.html', data=features, result = data)
     return render_template('index.html',data=features)
 
 @app.route("/predict", methods=["GET"])
@@ -107,4 +115,4 @@ def predict():
 if __name__ == "__main__":
     print("Starting the server and loading the model...")
     app.run(host='0.0.0.0', port=45000, debug=True)
-
+    

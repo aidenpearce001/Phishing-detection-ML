@@ -22,6 +22,7 @@ $(document).ready(function(){
             dataType: 'json',
             success: function(data)
             {
+                swal("Hello world!");
                 console.log(data); 
             }
         });

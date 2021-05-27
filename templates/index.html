@@ -7,8 +7,8 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-</script>
 <body>
 <div id="flexbox">
 
@@ -54,7 +54,23 @@
         <div class="square_box box_three"></div>
         <div class="square_box box_four"></div>
           {% for i in data%}
-
+          {% if "phishing" in result[0] %}
+            <script>
+              swal({
+                title: "Phishing Website",
+                text: "Score :  {{ result[1] }}",
+                icon: "error",
+              });
+            </script>
+          {% else %}
+          <script>
+            swal({
+              title: "Not Phishing Website",
+              text: "Score :  {{ result[1] }}",
+              icon: "success",
+            });
+          </script>
+          {% endif %}
           <div class="col-sm-12">
             <div class="alert fade alert-simple alert-primary alert-dismissible brk-library-rendered rendered show" role="alert" data-brk-library="component__alert">
             <!-- <button type="button" class="" data-dismiss="alert"> -->
@@ -73,7 +89,6 @@
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script src="{{ url_for('static', filename='js/script.js') }}" ></script>
-
 
 </body>
 </html>
