@@ -11,6 +11,7 @@ import label_data
 from flask import Flask, redirect, url_for, render_template, request
 import json
 import pickle
+import joblib
 import time 
 from model import ConvModel
 # Initialize our Flask application and the Keras model.
@@ -22,14 +23,17 @@ with open('tokenizer.pickle', 'rb') as handle:
 num_chars = len(tokenizer.word_index)+1
 embedding_vector_length = 128
 maxlen = 128
-max_words = 20000
+max_words = 20000\
 
+from feature_extraction import *
 
-with tf.device('/cpu:0'):
-    model_pre = "./checkpointModel/bestModelCNN"
-    model = ConvModel(num_chars, embedding_vector_length, maxlen)
-    model.built = True
-    model.load_weights(model_pre)
+classifier = joblib.load('rf_final.pkl')
+ext = Extractor()
+# with tf.device('/cpu:0'):
+#     model_pre = "./checkpointModel/bestModelCNN"
+#     model = ConvModel(num_chars, embedding_vector_length, maxlen)
+#     model.built = True
+#     model.load_weights(model_pre)
 
 
 app = Flask(__name__)
@@ -48,8 +52,12 @@ def survey():
     features =  ['Chứa địa chỉ IP trong URL', 'Chứa ký tự @ trong URL', 'Địa chỉ trang web chứa nhiều path','Có ký tự // trong tên miền', 
     'HTTPS hoặc HTTP trong tên miền', 'Sử dụng địa chỉ rút gọn', 'Có chứa ký tự - trong domain', 'Kiểm tra xem DNS có nhận được website không', 
     'Tuổi thọ của tên miền có dưới 6 tháng', 'Tên miền đã hết hạn', 'Website có sử dụng Iframe', 'Website có sử dụng Mouse_Over','Website tắt chức năng Right_Click', 'Sô lần bị forward có quá 2 lần khi vào trang web','Địa chỉ Website có chứa punny code']
-    if request.method == "POST":
+    if request.method == "POST" and request.form['url'] != None:
         print(request.form['url'])
+        Vector = np.array(ext(request.form['url'])).reshape(1, -1)
+    
+        prediction = classifier.predict(Vector )
+        print(prediction)
 
         return render_template('index.html', data=features)
     return render_template('index.html',data=features)
