@@ -34,6 +34,7 @@
 <!-- Mega Menu -->
 <link rel="stylesheet" href="{{ url_for('static', filename='js/megamenu/stylesheets/screen.css') }}" />
 
+<script src="{{ url_for('static', filename='js/script.js') }}" ></script>
 </head>
 <body>
 <div class="site-wrapper">
@@ -66,15 +67,23 @@
       <div class="modal-body">
         <form>
           <div class="form-group col-md-12">
-            <div class="dropdown">
-              <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown">Chủ đề đóng góp
-              <span class="caret"></span></button>
-              <ul class="dropdown-menu">
-                <li><a href="#">Giao Diện</a></li>
-                <li><a href="#">Thêm Đặc Trưng</a></li>
-                <li><a href="#">Khác...</a></li>
-              </ul>
-            </div>
+            <label class="select" for="slct">
+              <select id="slct" required="required">
+                <option value="" disabled="disabled" selected="selected">Chủ đề góp ý</option>
+                <option value="design">Giao diện</option>
+                <option value="features_feedback">Thêm đặc trưng</option>
+                <option value="other">Khác..</option>
+              </select>
+              <svg>
+                <use xlink:href="#select-arrow-down"></use>
+              </svg>
+            </label>
+            <!-- SVG Sprites-->
+            <svg class="sprites">
+              <symbol id="select-arrow-down" viewbox="0 0 10 6">
+                <polyline points="1 1 5 5 9 1"></polyline>
+              </symbol>
+            </svg>
           </div>
           <div class="form-group col-md-12">
             <!-- <input type="text" class="form-control" id="searchTxt" name="url" aria-describedby="urlHelp" placeholder="Nội dung góp ý"> -->
@@ -83,8 +92,8 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+        <button type="button" class="btn btn-primary">Góp ý</button>
       </div>
     </div>
   </div>
@@ -99,12 +108,12 @@
             <h1 class="f-35 font-bold uppercase">Phishing detection</h1>
             <div class="hr-line blue-color m-bot-2"></div>
             <p>Điền Link Website</p>
-            <form>
+            <form id="form" method="post">
               <row>
                 <div class="form-group col-md-11">
                   <input type="text" class="form-control" id="searchTxt" name="url" aria-describedby="urlHelp" placeholder="https://www.google.com/">
                 </div>
-                <button type="button" class="col-md-1 btn btn-primary"><i class="fa fa-check"></i> Check</button>
+                <button id="submit" type="button" class="col-md-1 btn btn-primary"><i class="fa fa-check"></i> Check</button>
               </row>
               
             </form>
@@ -189,7 +198,6 @@
 </div>
 
 <a href="#" class="scrollup"></a> 
-<!-- end scroll to top of the page--> 
 
 <!-- jQuery first, then Tether, then Bootstrap JS. --> 
 <script src="{{ url_for('static', filename='js/jquery.js') }}" ></script>
