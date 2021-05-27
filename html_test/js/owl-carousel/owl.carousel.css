@@ -1,0 +1,186 @@
+/* 
+ * 	Core Owl Carousel CSS File
+ *	v1.3.3
+ */
+
+/* clearfix */
+.owl-carousel .owl-wrapper:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+/* display none until init */
+.owl-carousel {
+	display: none;
+	position: relative;
+	width: 100%;
+	-ms-touch-action: pan-y;
+}
+.owl-carousel .owl-wrapper {
+	display: none;
+	position: relative;
+	-webkit-transform: translate3d(0px, 0px, 0px);
+}
+.owl-carousel .owl-wrapper-outer {
+	overflow: hidden;
+	position: relative;
+	width: 100%;
+}
+.owl-carousel .owl-wrapper-outer.autoHeight {
+	-webkit-transition: height 500ms ease-in-out;
+	-moz-transition: height 500ms ease-in-out;
+	-ms-transition: height 500ms ease-in-out;
+	-o-transition: height 500ms ease-in-out;
+	transition: height 500ms ease-in-out;
+}
+.owl-carousel .owl-item {
+	width: 100%;
+	float: left;
+	margin-right:10px;
+}
+.owl-controls .owl-page, .owl-controls .owl-buttons div {
+	cursor: pointer;
+}
+.owl-controls {
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+/* mouse grab icon */
+.grabbing {
+	cursor: url(grabbing.png) 8 8, move;
+}
+/* fix */
+.owl-carousel .owl-wrapper, .owl-carousel .owl-item {
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	-webkit-transform: translate3d(0, 0, 0);
+	-moz-transform: translate3d(0, 0, 0);
+	-ms-transform: translate3d(0, 0, 0);
+}
+#owl-demo5 .item {
+	margin: 3px;
+}
+#owl-demo5 .item img {
+	display: block;
+	width: 100%;
+	height: auto;
+	margin-bottom:40px;
+}
+#owl-demo5 .item.imgwauto img {
+	display: block;
+	width: auto;
+	height: auto;
+	margin-bottom:40px;
+}
+#owl-demo6 .owl-item div {
+	padding: 5px;
+}
+#owl-demo6 .owl-item img {
+	display: block;
+	width: 100%;
+	height: auto;
+	margin-bottom:40px;
+}
+#owl-demo7 .item img {
+	display: block;
+	width: 100%;
+	height: auto;
+	margin-bottom:40px;
+}
+#owl-demo8 .item {
+	display: block;
+	padding:0px;
+	margin: 5px;
+	color: #FFF;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	text-align: center;
+}
+#owl-demo8 .item img {
+	width: 100%;
+}
+#owl-demo9 .item img {
+	display: block;
+	width: 100%;
+	height: auto;
+	margin-bottom:10px;
+}
+#owl-demo10 .item img {
+	display: block;
+	width: 100%;
+	height: auto;
+	margin-bottom:10px;
+}
+.owl-theme .owl-controls .owl-buttons div {
+	background-color: #F00;
+	padding: 5px 9px;
+}
+.owl-theme .owl-buttons i {
+	margin-top: 2px;
+	background-color: #F00;
+}
+#sync1 .item {
+	padding: 0 0px;
+	margin: 0 0 30px 0;
+	color: #FFF;
+}
+#sync2 {
+	width: 75%;
+	margin: 0 auto;
+}
+.thmbwid {
+	width: 70.500% !important;
+	margin: 0 auto;
+}
+#sync2 .item {
+	width: 180px;
+	height: 100px;
+	padding: 0;
+	margin: 0;
+	color: #FFF;
+	cursor: pointer;
+}
+.thmbwid .owl-item {
+	width: 130px !important;
+	height:100px;
+	margin-right:5px;
+}
+#sync2 .item.one {
+	width: 130px;
+	height:100px;
+	padding: 0;
+	margin: 0;
+	color: #FFF;
+	cursor: pointer;
+}
+#sync2 .item.one img {
+	width:100%;
+}
+.carousel_holder {
+	width: 100%;
+	padding: 0px;
+	margin: 0 0 0 0;
+	float: left;
+}
+#sync1 .item img {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+ @media only screen and (max-width:480px) {
+}
+ @media only screen and (max-width:320px) {
+#sync2 {
+	width: 100%;
+	margin: 0;
+}
+}
