@@ -7,7 +7,7 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.preprocessing.text import Tokenizer
 import tensorflow as tf
-import label_data
+# import label_data
 from flask import Flask, redirect, url_for, render_template, request,jsonify
 import json
 import pickle
@@ -99,7 +99,7 @@ def feedback():
 
         return jsonify(success=True)
 
-@app.route("/predict", methods=["GET"])
+@app.route("/predict", methods=["GET","POST"])
 def predict():
 
     # Initialize the dictionary for the response.
