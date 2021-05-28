@@ -8,7 +8,7 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.preprocessing.text import Tokenizer
 import tensorflow as tf
 import label_data
-from flask import Flask, redirect, url_for, render_template, request
+from flask import Flask, redirect, url_for, render_template, request,jsonify
 import json
 import pickle
 import joblib
@@ -43,7 +43,6 @@ def preprocess_url(url, tokenizer):
 
 @app.route('/survey', methods=["GET","POST"])
 def survey():
-    swal = 'hello'
 
     features =  {
         'Chứa địa chỉ IP trong URL' :'Các trang web lừa đảo thường không đăng ký tên miền thay vào đó là sử dụng nguyên IP vì vậy hãy cẩn thận', 
@@ -64,27 +63,26 @@ def survey():
     }
     sublist = [list(features.keys())[n:n+3] for n in range(0, len(list(features.keys())), 3)]
     if request.method == "POST" and request.form['url'] != None:
-        print("BRUH")
-        swal = []
         url = request.form['url']
         print(url)
 
         if(isinstance(url, str)):
             url_prepped = preprocess_url(url, tokenizer)
             prediction = model.predict(url_prepped)
-            print(prediction)
             
             if prediction > 0.5:
-                swal.append("phishing")
+                return jsonify({'notsafe' : 'Website Phishing ','score': str(prediction[0][0])})
             else:
-                swal.append("legit")
+                return jsonify({'safe' : 'Website Legitimate','score': str(prediction[0][0]) })
 
-            swal.append(prediction[0][0])
-            print(swal)
 
-        return render_template('index.html',data=sublist,features=features,detect=swal)
-    return render_template('index.html',data=sublist,features=features,detect=swal)
-        # return "hello"
+        # return render_template('index.html',data=sublist,features=features)
+        
+    return render_template('index.html',data=sublist,features=features)
+
+@app.route("/feedback", methods=["GET","POST"])
+def feedback():
+    pass
 
 @app.route("/predict", methods=["GET"])
 def predict():

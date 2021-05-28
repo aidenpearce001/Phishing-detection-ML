@@ -93,7 +93,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-        <button type="button" class="btn btn-primary">Góp ý</button>
+        <button id="feedback" type="button" class="btn btn-primary">Góp ý</button>
       </div>
     </div>
   </div>
@@ -113,7 +113,7 @@
                 <div class="form-group col-md-11">
                   <input type="text" class="form-control" id="searchTxt" name="url" aria-describedby="urlHelp" placeholder="https://www.google.com/">
                 </div>
-                <button id="submit" type="button" class="col-md-1 btn btn-primary" onclick="mysubmit()"><i class="fa fa-check"></i> Check</button>
+                <button id="submit" type="button" class="col-md-1 btn btn-primary"><i class="fa fa-check"></i> Check</button>
               </row>
               
             </form>
@@ -208,9 +208,8 @@
 <a href="#" class="scrollup"></a> 
 {% block script %}
 <!-- jQuery first, then Tether, then Bootstrap JS. --> 
-<script  type="text/javascript" src="static/js/cldscript.js"></script>
-<!-- <script src="{{ url_for('static', filename='js/cldscript.js') }}" ></script> -->
 <script src="{{ url_for('static', filename='js/jquery.js') }}" ></script>
+<script src="{{ url_for('static', filename='js/cldscript.js') }}" ></script>
 <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}" ></script>
 
 <!-- Mega Menu --> 
