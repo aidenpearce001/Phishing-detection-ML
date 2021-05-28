@@ -41,23 +41,27 @@ $(document).ready(function(){
 
 $(document).ready(function(){
     $("#feedback").on('click', function(){
+        $('#reportModal').modal('hide');
         $.ajax({
             type: "POST",
             url: '/feedback',
-            data: $("#form").serialize(), 
-            cache: 'false',
-            processData: false,
-            dataType: 'json',
+            data: {
+                title : document.getElementById("slct").value,
+                content : document.getElementById("comment_text").value
+            },
             success: function(data)
             {
-                console.log(data); 
+                console.log('success'); 
+                swal({
+                    title: "Send Feedback success",
+                    text: "Thanks for your feedback",
+                    icon: "success",
+                });
             },
             error: function(data)
             {
-                console.log(data); 
                 console.log("error");
             }
         })
-  
     });
 });
