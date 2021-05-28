@@ -18,7 +18,7 @@
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome/css/font-awesome.min.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='css/Simple-Line-Icons-Webfont/simple-line-icons.css') }}" />
-<link rel="stylesheet" href="{{ url_for('static', filename='css/et-line-font/et-line-font.csss') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/et-line-font/et-line-font.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='js/tooltip/tooltip.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='js/bootstrap-switch/bootstrap-switch.css') }}" />
 
@@ -34,7 +34,8 @@
 <!-- Mega Menu -->
 <link rel="stylesheet" href="{{ url_for('static', filename='js/megamenu/stylesheets/screen.css') }}" />
 
-<script src="{{ url_for('static', filename='js/script.js') }}" ></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 </head>
 <body>
 <div class="site-wrapper">
@@ -50,7 +51,6 @@
     <!--end menu--> 
   </div>
   <div class="clearfix"></div>
-  
   <style>
 
   </style>
@@ -113,7 +113,7 @@
                 <div class="form-group col-md-11">
                   <input type="text" class="form-control" id="searchTxt" name="url" aria-describedby="urlHelp" placeholder="https://www.google.com/">
                 </div>
-                <button id="submit" type="button" class="col-md-1 btn btn-primary"><i class="fa fa-check"></i> Check</button>
+                <button id="submit" type="button" class="col-md-1 btn btn-primary" onclick="mysubmit()"><i class="fa fa-check"></i> Check</button>
               </row>
               
             </form>
@@ -136,19 +136,19 @@
           </div>
           <p class="f-18"><a class="js-mytooltip "
             data-mytooltip-custom-class="align-center"
-            data-mytooltip-content="Protocol" style="color: black;background-color: #96be25; ">http </a><a class="js-mytooltip"
+            data-mytooltip-content="Giao thức" style="color: black;background-color: #96be25; ">http </a><a class="js-mytooltip"
             data-mytooltip-custom-class="align-center"
             data-mytooltip-content="" style="color: black;">:// </a><a class="js-mytooltip"
             data-mytooltip-custom-class="align-center"
-            data-mytooltip-content="Domain" style="color: black;background-color: #749F9F;">www.example.com </a><a class="js-mytooltip"
+            data-mytooltip-content="Tên miền" style="color: black;background-color: #749F9F;">www.example.com </a><a class="js-mytooltip"
             data-mytooltip-custom-class="align-center"
             data-mytooltip-content="" style="color:black;">:</a><a class="js-mytooltip"
             data-mytooltip-custom-class="align-center"
-            data-mytooltip-content="Port" style="color:black;background-color: yellow;">80 </a><a class="js-mytooltip"
+            data-mytooltip-content="Cổng" style="color:black;background-color: yellow;">80 </a><a class="js-mytooltip"
             data-mytooltip-custom-class="align-center"
-            data-mytooltip-content="Link path" style="color: black;background-color: #F49907">/path/file.html </a><a class="js-mytooltip"
+            data-mytooltip-content="Đường dẫn" style="color: black;background-color: #F49907">/path/file.html </a><a class="js-mytooltip"
             data-mytooltip-custom-class="align-center"
-            data-mytooltip-content="Paramter" style="color: black;background-color: #D3DCF5; ">?key1=value1&key2=value2 </a><a class="js-mytooltip"
+            data-mytooltip-content="Tham số" style="color: black;background-color: #D3DCF5; ">?key1=value1&key2=value2 </a><a class="js-mytooltip"
             data-mytooltip-custom-class="align-center"
             data-mytooltip-content="Anchor" style="color: black;background-color: #CF97C3; ">#SomeWhere </a>
           </p>
@@ -157,39 +157,47 @@
       </div>
     </div>
   </div>
+  <!-- <script>
+    swal({
+      title: "Phishing Website",
+      text: "Score : detect[1] ",
+      icon: "error",
+    });
+  </script> -->
+  <h1>{{something}}</h1>
+  {% if detect %}
+  {% endif %}
   <div class="section-lg">
     <div class="container">
       <div style="width:100%">
         <div class="sec-title">
           <h2>Các đặc trưng Model sử dụng</h2>
         </div>
-    <div class="container1">
-      <div class="card item">
-        <h1>testtesttesttesttesttesttesttest</h1>
-      </div>
-      <div class="card item">
-        <h1>test</h1>
-      </div>
-      <div class="card item">
-        <h1>test</h1>
-      </div>
-    </div>
-    <div class="card item">
-        <h1>test</h1>
-      </div>
-    </div>
 
-    
-   
-  </div>
-  
-  <!-- end features Section 01 -->
+    {% for sublist in data %} 
+    <div class="grid">
+      {% for i in sublist%}  
+      <div class="column">
+        <div class="card element">
+          <div class="parent">
+            <div class="div1"> 
+              <h3>{{i}} {{detect}}</h3>
+            </div>
+            <div class="div2"> 
+              <p data-tooltip="{{ features[i] }}"><i class="fa fa-info-circle" style="font-size:24px"></i></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endfor %}
   
   <footer class="footer black-bg">
   
     <div class="copyright sty-one">
       <div class="container">
-        <div class="text-center">Copyright © 2021 Aiden Pearce. Design by MrNA All rights reserved.</div>
+        <div class="text-center">Copyright © 2021 YoungIT</div>
       </div>
     </div>
   </footer>
@@ -198,16 +206,16 @@
 </div>
 
 <a href="#" class="scrollup"></a> 
-
+{% block script %}
 <!-- jQuery first, then Tether, then Bootstrap JS. --> 
+<script  type="text/javascript" src="static/js/cldscript.js"></script>
+<!-- <script src="{{ url_for('static', filename='js/cldscript.js') }}" ></script> -->
 <script src="{{ url_for('static', filename='js/jquery.js') }}" ></script>
 <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}" ></script>
 
 <!-- Mega Menu --> 
-<script src="{{ url_for('static', filename='js/jquery.js') }}" ></script>
-<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}" ></script>
-<script type="text/javascript" src="js/megamenu/js/main.js"></script> 
-<script type="text/javascript" src="js/megamenu/js/onepage.js"></script> 
+<script src="{{ url_for('static', filename='js/megamenu/js/main.js') }}" ></script>
+<script src="{{ url_for('static', filename='js/megamenu/js/onepage.js') }}" ></script>
 
 <!-- MasterSlider --> 
 <script src="{{ url_for('static', filename='js/masterslider/jquery.easing.min.js') }}" ></script>
@@ -221,12 +229,13 @@
 <script src="{{ url_for('static', filename='js/scrolltotop/totop.js') }}" ></script>
 
 <!-- tooltip --> 
-<script src="{{ url_for('static', filename='js/js/tooltip/tooltip.js') }}" ></script>
+<script src="{{ url_for('static', filename='js/tooltip/tooltip.js') }}" ></script>
 <script src="{{ url_for('static', filename='js/tooltip/script.js') }}" ></script>
 
 <!-- bootstrap-switch --> 
 <script src="{{ url_for('static', filename='js/bootstrap-switch/bootstrap-switch.js') }}" ></script>
 <script src="{{ url_for('static', filename='js/bootstrap-switch/highlight.js') }}" ></script>
 <script src="{{ url_for('static', filename='js/bootstrap-switch/main.js') }}" ></script>
+{% endblock %}
 </body>
 </html>

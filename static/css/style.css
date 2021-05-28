@@ -39,7 +39,7 @@ Designed By: UXLiner
 	SITE MAIN STRUCTURE
 ------------------------------------------------------*/
 body {
-	font-family: 'Poppins', sans-serif;
+	font-family: 'Source Code Pro', monospace;
 	color: #5a5a5a;
 	font-size: 15px;
 }
@@ -59,7 +59,7 @@ p {
 h1, h2, h3, h4, h5, h6 {
 	color: #161616;
 	font-weight: 600;
-	font-family: 'Poppins', sans-serif;
+	font-family: 'Source Code Pro', monospace;
 }
 h1 {
 	color: #000;
@@ -1914,7 +1914,7 @@ figure img.wid60 {
 }
 .post-item .post-item-description > h2, .post-item .post-item-description > h2 > a {
 	color: #444;
-	font-family: Montserrat, Helvetica, Arial, sans-serif;
+	font-family: 'Source Code Pro', monospace;
 	font-size: 18px;
 	font-weight: 600;
 	line-height: 23px;
@@ -3143,6 +3143,28 @@ ul.address-info li {
 	border-radius: 5px;
 }
 
+.grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	grid-gap: 50px;
+	padding: 10px;
+	grid-auto-flow: column;
+}
+.grid .element {
+	/* height: 100%; */
+}
+
+.parent {
+	display: grid;
+	grid-template-columns: 1fr 0.05fr;
+	grid-template-rows: 1fr;
+	grid-column-gap: 0px;
+	grid-row-gap: 0px;
+}
+	
+.div1 { grid-area: 1 / 1 / 2 / 2; }
+.div2 { grid-area: 1 / 2 / 2 / 3; }
+  
 .container1 {
   display: flex;
 }
@@ -3153,6 +3175,11 @@ ul.address-info li {
   word-wrap: break-word;
   width: 30%;
   margin: 10%;
+}
+
+.float-left {
+    float:left;
+    width:300px; // or 33% for equal width independent of parent width
 }
 
 @import url('https://rsms.me/inter/inter.css');
@@ -3166,7 +3193,7 @@ ul.address-info li {
 	 --size-bezel: 0.5rem;
 	 --size-radius: 4px;
 	 line-height: 1.4;
-	 font-family: 'Inter', sans-serif;
+	 font-family: 'Source Code Pro', monospace;
 	 font-size: calc(.6rem + .4vw);
 	 color: var(--color-text);
 	 background: var(--color-background);
@@ -3215,74 +3242,147 @@ textarea {
 	border-width: medium 1px 1px medium;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12) inset;
 	color: #555555;
-	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-family: 'Source Code Pro', monospace;
 	font-size: 1em;
 	line-height: 1.4em;
 	padding: 5px 8px;
 	transition: background-color 0.2s ease 0s;
-  }
-  
-  
-  textarea:focus {
-	  background: none repeat scroll 0 0 #FFFFFF;
-	  outline-width: 0;
-  }
+}
 
-  * {
-	box-sizing: border-box;
-  }
-  .select {
-	position: relative;
-	min-width: 200px;
-  }
-  .select svg {
-	position: absolute;
-	right: 12px;
-	top: calc(50% - 3px);
-	width: 10px;
-	height: 6px;
-	stroke-width: 2px;
-	stroke: #9098a9;
-	fill: none;
-	stroke-linecap: round;
-	stroke-linejoin: round;
-	pointer-events: none;
-  }
-  .select select {
-	-webkit-appearance: none;
-	padding: 7px 40px 7px 12px;
-	width: 100%;
-	border: 1px solid #e8eaed;
-	border-radius: 5px;
-	background: #fff;
-	box-shadow: 0 1px 3px -2px #9098a9;
-	cursor: pointer;
-	font-family: inherit;
-	font-size: 16px;
-	transition: all 150ms ease;
-  }
-  .select select:required:invalid {
-	color: #5a667f;
-  }
-  .select select option {
-	color: #223254;
-  }
-  .select select option[value=""][disabled] {
-	display: none;
-  }
-  .select select:focus {
-	outline: none;
-	border-color: #07f;
-	box-shadow: 0 0 0 2px rgba(0,119,255,0.2);
-  }
-  .select select:hover + svg {
-	stroke: #07f;
-  }
-  .sprites {
-	position: absolute;
-	width: 0;
-	height: 0;
-	pointer-events: none;
-	user-select: none;
-  }
+
+textarea:focus {
+	background: none repeat scroll 0 0 #FFFFFF;
+	outline-width: 0;
+}
+
+* {
+box-sizing: border-box;
+}
+.select {
+position: relative;
+min-width: 200px;
+}
+.select svg {
+position: absolute;
+right: 12px;
+top: calc(50% - 3px);
+width: 10px;
+height: 6px;
+stroke-width: 2px;
+stroke: #9098a9;
+fill: none;
+stroke-linecap: round;
+stroke-linejoin: round;
+pointer-events: none;
+}
+.select select {
+-webkit-appearance: none;
+padding: 7px 40px 7px 12px;
+width: 100%;
+border: 1px solid #e8eaed;
+border-radius: 5px;
+background: #fff;
+box-shadow: 0 1px 3px -2px #9098a9;
+cursor: pointer;
+font-family: 'Source Code Pro', monospace;
+font-size: 16px;
+transition: all 150ms ease;
+}
+.select select:required:invalid {
+color: #5a667f;
+}
+.select select option {
+color: #223254;
+}
+.select select option[value=""][disabled] {
+display: none;
+}
+.select select:focus {
+outline: none;
+border-color: #07f;
+box-shadow: 0 0 0 2px rgba(0,119,255,0.2);
+}
+.select select:hover + svg {
+stroke: #07f;
+}
+.sprites {
+position: absolute;
+width: 0;
+height: 0;
+pointer-events: none;
+user-select: none;
+}
   
+[data-tooltip] {
+	position: relative;
+	z-index: 10;
+}
+
+/* Positioning and visibility settings of the tooltip */
+[data-tooltip]:before,
+[data-tooltip]:after {
+position: absolute;
+visibility: hidden;
+opacity: 0;
+left: 50%;
+bottom: calc(100% + 5px); /* 5px is the size of the arrow */
+pointer-events: none;
+transition: 0.2s;
+will-change: transform;
+}
+
+/* The actual tooltip with a dynamic width */
+[data-tooltip]:before {
+content: attr(data-tooltip);
+padding: 10px 18px;
+min-width: 50px;
+max-width: 300px;
+width: max-content;
+width: -moz-max-content;
+border-radius: 6px;
+font-size: 14px;
+background-color: rgba(59, 72, 80, 0.9);
+background-image: linear-gradient(30deg,
+	rgba(59, 72, 80, 0.44),
+	rgba(59, 68, 75, 0.44),
+	rgba(60, 82, 88, 0.44));
+box-shadow: 0px 0px 24px rgba(0, 0, 0, 0.2);
+color: #fff;
+text-align: center;
+white-space: pre-wrap;
+transform: translate(-50%, -5px) scale(0.5);
+}
+
+/* Tooltip arrow */
+[data-tooltip]:after {
+content: '';
+border-style: solid;
+border-width: 5px 5px 0px 5px; /* CSS triangle */
+border-color: rgba(55, 64, 70, 0.9) transparent transparent transparent;
+transition-duration: 0s; /* If the mouse leaves the element, 
+							the transition effects for the 
+							tooltip arrow are "turned off" */
+transform-origin: top;   /* Orientation setting for the
+							slide-down effect */
+transform: translateX(-50%) scaleY(0);
+}
+
+/* Tooltip becomes visible at hover */
+[data-tooltip]:hover:before,
+[data-tooltip]:hover:after {
+visibility: visible;
+opacity: 1;
+}
+/* Scales from 0.5 to 1 -> grow effect */
+[data-tooltip]:hover:before {
+transition-delay: 0.3s;
+transform: translate(-50%, -5px) scale(1);
+}
+/* 
+Arrow slide down effect only on mouseenter (NOT on mouseleave)
+*/
+[data-tooltip]:hover:after {
+transition-delay: 0.5s; /* Starting after the grow effect */
+transition-duration: 0.2s;
+transform: translateX(-50%) scaleY(1);
+}

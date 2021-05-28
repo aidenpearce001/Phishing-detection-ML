@@ -25,19 +25,14 @@ embedding_vector_length = 128
 maxlen = 128
 max_words = 20000\
 
-from feature_extraction import *
-
-classifier = joblib.load('rf_final.pkl')
-ext = Extractor()
-# with tf.device('/cpu:0'):
-#     model_pre = "./checkpointModel/bestModelCNN"
-#     model = ConvModel(num_chars, embedding_vector_length, maxlen)
-#     model.built = True
-#     model.load_weights(model_pre)
-
+with tf.device('/cpu:0'):
+    model_pre = "./checkpointModel/bestModelCNN"
+    model = ConvModel(num_chars, embedding_vector_length, maxlen)
+    model.built = True
+    model.load_weights(model_pre)
 
 app = Flask(__name__)
-
+app.config["CACHE_TYPE"] = "null"
 def preprocess_url(url, tokenizer):
     url = url.strip()
     sequences = tokenizer.texts_to_sequences([url])
@@ -48,19 +43,48 @@ def preprocess_url(url, tokenizer):
 
 @app.route('/survey', methods=["GET","POST"])
 def survey():
+    swal = 'hello'
 
-    features =  ['Chứa địa chỉ IP trong URL', 'Chứa ký tự @ trong URL', 'Địa chỉ trang web chứa nhiều path','Có ký tự // trong tên miền', 
-    'HTTPS hoặc HTTP trong tên miền', 'Sử dụng địa chỉ rút gọn', 'Có chứa ký tự - trong domain', 'Kiểm tra xem DNS có nhận được website không', 
-    'Tuổi thọ của tên miền có dưới 6 tháng', 'Tên miền đã hết hạn', 'Website có sử dụng Iframe', 'Website có sử dụng Mouse_Over','Website tắt chức năng Right_Click', 'Sô lần bị forward có quá 2 lần khi vào trang web','Địa chỉ Website có chứa punny code']
+    features =  {
+        'Chứa địa chỉ IP trong URL' :'Các trang web lừa đảo thường không đăng ký tên miền thay vào đó là sử dụng nguyên IP vì vậy hãy cẩn thận', 
+        'Chứa ký tự @ trong URL' : 'Dấu @ có tác dụng bỏ quả tất cả ký tự xuất hiện trước nó (VD: http://totally-legit-site.com@192.168.50.20/account sẽ đưa nạn nhân đến trang 192.168.50.20/account là trang web lửa đảo', 
+        'Địa chỉ trang web chứa nhiều path' : 'Tìm kiếm điểm chung của trang web lừa đảo giựa vào số đường dẫn có trong url',
+        'Có ký tự // trong tên miền' : 'Ký tự // nằm trong đường dẫn nhằm chuyển hướng người dùng đến trang web lừa đảo', 
+        'HTTPS hoặc HTTP trong tên miền' : 'sử dụng https trong domain khiến người dùng nhìn nhầm và chủ quan (VD: http:https://vietcombank.com.vn)', 
+        'Sử dụng địa chỉ rút gọn' : 'Sử dụng địa chỉ rút gọn như bit.ly để giấu đi địa chỉ thật sự của trang web lừa đảo', 
+        'Có chứa ký tự - trong domain': 'sử dụng ký tự - trong tên miền khiến tên trang web nhìn "có vẻ" không lừa đảo', 
+        'Kiểm tra xem DNS có nhận được website không' : 'Kiểm tra xem DNS có trỏ đến được trang web không, nếu không thì trang web đó được đăng ký với dịch vụ không rõ ràng', 
+        'Tuổi thọ của tên miền có dưới 6 tháng' : 'Nhưng trang web lừa đảo thường bị báo cáo liên tục đẫn đến việc gỡ xuống và nhưng tên lừa đảo thường không hay bỏ chi phí duy trì server nên tuổi thọ thường rất ngắn', 
+        'Tên miền đã hết hạn' : 'Tên miền đã hết hạn đăng ký', 
+        'Website có sử dụng Iframe' : 'Sử dụng Iframe chạy chầm trong các trang web để ăn cắp thông tin cá nhân', 
+        'Website có sử dụng Mouse_Over' : 'Sử dụng hàm mouse_over trong javscript để khi người dùng đung đưa con chuột qua 1 cái link bất kỳ trang web lừa đảo sẽ tự động bật lên',
+        'Website tắt chức năng Right_Click' : 'Trang web vô hiệu hóa chuột phải vì lo sợ ta sẽ nhìn thấy những đoạn mã độc trong trang web', 
+        'Sô lần bị forward có quá 2 lần khi vào trang web' : 'Khi vào 1 trang web số lần ta bị tự động forward quá nhiều nhằm qua mặt các công cụ quét',
+        'Địa chỉ Website có chứa punny code' : 'Sử dụng punnycode để đánh lừa url (VD: dı sẽ nhìn khá giống với di nhưng punnycode của adıdas.de là trang web lừa đảo với đủ ký tự là http://xn--addas-o4a.de/ nhưng trình duyệt sẽ encode và hiển thị giống như là adidas.de'
+    }
+    sublist = [list(features.keys())[n:n+3] for n in range(0, len(list(features.keys())), 3)]
     if request.method == "POST" and request.form['url'] != None:
-        print(request.form['url'])
-        Vector = np.array(ext(request.form['url'])).reshape(1, -1)
-    
-        prediction = classifier.predict(Vector )
-        print(prediction)
+        print("BRUH")
+        swal = []
+        url = request.form['url']
+        print(url)
 
-        return render_template('index.html', data=features)
-    return render_template('index.html',data=features)
+        if(isinstance(url, str)):
+            url_prepped = preprocess_url(url, tokenizer)
+            prediction = model.predict(url_prepped)
+            print(prediction)
+            
+            if prediction > 0.5:
+                swal.append("phishing")
+            else:
+                swal.append("legit")
+
+            swal.append(prediction[0][0])
+            print(swal)
+
+        return render_template('index.html',data=sublist,features=features,detect=swal)
+    return render_template('index.html',data=sublist,features=features,detect=swal)
+        # return "hello"
 
 @app.route("/predict", methods=["GET"])
 def predict():
