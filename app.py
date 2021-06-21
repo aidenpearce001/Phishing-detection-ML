@@ -67,7 +67,7 @@ def survey():
 
         if url == '':
             return jsonify({'notvalid' : 'Maybe your input not correct'})
-            
+
         print(url)
 
         if(isinstance(url, str)):
@@ -116,6 +116,8 @@ def predict():
         incoming = request.get_json()
         url = incoming["url"]
 
+        if url = '':
+            return jsonify('message' : 'Maybe your input not correct')
         data["predictions"] = []
         if(isinstance(url, str)):
             url_prepped = preprocess_url(url, tokenizer)
