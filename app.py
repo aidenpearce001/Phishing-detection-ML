@@ -64,6 +64,10 @@ def survey():
     sublist = [list(features.keys())[n:n+3] for n in range(0, len(list(features.keys())), 3)]
     if request.method == "POST" and request.form['url'] != None:
         url = request.form['url']
+
+        if url == '':
+            return jsonify({'notvalid' : 'Maybe your input not correct'})
+            
         print(url)
 
         if(isinstance(url, str)):
@@ -111,6 +115,7 @@ def predict():
         start = time.time()
         incoming = request.get_json()
         url = incoming["url"]
+
         data["predictions"] = []
         if(isinstance(url, str)):
             url_prepped = preprocess_url(url, tokenizer)

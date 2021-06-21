@@ -26,6 +26,13 @@ $(document).ready(function(){
                     });
                 console.log(data);
             }
+            if (data.notvalid) {
+                swal({
+                    title: data.notvalid,
+                    icon: "error",
+                    });
+                console.log(data);
+            }
             if (data.safe){
                 swal({
                     title: data.safe,
