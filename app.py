@@ -109,8 +109,7 @@ def predict():
     # Initialize the dictionary for the response.
     data = {"success": False}
 
-    # Check if POST request.
-    if request.method == "GET":
+    if request.method == "POST":
         # Grab and process the incoming json.
         start = time.time()
         incoming = request.get_json()
@@ -145,7 +144,9 @@ def predict():
             data["time_elapsed"] = end
 
     # Return the data as a JSON response.
-    return jsonify(data)
+        return jsonify(data)
+    else:
+        return jsonify({'message' : 'Send me something'})
 
 # Start the server.
 if __name__ == "__main__":
