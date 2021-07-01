@@ -11,6 +11,7 @@
 - https://www.alexa.com/topsites/countries/VN
 - https://webrank.vn/top-website-vietnam
 - https://majestic.com/reports/majestic-million
+- https://github.com/csirtgadgets/suspect-domains-dataset/blob/master/whitelist.txt
 
 ## References
 - http://docnum.univ-lorraine.fr/public/DDOC_T_2015_0058_MARCHAL.pdf
