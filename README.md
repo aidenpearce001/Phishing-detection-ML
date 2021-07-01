@@ -4,6 +4,7 @@
 #### Blacklist
 - https://phishingreel.io/api/v1/panels/today
 - https://api.chongluadao.vn/v1/blacklist
+- http://data.phishtank.com/data/online-valid.xml (update every hour)
 
 #### Whitelist
 - https://api.chongluadao.vn/v1/whitelist
@@ -13,3 +14,4 @@
 
 ## References
 - http://docnum.univ-lorraine.fr/public/DDOC_T_2015_0058_MARCHAL.pdf
+- https://research.aalto.fi/en/datasets/phishstorm-phishing-legitimate-url-dataset
