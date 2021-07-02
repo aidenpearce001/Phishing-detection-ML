@@ -10,12 +10,44 @@ from datetime import datetime
 import requests
 import dns.resolver
 import socket
+from googlesearch import search
 
+truseted_ca = ['cPanel,',
+ 'Microsoft',
+ 'HydrantID',
+ 'AlphaSSL',
+ 'GTS',
+ 'RapidSSL',
+ 'DFN-Verein',
+ 'Cloudflare',
+ 'GeoTrust',
+ 'QuoVadis',
+ 'Certum',
+ 'Amazon',
+ 'Gandi',
+ 'COMODO',
+ 'Go',
+ 'Cybertrust',
+ 'GlobalSign',
+ 'Yandex',
+ 'R3',
+ 'Network',
+ 'DigiCert',
+ 'GoGetSSL',
+ 'Thawte',
+ 'Apple',
+ 'Starfield',
+ 'RU-CENTER',
+ 'Trustwave',
+ 'Entrust',
+ 'InCommon',
+ 'Sectigo',
+ 'Secure']
 class Extractor():
     def __init__(self):
         self.feature_names = ['Speical_Char','Have_IP', 'Have_At','URL_length' ,'URL_Depth','Redirection', 'Time_get_redirect',
-                        'https_Domain', 'TinyURL', 'Prefix/Suffix', 'DNS_Record', 'Web_Traffic', 
-                        'Domain_lifespan', 'Domain_timeleft', 'same_asn','iFrame', 'Mouse_Over','Right_Click', 'Web_Forwards','eval','unescape',
+                        'port_in_url','use_http', 'TinyURL', 'Prefix/Suffix', 'DNS_Record', 'https_Domain'
+                        'Domain_lifespan', 'Domain_timeleft', 'same_asn','cant_search','iFrame', 'Mouse_Over','Right_Click', 'Web_Forwards','eval','unescape',
                         'escape', 'ActiveXObject','fromCharCode','atob','Punny_Code']
     
     # 1.Speical Chartacter in URL
@@ -86,7 +118,23 @@ class Extractor():
         n_redirect = len([response for response in responses.history])
 
         return n_redirect
-                  
+
+    @staticmethod
+    def port_in_url(url):
+        p = '(?:http.*://)?(?P<host>[^:/ ]+).?(?P<port>[0-9]*).*'
+
+        m = re.search(p,url)
+        if m.group('port') :
+            return 1
+        else :
+            return 0
+    
+    def notsafe_protocol(url):
+        if urlparse(url).scheme == 'http':
+            return 1
+        else:
+            return 0
+
     # 7.Existence of “HTTPS” Token in the Domain Part of the URL (https_Domain)
     @staticmethod
     def httpDomain(domain):
@@ -136,6 +184,27 @@ class Extractor():
             return 0
         else:
             return 1
+    @staticmethod
+    def trusted_ca(domain):
+        try:
+            ctx = ssl.create_default_context()
+            with ctx.wrap_socket(socket.socket(), server_hostname=domain) as s:
+                s.settimeout(5)
+                s.connect((hostname, 443))
+                cert = s.getpeercert()
+
+            subject = dict(x[0] for x in cert['subject'])
+            issued_to = subject['commonName']
+            issuer = dict(x[0] for x in cert['issuer'])
+            issued_by = issuer['commonName']
+            print(issued_by)
+
+            if issued_by.split(" ")[0] in truseted_ca:
+                return 0
+            else:
+                return 1
+        except:
+            print(f"DOMAIN {domain} ERROR")
 
     # 13.Survival time of domain: The difference between termination time and creation time (Domain_Age)  
     @staticmethod
@@ -194,6 +263,14 @@ class Extractor():
         if len(_asn) == 1 and ocket.gethostbyname(_asn[0]) == socket.gethostbyname(domain_name):
             return 1 
         else :
+            return 0
+
+    @staticmethod
+    def top_n_google(domain, stop=30):
+        google_search = [j for j in search(domain, tld="co.in", num=10, stop=stop, pause=2)]
+        if domain not in google_search:
+            return 1
+        else:
             return 0
 
     # 15. IFrame Redirection (iFrame)
@@ -303,7 +380,10 @@ class Extractor():
             features.append(self.getDepth(url))
             features.append(self.redirection(url))
             features.append(self.redirect(url))
-            features.append(self.httpDomain(url))
+            features.append(self.port_in_url(url))
+            features.append(self.notsafe_protoco(url))
+            features.append(self.notsafe_protoco(url))
+            # features.append(self.httpDomain(url))
             features.append(self.tinyURL(url))
             features.append(self.prefixSuffix(url))
             
@@ -317,10 +397,11 @@ class Extractor():
                 dns = 1
 
             features.append(dns)
-            #features.append(self.web_traffic(url))
+            features.append(1 if dns == 1 else self.httpDomain(domain_name))
             features.append(1 if dns == 1 else self.domain_lifespan(domain_name))
             features.append(1 if dns == 1 else self.domainEnd(domain_name))
             features.append(1 if dns == 1 else self.same_asn(domain_name))
+            features.append(1 if dns == 1 else self.top_n_google(domain_name))
             
             # HTML & Javascript based features
             try:
