@@ -43,6 +43,7 @@ truseted_ca = ['cPanel,',
  'InCommon',
  'Sectigo',
  'Secure']
+
 class Extractor():
     def __init__(self):
         self.feature_names = ['Speical_Char','Have_IP', 'Have_At','URL_length' ,'URL_Depth','Redirection', 'Time_get_redirect',
@@ -188,9 +189,9 @@ class Extractor():
     def trusted_ca(domain):
         try:
             ctx = ssl.create_default_context()
-            with ctx.wrap_socket(socket.socket(), server_hostname=domain) as s:
+            with ctx.wrap_socket(socket.socket(), server_hostname=domain['domain_name']) as s:
                 s.settimeout(5)
-                s.connect((hostname, 443))
+                s.connect((domain['domain_name'], 443))
                 cert = s.getpeercert()
 
             subject = dict(x[0] for x in cert['subject'])
