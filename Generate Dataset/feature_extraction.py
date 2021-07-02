@@ -2,20 +2,30 @@
 from urllib.parse import urlparse,urlencode
 import ipaddress
 import re
-import re
 from bs4 import BeautifulSoup
 import whois
 import urllib
 import urllib.request
 from datetime import datetime
 import requests
-
+import dns.resolver
+import socket
 
 class Extractor():
     def __init__(self):
-        self.feature_names = ['Have_IP', 'Have_At', 'URL_Depth','Redirection', 
+        self.feature_names = ['Speical_Char','Have_IP', 'Have_At','URL_length' ,'URL_Depth','Redirection', 'Time_get_redirect',
                         'https_Domain', 'TinyURL', 'Prefix/Suffix', 'DNS_Record', 'Web_Traffic', 
-                        'Domain_Age', 'Domain_End', 'iFrame', 'Mouse_Over','Right_Click', 'Web_Forwards','Punny_Code']
+                        'Domain_lifespan', 'Domain_timeleft', 'same_asn','iFrame', 'Mouse_Over','Right_Click', 'Web_Forwards','eval','unescape',
+                        'escape', 'ActiveXObject','fromCharCode','atob','Punny_Code']
+    
+    # 1.Speical Chartacter in URL
+    @staticmethod
+    def special_char(url):
+        url = url.replace("/","")
+        url = url.replace("-","")
+        special = re.sub('[\w]+' ,'', url)
+
+        return len(special)
     # 2.Checks for IP address in URL (Have_IP)
     @staticmethod
     def havingIP(url):
@@ -34,14 +44,18 @@ class Extractor():
         else:
             at = 0    
         return at
+
     # 4.Finding the length of URL and categorizing (URL_Length)
     @staticmethod
     def getLength(url):
+        if "?fbclid" in url: #Fukin link in facebook contain fbclid
+            url = url.split("?fbclid")[0]
         if len(url) < 54:
             length = 0            
         else:
             length = 1            
         return length
+
     # 5.Gives number of '/' in URL (URL_Depth)
     @staticmethod
     def getDepth(url):
@@ -64,11 +78,21 @@ class Extractor():
         else:
             return 0
 
+    # 7.Redirect time 
+    @staticmethod
+    def redirect(url):
+        responses = requests.get(url)
+
+        n_redirect = len([response for response in responses.history])
+
+        return n_redirect
+                  
     # 7.Existence of “HTTPS” Token in the Domain Part of the URL (https_Domain)
     @staticmethod
-    def httpDomain(url):
+    def httpDomain(domain):
         # domain = urlparse(url).netloc
-        if 'https' or 'http' in url[5:] and Extractor.getLength(url) == 1:
+        # if 'http' in domain and Extractor.getLength(url) == 1:
+        if 'http' in domain:
             return 1
         else:
             return 0
@@ -115,7 +139,7 @@ class Extractor():
 
     # 13.Survival time of domain: The difference between termination time and creation time (Domain_Age)  
     @staticmethod
-    def domainAge(domain_name):
+    def domain_lifespan(domain_name):
         creation_date = domain_name.creation_date
         expiration_date = domain_name.expiration_date
         if (isinstance(creation_date,str) or isinstance(expiration_date,str)):
@@ -159,6 +183,19 @@ class Extractor():
                 end = 0
             return end  
 
+    @staticmethod
+    def same_asn(domain_name):
+        _asn = []
+        for record in dns.resolver.resolve(domain_name["domain_name"], 'MX'):
+            mx = record.to_text().split(" ")[1]
+            print(mx)
+            _asn.append(socket.gethostbyname(mx))
+        
+        if len(_asn) == 1 and ocket.gethostbyname(_asn[0]) == socket.gethostbyname(domain_name):
+            return 1 
+        else :
+            return 0
+
     # 15. IFrame Redirection (iFrame)
     @staticmethod
     def iframe(response):
@@ -201,6 +238,47 @@ class Extractor():
                 return 0
             else:
                 return 1
+    @staticmethod
+    def js_eval(response):      
+        try:      
+            return response.count("eval")
+        except:
+            return 0
+
+    @staticmethod
+    def js_unescape(response):
+        try:
+            return response.count("unescape")
+        except:
+            return 0
+
+    @staticmethod
+    def js_escape(response):
+        try:
+            return response.count("escape")
+        except:
+            return 0
+
+    @staticmethod
+    def js_Active(response):
+        try:
+            return response.count("ActiveXObject")
+        except:
+            return 0
+
+    @staticmethod
+    def js_charcode(response):
+        try:
+            return response.count("fromCharCode")
+        except:
+            return 0
+
+    @staticmethod
+    def js_atob(response):
+        try:
+            return response.count("atob")
+        except:
+            return 0
 
     # 19.Punny code 
     @staticmethod
@@ -218,11 +296,13 @@ class Extractor():
         if isinstance(url, str):
             url = url.rstrip()
             features = []
+            features.append(self.special_char(url))
             features.append(self.havingIP(url))
             features.append(self.haveAtSign(url))
-            # features.append(self.getLength(url))
+            features.append(self.getLength(url))
             features.append(self.getDepth(url))
             features.append(self.redirection(url))
+            features.append(self.redirect(url))
             features.append(self.httpDomain(url))
             features.append(self.tinyURL(url))
             features.append(self.prefixSuffix(url))
@@ -238,8 +318,9 @@ class Extractor():
 
             features.append(dns)
             #features.append(self.web_traffic(url))
-            features.append(1 if dns == 1 else self.domainAge(domain_name))
+            features.append(1 if dns == 1 else self.domain_lifespan(domain_name))
             features.append(1 if dns == 1 else self.domainEnd(domain_name))
+            features.append(1 if dns == 1 else self.same_asn(domain_name))
             
             # HTML & Javascript based features
             try:
@@ -251,9 +332,14 @@ class Extractor():
             features.append(self.mouseOver(response))
             features.append(self.rightClick(response))
             features.append(self.forwarding(response))
+            features.append(self.js_eval(response))
+            features.append(self.js_unescape(response))
+            features.append(self.js_escape(response))
+            features.append(self.js_Active(response))
+            features.append(self.js_charcode(response))
+            features.append(self.js_atob(response))
 
             features.append(self.punnycode(url))
-            print(features)
             return features
         return []
 
