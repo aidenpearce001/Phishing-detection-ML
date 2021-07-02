@@ -4,7 +4,7 @@
 #### Blacklist
 - https://phishingreel.io/api/v1/panels/today
 - https://api.chongluadao.vn/v1/blacklist
-- http://data.phishtank.com/data/online-valid.xml (update every hour)
+- http://data.phishtank.com/data/online-valid.csv (update every hour)
 - https://raw.githubusercontent.com/mitchellkrogza/Phishing.Database/master/phishing-links/output/domains/ACTIVE/list (update every day)
 
 #### Whitelist
