@@ -25,8 +25,8 @@ def blacklist():
     open('dataset/phishstats.txt', 'wb').write(phishstat_res.content)
     with open('dataset/phishstats.txt', 'r+',encoding='utf-8') as f:
         lines = f.readlines()
-        for i in lines:
-            dataset.add( (i,1) )
+        for i in lines[9:]:
+            dataset.add( (i.replace('"','').split(',')[2],1) )
 
 def whitelist():
     for i in range(2):
