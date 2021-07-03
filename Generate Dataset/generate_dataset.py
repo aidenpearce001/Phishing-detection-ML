@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import pandas as pd
 import requests
+import concurrent.futures
 
 dataset = set()
 
@@ -41,14 +42,24 @@ cld_dataset = pd.read_csv("dataset/chongluadaov2.csv")
 blacklist()
 whitelist()
 
-total = lenlist(dataset)
-print("TOTAL:",total)
-for i in list(dataset):
-    new_row = {'url':i[0], 'labels':i[1], 'type':'train'}
+def append_data(data):
+    global cld_dataset
+    
+    new_row = new_row = {'url':data[0], 'labels':data[1], 'type':'train'}
     print(new_row)
-    cld_dataset.append(new_row, ignore_index=True)
+    cld_dataset = cld_dataset.append(new_row,ignore_index=True)
 
-    print(f"{total} row left")
-    total -=1
+def main():
+    
+    data = [url for url in list(dataset)]
+    
+    with concurrent.futures.ProcessPoolExecutor() as executor:
+        future_proc = {executor.submit(append_data, url): url for url in data}
+        for future in concurrent.futures.as_completed(future_proc):
+            print(future.result())
+        
+if __name__ == '__main__':
+    main()
+
 cld_dataset.to_csv("chongluadao_dataset.csv", index = False)
 # whitelist = 
