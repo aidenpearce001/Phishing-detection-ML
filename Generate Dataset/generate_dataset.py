@@ -11,7 +11,7 @@ def blacklist():
     open('dataset/phishtank.csv', 'wb').write(phishtank_res.content)
     phistank = pd.read_csv("dataset/phishtank.csv")['url']
     for i in phistank:
-        dataset.add( (i,1) )
+        dataset.add( (i.strip(),1) )
 
     git_blacklist = requests.get("https://raw.githubusercontent.com/mitchellkrogza/Phishing.Database/master/phishing-links/output/domains/ACTIVE/list")
     file1 = open("dataset/phishing.txt","wb")
@@ -19,14 +19,14 @@ def blacklist():
     with open('dataset/phishing.txt', 'r+',encoding='utf-8') as f:
         lines = f.readlines()
     for i in lines[3:]:
-        dataset.add( (i,1) )
+        dataset.add( (i.strip(),1) )
 
     phishstat_res = requests.get('https://phishstats.info/phish_score.csv', allow_redirects=True)
     open('dataset/phishstats.txt', 'wb').write(phishstat_res.content)
     with open('dataset/phishstats.txt', 'r+',encoding='utf-8') as f:
         lines = f.readlines()
         for i in lines[9:]:
-            dataset.add( (i.replace('"','').split(',')[2],1) )
+            dataset.add( (i.replace('"','').split(',')[2].strip(),1) )
 
 def whitelist():
     for i in range(2):
@@ -36,7 +36,7 @@ def whitelist():
             'IDN_Domain', 'IDN_TLD', 'PrevGlobalRank', 'PrevTldRank','PrevRefSubNets', 'PrevRefIPs']
         white = pd.read_csv(f'dataset/majestic_million-0{number}.csv',names= cols)["Domain"]
         for i in white:
-            dataset.add( ("https://"+i,0) )
+            dataset.add( ("https://"+i.strip(),0) )
 
 cld_dataset = pd.read_csv("dataset/chongluadaov2.csv")
 blacklist()
