@@ -48,7 +48,7 @@ class Extractor():
     def __init__(self):
         self.feature_names = ['Speical_Char','Have_IP', 'Have_At','URL_length' ,'URL_Depth','Redirection', 'Time_get_redirect',
                         'port_in_url','use_http', 'TinyURL', 'Prefix/Suffix', 'DNS_Record', 'https_Domain'
-                        'Domain_lifespan', 'Domain_timeleft', 'same_asn','cant_search','iFrame', 'Mouse_Over','Right_Click', 'Web_Forwards','eval','unescape',
+                        'Domain_lifespan', 'Domain_timeleft', 'same_asn','iFrame', 'Mouse_Over','Right_Click', 'Web_Forwards','eval','unescape',
                         'escape', 'ActiveXObject','fromCharCode','atob','Punny_Code']
     
     # 1.Speical Chartacter in URL
@@ -129,7 +129,8 @@ class Extractor():
             return 1
         else :
             return 0
-    
+
+    @staticmethod
     def notsafe_protocol(url):
         if urlparse(url).scheme == 'http':
             return 1
@@ -255,16 +256,19 @@ class Extractor():
 
     @staticmethod
     def same_asn(domain_name):
-        _asn = []
-        for record in dns.resolver.resolve(domain_name["domain_name"], 'MX'):
-            mx = record.to_text().split(" ")[1]
-            print(mx)
-            _asn.append(socket.gethostbyname(mx))
-        
-        if len(_asn) == 1 and ocket.gethostbyname(_asn[0]) == socket.gethostbyname(domain_name):
-            return 1 
-        else :
-            return 0
+        try:
+            _asn = []
+            for record in dns.resolver.resolve(domain_name["domain_name"], 'MX'):
+                mx = record.to_text().split(" ")[1]
+                print(mx)
+                _asn.append(socket.gethostbyname(mx))
+            
+            if len(_asn) == 1 and ocket.gethostbyname(_asn[0]) == socket.gethostbyname(domain_name):
+                return 1 
+            else :
+                return 0
+        except:
+            return 1
 
     @staticmethod
     def top_n_google(domain, stop=30):
@@ -373,6 +377,7 @@ class Extractor():
     def __call__(self, url):
         if isinstance(url, str):
             url = url.rstrip()
+            print(url)
             features = []
             features.append(self.special_char(url))
             features.append(self.havingIP(url))
@@ -382,8 +387,7 @@ class Extractor():
             features.append(self.redirection(url))
             features.append(self.redirect(url))
             features.append(self.port_in_url(url))
-            features.append(self.notsafe_protoco(url))
-            features.append(self.notsafe_protoco(url))
+            features.append(self.notsafe_protocol(url))
             # features.append(self.httpDomain(url))
             features.append(self.tinyURL(url))
             features.append(self.prefixSuffix(url))
@@ -402,7 +406,7 @@ class Extractor():
             features.append(1 if dns == 1 else self.domain_lifespan(domain_name))
             features.append(1 if dns == 1 else self.domainEnd(domain_name))
             features.append(1 if dns == 1 else self.same_asn(domain_name))
-            features.append(1 if dns == 1 else self.top_n_google(domain_name))
+            # features.append(1 if dns == 1 else self.top_n_google(domain_name))
             
             # HTML & Javascript based features
             try:
