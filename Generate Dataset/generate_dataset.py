@@ -42,7 +42,6 @@ def whitelist():
 blacklist()
 whitelist()
 
-<<<<<<< HEAD
 new_row = {'url':'google.com', 'labels':'1', 'type':'train'}
 #cld_dataset = cld_dataset.append(new_row,ignore_index=True)
 
@@ -70,26 +69,5 @@ if __name__ == '__main__':
     print(len(dataset))
     if isinstance(cld_dataset, list):
         cld_dataset = pd.DataFrame(cld_dataset)
-=======
-def append_data(data):
-    global cld_dataset
-    
-    new_row = new_row = {'url':data[0], 'labels':data[1], 'type':'train'}
-    print(new_row)
-    cld_dataset = cld_dataset.append(new_row,ignore_index=True)
-
-def main():
-    
-    data = [url for url in list(dataset)]
-    
-    with concurrent.futures.ProcessPoolExecutor() as executor:
-        future_proc = {executor.submit(append_data, url): url for url in data}
-        for future in concurrent.futures.as_completed(future_proc):
-            print(future.result())
-        
-if __name__ == '__main__':
-    main()
-
->>>>>>> 8b9d6b8160d9823f937688157a7f71f51cb3ed55
 cld_dataset.to_csv("chongluadao_dataset.csv", index = False)
 # whitelist = 

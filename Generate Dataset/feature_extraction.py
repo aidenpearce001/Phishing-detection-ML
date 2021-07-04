@@ -114,11 +114,14 @@ class Extractor():
     # 7.Redirect time 
     @staticmethod
     def redirect(url):
-        responses = requests.get(url)
+        try:
+            responses = requests.get(url)
 
-        n_redirect = len([response for response in responses.history])
+            n_redirect = len([response for response in responses.history])
 
-        return n_redirect
+            return n_redirect
+        except:
+            return 0
 
     @staticmethod
     def port_in_url(url):
