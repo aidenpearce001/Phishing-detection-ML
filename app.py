@@ -17,6 +17,7 @@ from model import ConvModel
 # Initialize our Flask application and the Keras model.
 import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+hex_color = ["85b0bd", "92bdca", "a0cad8", "add8e6" ,"bbe6f4", "c8f4ff", "d6ffff"]
 
 with open('tokenizer.pickle', 'rb') as handle:
     tokenizer = pickle.load(handle)
@@ -41,7 +42,7 @@ def preprocess_url(url, tokenizer):
     
     return url_prepped
 
-@app.route('/survey', methods=["GET","POST"])
+@app.route('/', methods=["GET","POST"])
 def survey():
 
     features =  {
@@ -83,6 +84,10 @@ def survey():
         # return render_template('index.html',data=sublist,features=features)
         
     return render_template('index.html',data=sublist,features=features)
+
+@app.route('/dashboard', methods=["GET","POST"])
+def dashboard():
+    return render_template('dashboard.html')
 
 @app.route("/feedback", methods=["GET","POST"])
 def feedback():

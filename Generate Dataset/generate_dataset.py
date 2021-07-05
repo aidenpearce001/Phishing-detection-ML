@@ -8,23 +8,23 @@ Thread = os.cpu_count() * 10
 dataset = set()
 
 def blacklist():
-    phishtank = "http://data.phishtank.com/data/online-valid.csv"
-    phishtank_res = requests.get('http://data.phishtank.com/data/online-valid.csv', allow_redirects=True)
-    open('dataset/phishtank.csv', 'wb').write(phishtank_res.content)
+    # phishtank = "http://data.phishtank.com/data/online-valid.csv"
+    # phishtank_res = requests.get('http://data.phishtank.com/data/online-valid.csv', allow_redirects=True)
+    # open('dataset/phishtank.csv', 'wb').write(phishtank_res.content)
     phistank = pd.read_csv("dataset/phishtank.csv")['url']
     for i in phistank:
         dataset.add( (i.strip(),1) )
 
-    git_blacklist = requests.get("https://raw.githubusercontent.com/mitchellkrogza/Phishing.Database/master/phishing-links/output/domains/ACTIVE/list")
-    file1 = open("dataset/phishing.txt","wb")
-    file1.write(git_blacklist.content)
+    # git_blacklist = requests.get("https://raw.githubusercontent.com/mitchellkrogza/Phishing.Database/master/phishing-links/output/domains/ACTIVE/list")
+    # file1 = open("dataset/phishing.txt","wb")
+    # file1.write(git_blacklist.content)
     with open('dataset/phishing.txt', 'r+',encoding='utf-8') as f:
         lines = f.readlines()
     for i in lines[3:]:
         dataset.add( (i.strip(),1) )
 
-    phishstat_res = requests.get('https://phishstats.info/phish_score.csv', allow_redirects=True)
-    open('dataset/phishstats.txt', 'wb').write(phishstat_res.content)
+    # phishstat_res = requests.get('https://phishstats.info/phish_score.csv', allow_redirects=True)
+    # open('dataset/phishstats.txt', 'wb').write(phishstat_res.content)
     with open('dataset/phishstats.txt', 'r+',encoding='utf-8') as f:
         lines = f.readlines()
         for i in lines[9:]:
@@ -42,17 +42,19 @@ def whitelist():
 
 origin_dataset = pd.read_csv("dataset/chongluadaov2.csv")
 blacklist()
-# whitelist()
+whitelist()
 
 alive_dataset = []
 
 def check_alive(data):
-
-    code = requests.get(data[0], timeout=5)
-    if code.status_code == 200:
-        alive_dataset.append(data[0])
-    else:
-        alive_dataset.append(data[0])
+    try:
+        code = requests.get(data[0], timeout=5)
+        if code.status_code == 200:
+            alive_dataset.append(data)
+        else:
+            alive_dataset.append(data)
+    except:
+        pass
     
     print(f"{data[0]} Alive")
 
@@ -61,7 +63,9 @@ def append_data(data):
       
     new_row = {'url':data[0], 'labels':data[1], 'type':'train'}
     print(new_row)
+
     cld_dataset.append(new_row)
+    return cld_dataset
 
 def main():
     import time
@@ -70,8 +74,7 @@ def main():
     with concurrent.futures.ThreadPoolExecutor(max_workers=Thread) as executor:
         executor.map(check_alive, sites)
 
-    data = [url for url in list(alive_dataset)]
-    print(len(data))
+    data = [url for url in alive_dataset]
     cld_dataset = []
     with concurrent.futures.ProcessPoolExecutor() as executor:
         future_proc = {executor.submit(append_data, url): url for url in data}

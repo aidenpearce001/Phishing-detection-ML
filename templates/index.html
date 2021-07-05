@@ -12,6 +12,9 @@
 <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
 
 <!-- Bootstrap CSS -->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/vendors_css.css') }}" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/skin_color.css') }}" />
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
 
 <!-- Template Styles -->
@@ -40,14 +43,33 @@
 <body>
 <div class="site-wrapper">
   <div class="temp-header sty1">
-    <div class="top-bar solid-dark">
+    <nav class="navbar-static-top pl-30" style="background: #272e48;min-height: 70px;">
+      <!-- Sidebar toggle button-->
+      <div>
+        <ul class="nav">
+        <li class="btn-group nav-item">
+          <a href="/" class="waves-effect waves-light nav-link rounded svg-bt-icon" data-toggle="push-menu" role="button">
+            <i class="mdi mdi-home-outline"></i>
+            </a>
+        </li>
+        <li class="btn-group nav-item">
+          <a href="/dashboard" data-provide="fullscreen" class="waves-effect waves-light nav-link rounded svg-bt-icon" title="Full Screen">
+            <i class="mdi mdi-poll-box"></i>
+            </a>
+        </li>			
+        
+        </ul>
+      </div>
+      
+    </nav>
+    <!-- <div class="top-bar solid-dark">
       <div class="container">
         <div class="row">
           <div class="col-md-6"><i style="color: black" class="fa fa-envelope-o" data-toggle="modal" data-target="#reportModal"></i> <a data-toggle="modal" data-target="#reportModal"><b style="color: black">Hòm thư góp ý</b></a>  </div>
         </div>
-        <!--end of row--> 
+        end of row
       </div>
-    </div>
+    </div> -->
     <!--end menu--> 
   </div>
   <div class="clearfix"></div>
@@ -208,6 +230,7 @@
 <a href="#" class="scrollup"></a> 
 {% block script %}
 <!-- jQuery first, then Tether, then Bootstrap JS. --> 
+<script src="{{ url_for('static', filename='js/vendors.min.js') }}" ></script>
 <script src="{{ url_for('static', filename='js/jquery.js') }}" ></script>
 <script src="{{ url_for('static', filename='js/cldscript.js') }}" ></script>
 <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}" ></script>
@@ -235,6 +258,7 @@
 <script src="{{ url_for('static', filename='js/bootstrap-switch/bootstrap-switch.js') }}" ></script>
 <script src="{{ url_for('static', filename='js/bootstrap-switch/highlight.js') }}" ></script>
 <script src="{{ url_for('static', filename='js/bootstrap-switch/main.js') }}" ></script>
+<script src="{{ url_for('static', filename='js/template.js') }}" ></script>
 {% endblock %}
 </body>
 </html>
