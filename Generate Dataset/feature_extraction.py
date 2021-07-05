@@ -378,59 +378,63 @@ class Extractor():
         return punny
     #Function to extract features
     def __call__(self, url):
-        if isinstance(url, str):
-            url = url.rstrip()
-            print(url)
-            features = []
-            features.append(self.special_char(url))
-            features.append(self.havingIP(url))
-            features.append(self.haveAtSign(url))
-            features.append(self.getLength(url))
-            features.append(self.getDepth(url))
-            features.append(self.redirection(url))
-            features.append(self.redirect(url))
-            features.append(self.port_in_url(url))
-            features.append(self.notsafe_protocol(url))
-            # features.append(self.httpDomain(url))
-            features.append(self.tinyURL(url))
-            features.append(self.prefixSuffix(url))
-            
-            #Domain based features (4)
-            dns = 0
-            try:
-                domain_name = whois.whois(urlparse(url).netloc)
-            # print(domain_name)
-            except:
-                print("Cant get domain name")
-                dns = 1
+        try:
+            if isinstance(url, str):
+                if requests.get(url):
+                    url = url.rstrip()
+                    print(url)
+                    features = []
+                    features.append(self.special_char(url))
+                    features.append(self.havingIP(url))
+                    features.append(self.haveAtSign(url))
+                    features.append(self.getLength(url))
+                    features.append(self.getDepth(url))
+                    features.append(self.redirection(url))
+                    features.append(self.redirect(url))
+                    features.append(self.port_in_url(url))
+                    features.append(self.notsafe_protocol(url))
+                    # features.append(self.httpDomain(url))
+                    features.append(self.tinyURL(url))
+                    features.append(self.prefixSuffix(url))
+                    
+                    #Domain based features (4)
+                    dns = 0
+                    try:
+                        domain_name = whois.whois(urlparse(url).netloc)
+                    # print(domain_name)
+                    except:
+                        print("Cant get domain name")
+                        dns = 1
 
-            features.append(dns)
-            features.append(1 if dns == 1 else self.httpDomain(domain_name))
-            features.append(1 if dns == 1 else self.domain_lifespan(domain_name))
-            features.append(1 if dns == 1 else self.domainEnd(domain_name))
-            features.append(1 if dns == 1 else self.same_asn(domain_name))
-            # features.append(1 if dns == 1 else self.top_n_google(domain_name))
-            
-            # HTML & Javascript based features
-            try:
-                response = requests.get(url)
-            except:
-                response = ""
+                    features.append(dns)
+                    features.append(1 if dns == 1 else self.httpDomain(domain_name))
+                    features.append(1 if dns == 1 else self.domain_lifespan(domain_name))
+                    features.append(1 if dns == 1 else self.domainEnd(domain_name))
+                    features.append(1 if dns == 1 else self.same_asn(domain_name))
+                    # features.append(1 if dns == 1 else self.top_n_google(domain_name))
+                    
+                    # HTML & Javascript based features
+                    try:
+                        response = requests.get(url)
+                    except:
+                        response = ""
 
-            features.append(self.iframe(response))
-            features.append(self.mouseOver(response))
-            features.append(self.rightClick(response))
-            features.append(self.forwarding(response))
-            features.append(self.js_eval(response))
-            features.append(self.js_unescape(response))
-            features.append(self.js_escape(response))
-            features.append(self.js_Active(response))
-            features.append(self.js_charcode(response))
-            features.append(self.js_atob(response))
+                    features.append(self.iframe(response))
+                    features.append(self.mouseOver(response))
+                    features.append(self.rightClick(response))
+                    features.append(self.forwarding(response))
+                    features.append(self.js_eval(response))
+                    features.append(self.js_unescape(response))
+                    features.append(self.js_escape(response))
+                    features.append(self.js_Active(response))
+                    features.append(self.js_charcode(response))
+                    features.append(self.js_atob(response))
 
-            features.append(self.punnycode(url))
-            return features
-        return []
+                    features.append(self.punnycode(url))
+                    return features
+                return []
+        except:
+            return []
 
 if __name__ == "__main__":
     ext = Extractor()

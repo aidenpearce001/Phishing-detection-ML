@@ -7,11 +7,16 @@ import requests
 from feature_extraction import Extractor
 urlQueue = queue.Queue()
 resultQueue = queue.Queue()
-dataset = pd.read_csv("dataset/chongluadaov2.csv")
+dataset = pd.read_csv("chongluadao_dataset.csv")
 dataset.head()
 urls = dataset["url"].values
 for url in urls:
-    urlQueue.put(url)
+    print(url)
+    try:
+        if requests.get(url).status_code == 200:
+    	    urlQueue.put(url)
+    except:
+        pass
 
 print("Queue size ", urlQueue.qsize())
 time.sleep(4)
@@ -34,17 +39,19 @@ resultLock = threading.Lock()
 results = {}
 def get_result(threadName):
    while not exitFlag:
+      print(f"size :{resultQueue.qsize()}")
       print("Thread {} get item".format(threadName))
       if(resultQueue.empty()):
          time.sleep(1)
          continue
+      print(f"size :{resultQueue.qsize()}")
       url, features = resultQueue.get()
       print("Result dict have {} urls".format(len(results)))
       with resultLock:
          results[url] = features
          print("Thread {} trigger {} url remained".format(threadName, resultQueue.qsize()))
          df_last = pd.DataFrame(results.items(), columns=["urls", "features"])
-         df_last.to_csv("chongluadao_dataset.csv", index = False)
+         df_last.to_csv("chongluadao_dataset_process.csv", index = False)
    if(resultQueue.empty()):
       with resultLock:
          print("hahahahahaha")
