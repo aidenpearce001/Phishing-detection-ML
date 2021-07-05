@@ -43,25 +43,33 @@
 <body>
 <div class="site-wrapper">
   <div class="temp-header sty1">
-    <nav class="navbar-static-top pl-30" style="background: #272e48;min-height: 70px;">
-      <!-- Sidebar toggle button-->
-      <div>
-        <ul class="nav">
-        <li class="btn-group nav-item">
-          <a href="/" class="waves-effect waves-light nav-link rounded svg-bt-icon" data-toggle="push-menu" role="button">
-            <i class="mdi mdi-home-outline"></i>
+    <header class="main-header">
+      <nav class="navbar navbar-static-top pl-30" style="background: #272e48;min-height: 70px">
+        <!-- Sidebar toggle button-->
+        <div>
+          <ul class="nav" >
+          <li class="btn-group nav-item" >
+            <a href="/" class="waves-effect waves-light nav-link rounded svg-bt-icon">
+              <i class="mdi mdi-home-outline"></i>
+              </a>
+          </li>
+          <li class="btn-group nav-item">
+            <a href="/dashboard" class="waves-effect waves-light nav-link rounded svg-bt-icon">
+              <i class="mdi mdi-poll-box"></i>
+              </a>
+          </li>		
+          
+          <li class="btn-group nav-item">
+            <a class="waves-effect waves-light nav-link rounded svg-bt-icon" data-toggle="modal" data-target="#reportModal">
+              <i class="mdi mdi-email-outline" data-toggle="modal" data-target="#reportModal"></i>
             </a>
-        </li>
-        <li class="btn-group nav-item">
-          <a href="/dashboard" data-provide="fullscreen" class="waves-effect waves-light nav-link rounded svg-bt-icon" title="Full Screen">
-            <i class="mdi mdi-poll-box"></i>
-            </a>
-        </li>			
+          </li>	
+          
+          </ul>
+        </div>
         
-        </ul>
-      </div>
-      
-    </nav>
+      </nav>
+    </header>
     <!-- <div class="top-bar solid-dark">
       <div class="container">
         <div class="row">
