@@ -46,9 +46,9 @@ truseted_ca = ['cPanel,',
 
 class Extractor():
     def __init__(self):
-        self.feature_names = ['Speical_Char','Have_IP', 'Have_At','URL_length' ,'URL_Depth','Redirection', 'Time_get_redirect',
-                        'port_in_url','use_http', 'TinyURL', 'Prefix/Suffix', 'DNS_Record', 'https_Domain'
-                        'Domain_lifespan', 'Domain_timeleft', 'same_asn','iFrame', 'Mouse_Over','Right_Click', 'Web_Forwards','eval','unescape',
+        self.feature_names = ['Speical_Char','Have_IP', 'Have_At','URL_length' ,'URL_Depth','redirection', 'time_get_redirect',
+                        'port_in_url','use_http', 'http_in_domain','TinyURL', 'Prefix/Suffix', 'DNS_Record','trusted_ca',
+                        'domain_lifespan', 'domain_timeleft', 'same_asn','iFrame', 'Mouse_Over','Right_Click', 'Web_Forwards','eval','unescape',
                         'escape', 'ActiveXObject','fromCharCode','atob','Punny_Code']
     
     # 1.Speical Chartacter in URL
@@ -103,13 +103,7 @@ class Extractor():
     @staticmethod
     def redirection(url):
         pos = url.rfind('//')
-        if pos > 6:
-            if pos > 7:
-                return 1
-            else:
-                return 0
-        else:
-            return 0
+        return pos
 
     # 7.Redirect time 
     @staticmethod
@@ -123,6 +117,7 @@ class Extractor():
         except:
             return 0
 
+    # 8.
     @staticmethod
     def port_in_url(url):
         p = '(?:http.*://)?(?P<host>[^:/ ]+).?(?P<port>[0-9]*).*'
@@ -133,6 +128,7 @@ class Extractor():
         else :
             return 0
 
+    # 9.
     @staticmethod
     def notsafe_protocol(url):
         if urlparse(url).scheme == 'http':
@@ -140,17 +136,17 @@ class Extractor():
         else:
             return 0
 
-    # 7.Existence of “HTTPS” Token in the Domain Part of the URL (https_Domain)
+    # 10.Existence of “HTTPS” Token in the Domain Part of the URL (https_Domain)
     @staticmethod
-    def httpDomain(domain):
+    def httpDomain(url):
         # domain = urlparse(url).netloc
         # if 'http' in domain and Extractor.getLength(url) == 1:
-        if 'http' in domain:
+        if 'http' in url.split("//")[1]:
             return 1
         else:
             return 0
 
-    # 8. Checking for Shortening Services in URL (Tiny_URL)
+    # 11. Checking for Shortening Services in URL (Tiny_URL)
     @staticmethod
     def tinyURL(url):
             #listing shortening services
@@ -167,14 +163,15 @@ class Extractor():
             return 1
         else:
             return 0
-    # 9.Checking for Prefix or Suffix Separated by (-) in the Domain (Prefix/Suffix)
+    # 12.Checking for Prefix or Suffix Separated by (-) in the Domain (Prefix/Suffix)
     @staticmethod
     def prefixSuffix(url):
         if '-' in urlparse(url).netloc:
             return 1            # phishing
         else:
             return 0            # legitimate
-    # 12.Web traffic (Web_Traffic)
+
+    # Reject
     @staticmethod
     def web_traffic(url):
         try:
@@ -189,6 +186,8 @@ class Extractor():
             return 0
         else:
             return 1
+
+    # 13
     @staticmethod
     def trusted_ca(domain):
         try:
@@ -202,20 +201,26 @@ class Extractor():
             issued_to = subject['commonName']
             issuer = dict(x[0] for x in cert['issuer'])
             issued_by = issuer['commonName']
-            print(issued_by)
 
             if issued_by.split(" ")[0] in truseted_ca:
                 return 0
             else:
                 return 1
         except:
-            print(f"DOMAIN {domain} ERROR")
+            return 1
+            print(f"DOMAIN {domain['domain_name']} ERROR")
 
-    # 13.Survival time of domain: The difference between termination time and creation time (Domain_Age)  
+    # 14.Survival time of domain: The difference between termination time and creation time (Domain_Age)  
     @staticmethod
     def domain_lifespan(domain_name):
         creation_date = domain_name.creation_date
         expiration_date = domain_name.expiration_date
+
+        if isinstance(creation_date, list):
+            creation_date= creation_date[-1]
+        if isinstance(expiration_date, list):
+            expiration_date= expiration_date[-1]
+
         if (isinstance(creation_date,str) or isinstance(expiration_date,str)):
             try:
                 creation_date = datetime.strptime(creation_date,'%Y-%m-%d')
@@ -235,10 +240,14 @@ class Extractor():
                 age = 0
         return age
 
-    # 14.End time of domain: The difference between termination time and current time (Domain_End) 
+    # 15.End time of domain: The difference between termination time and current time (Domain_End) 
     @staticmethod
     def domainEnd(domain_name):
         expiration_date = domain_name.expiration_date
+
+        if isinstance(expiration_date, list):
+            expiration_date= expiration_date[-1]
+
         if isinstance(expiration_date,str):
             try:
                 expiration_date = datetime.strptime(expiration_date,"%Y-%m-%d")
@@ -257,13 +266,13 @@ class Extractor():
                 end = 0
             return end  
 
+    # 16.
     @staticmethod
     def same_asn(domain_name):
         try:
             _asn = []
             for record in dns.resolver.resolve(domain_name["domain_name"], 'MX'):
                 mx = record.to_text().split(" ")[1]
-                print(mx)
                 _asn.append(socket.gethostbyname(mx))
             
             if len(_asn) == 1 and ocket.gethostbyname(_asn[0]) == socket.gethostbyname(domain_name):
@@ -273,6 +282,7 @@ class Extractor():
         except:
             return 1
 
+    # reject (too slow)
     @staticmethod
     def top_n_google(domain, stop=30):
         google_search = [j for j in search(domain, tld="co.in", num=10, stop=stop, pause=2)]
@@ -281,7 +291,7 @@ class Extractor():
         else:
             return 0
 
-    # 15. IFrame Redirection (iFrame)
+    # 17. IFrame Redirection (iFrame)
     @staticmethod
     def iframe(response):
         if response == "":
@@ -292,7 +302,7 @@ class Extractor():
             else:
                 return 1
 
-    # 16.Checks the effect of mouse over on status bar (Mouse_Over)
+    # 18.Checks the effect of mouse over on status bar (Mouse_Over)
     @staticmethod
     def mouseOver(response): 
         if response == "" :
@@ -303,7 +313,7 @@ class Extractor():
             else:
                 return 0
     
-    # 17.Checks the status of the right click attribute (Right_Click)
+    # 19.Checks the status of the right click attribute (Right_Click)
     @staticmethod
     def rightClick(response):
         if response == "":
@@ -313,7 +323,7 @@ class Extractor():
                 return 0
             else:
                 return 1
-    # 18.Checks the number of forwardings (Web_Forwards)    
+    # 20.Checks the number of forwardings (Web_Forwards)    
     @staticmethod
     def forwarding(response):
         if response == "":
@@ -323,49 +333,74 @@ class Extractor():
                 return 0
             else:
                 return 1
+
+    # 21       
     @staticmethod
     def js_eval(response):      
         try:      
-            return response.count("eval")
+            if response == "":
+                return 1
+            else:
+                return response.count("eval")
         except:
             return 0
 
+    # 22
     @staticmethod
     def js_unescape(response):
         try:
-            return response.count("unescape")
+            if response == "":
+                return 1
+            else:
+                return response.count("unescape")
         except:
             return 0
 
+    # 23
     @staticmethod
     def js_escape(response):
         try:
-            return response.count("escape")
+            if response == "":
+                return 1
+            else:
+                return response.count("escape")
         except:
             return 0
 
+    # 24
     @staticmethod
     def js_Active(response):
         try:
-            return response.count("ActiveXObject")
+            if response == "":
+                return 1
+            else:
+                return response.count("ActiveXObject")
         except:
             return 0
 
+    # 25
     @staticmethod
     def js_charcode(response):
         try:
-            return response.count("fromCharCode")
+            if response == "":
+                return 1
+            else:
+                return response.count("fromCharCode")
         except:
             return 0
 
+    # 26
     @staticmethod
     def js_atob(response):
         try:
-            return response.count("atob")
+            if response == "":
+                return 1
+            else:
+                return response.count("atob")
         except:
             return 0
 
-    # 19.Punny code 
+    # 27.Punny code 
     @staticmethod
     def punnycode(url):
 
@@ -378,64 +413,65 @@ class Extractor():
         return punny
     #Function to extract features
     def __call__(self, url):
-        try:
-            if isinstance(url, str):
-                if requests.get(url, timeout=5):
-                    url = url.rstrip()
-                    print(url)
-                    features = []
-                    features.append(self.special_char(url))
-                    features.append(self.havingIP(url))
-                    features.append(self.haveAtSign(url))
-                    features.append(self.getLength(url))
-                    features.append(self.getDepth(url))
-                    features.append(self.redirection(url))
-                    features.append(self.redirect(url))
-                    features.append(self.port_in_url(url))
-                    features.append(self.notsafe_protocol(url))
-                    # features.append(self.httpDomain(url))
-                    features.append(self.tinyURL(url))
-                    features.append(self.prefixSuffix(url))
-                    
-                    #Domain based features (4)
-                    dns = 0
-                    try:
-                        domain_name = whois.whois(urlparse(url).netloc)
-                    # print(domain_name)
-                    except:
-                        print("Cant get domain name")
-                        dns = 1
+        if isinstance(url, str):
+            if requests.get(url, timeout=5):
+                url = url.rstrip()
+                print(url)
+                features = []
+                features.append(self.special_char(url))
+                features.append(self.havingIP(url))
+                features.append(self.haveAtSign(url))
+                features.append(self.getLength(url))
+                features.append(self.getDepth(url))
+                features.append(self.redirection(url))
+                features.append(self.redirect(url))
+                features.append(self.port_in_url(url))
+                features.append(self.notsafe_protocol(url))
+                features.append(self.httpDomain(url))
+                features.append(self.tinyURL(url))
+                features.append(self.prefixSuffix(url))
+                
+                #Domain based features (4)
+                dns = 0
+                try:
+                    domain_name = whois.whois(urlparse(url).netloc)
+                except:
+                    dns = 1
 
-                    features.append(dns)
-                    features.append(1 if dns == 1 else self.httpDomain(domain_name))
-                    features.append(1 if dns == 1 else self.domain_lifespan(domain_name))
-                    features.append(1 if dns == 1 else self.domainEnd(domain_name))
-                    features.append(1 if dns == 1 else self.same_asn(domain_name))
-                    # features.append(1 if dns == 1 else self.top_n_google(domain_name))
-                    
-                    # HTML & Javascript based features
-                    try:
-                        response = requests.get(url)
-                    except:
-                        response = ""
+                features.append(dns)
+                features.append(1 if dns == 1 else self.trusted_ca(domain_name))
+                features.append(1 if dns == 1 else self.domain_lifespan(domain_name))
+                features.append(1 if dns == 1 else self.domainEnd(domain_name))
+                features.append(1 if dns == 1 else self.same_asn(domain_name))
+                # features.append(1 if dns == 1 else self.top_n_google(domain_name))
+                
+                # HTML & Javascript based features
+                try:
+                    response = requests.get(url)
+                except:
+                    response = ""
 
-                    features.append(self.iframe(response))
-                    features.append(self.mouseOver(response))
-                    features.append(self.rightClick(response))
-                    features.append(self.forwarding(response))
-                    features.append(self.js_eval(response))
-                    features.append(self.js_unescape(response))
-                    features.append(self.js_escape(response))
-                    features.append(self.js_Active(response))
-                    features.append(self.js_charcode(response))
-                    features.append(self.js_atob(response))
+                features.append(self.iframe(response))
+                features.append(self.mouseOver(response))
+                features.append(self.rightClick(response))
+                features.append(self.forwarding(response))
+                features.append(self.js_eval(response))
+                features.append(self.js_unescape(response))
+                features.append(self.js_escape(response))
+                features.append(self.js_Active(response))
+                features.append(self.js_charcode(response))
+                features.append(self.js_atob(response))
 
-                    features.append(self.punnycode(url))
-                    return features
-                return []
-        except:
-            return []
+                features.append(self.punnycode(url))
+
+                print(len(self.feature_names))
+                if len(features) == len(self.feature_names):
+                    print("EQUAL now")
+
+                return features
 
 if __name__ == "__main__":
     ext = Extractor()
-    print(ext("https://stackoverflow.com/questions/42179046/what-flavor-of-regex-does-visual-studio-code-use"))
+    Vector = ext("https://stackoverflow.com/questions/42179046/what-flavor-of-regex-does-visual-studio-code-use")
+
+    # print(len(Vector))
