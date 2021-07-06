@@ -11,12 +11,7 @@ dataset = pd.read_csv("chongluadao_dataset.csv")
 dataset.head()
 urls = dataset["url"].values
 for url in urls:
-    print(url)
-    try:
-        if requests.get(url).status_code == 200:
-    	    urlQueue.put(url)
-    except:
-        pass
+   urlQueue.put(url)
 
 print("Queue size ", urlQueue.qsize())
 time.sleep(4)

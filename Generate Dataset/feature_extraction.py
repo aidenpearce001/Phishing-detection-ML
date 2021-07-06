@@ -380,7 +380,7 @@ class Extractor():
     def __call__(self, url):
         try:
             if isinstance(url, str):
-                if requests.get(url):
+                if requests.get(url, timeout=5):
                     url = url.rstrip()
                     print(url)
                     features = []
