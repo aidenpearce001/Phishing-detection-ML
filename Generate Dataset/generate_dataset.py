@@ -5,7 +5,7 @@ import concurrent.futures
 import os
 from feature_extraction import Extractor
   
-Thread = os.cpu_count() * 10
+Thread = os.cpu_count() * 5
 dataset = set()
 alive_dataset = []
 
@@ -16,23 +16,23 @@ feature_names = ['Speical_Char','Have_IP', 'Have_At','URL_length' ,'URL_Depth','
                         'escape', 'ActiveXObject','fromCharCode','atob','Punny_Code', 'country_name']
 
 def blacklist():
-    # phishtank = "http://data.phishtank.com/data/online-valid.csv"
-    # phishtank_res = requests.get('http://data.phishtank.com/data/online-valid.csv', allow_redirects=True)
-    # open('dataset/phishtank.csv', 'wb').write(phishtank_res.content)
+    phishtank = "http://data.phishtank.com/data/online-valid.csv"
+    phishtank_res = requests.get('http://data.phishtank.com/data/online-valid.csv', allow_redirects=True)
+    open('dataset/phishtank.csv', 'wb').write(phishtank_res.content)
     phistank = pd.read_csv("dataset/phishtank.csv")['url']
     for i in phistank:
         dataset.add( (i.strip(),1) )
 
-    # git_blacklist = requests.get("https://raw.githubusercontent.com/mitchellkrogza/Phishing.Database/master/phishing-links/output/domains/ACTIVE/list")
-    # file1 = open("dataset/phishing.txt","wb")
-    # file1.write(git_blacklist.content)
+    git_blacklist = requests.get("https://raw.githubusercontent.com/mitchellkrogza/Phishing.Database/master/phishing-links/output/domains/ACTIVE/list")
+    file1 = open("dataset/phishing.txt","wb")
+    file1.write(git_blacklist.content)
     with open('dataset/phishing.txt', 'r+',encoding='utf-8') as f:
         lines = f.readlines()
     for i in lines[3:]:
         dataset.add( (i.strip(),1) )
 
-    # phishstat_res = requests.get('https://phishstats.info/phish_score.csv', allow_redirects=True)
-    # open('dataset/phishstats.txt', 'wb').write(phishstat_res.content)
+    phishstat_res = requests.get('https://phishstats.info/phish_score.csv', allow_redirects=True)
+    open('dataset/phishstats.txt', 'wb').write(phishstat_res.content)
     with open('dataset/phishstats.txt', 'r+',encoding='utf-8') as f:
         lines = f.readlines()
         for i in lines[9:]:
@@ -59,9 +59,7 @@ def check_alive(data):
     code = requests.get(data[0], timeout=5)
     features = extractor(data[0])
     print(features)
-    if len(features) > 0 and code.status_code == 200:
-        alive_dataset.append(( data[0],features, data[1]  ))
-    else:
+    if len(features) > 0 and code.status_code not in range(400,600):
         alive_dataset.append(( data[0],features, data[1]  ))
 
 output = pd.DataFrame()

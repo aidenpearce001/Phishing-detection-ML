@@ -18,25 +18,17 @@ $(document).ready(function(){
             }
         })
         .done(function(data) {
-            if (data.notsafe) {
-                swal({
-                    title: data.notsafe,
-                    text: "Score :"+data.score,
-                    icon: "error",
-                    });
-                console.log(data);
-            }
             if (data.notvalid) {
                 swal({
-                    title: data.notvalid,
+                    title: data.notsend,
+                    text: "Input the Phone Number and Get the OTP code",
                     icon: "error",
                     });
                 console.log(data);
             }
-            if (data.safe){
+            if (data.send){
                 swal({
-                    title: data.safe,
-                    text: "Score :"+data.score,
+                    title: data.send,
                     icon: "success",
                     });
             }

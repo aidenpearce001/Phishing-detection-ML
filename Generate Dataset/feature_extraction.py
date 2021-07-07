@@ -414,10 +414,10 @@ class Extractor():
     #Function to extract features
     def __call__(self, url):
         if isinstance(url, str):
+            features = []
             if requests.get(url, timeout=5):
                 url = url.rstrip()
                 print(url)
-                features = []
                 features.append(self.special_char(url))
                 features.append(self.havingIP(url))
                 features.append(self.haveAtSign(url))
@@ -466,14 +466,17 @@ class Extractor():
 
                 features.append("None" if dns == 1 else domain_name.country)
 
+                print(features)
                 print(len(self.feature_names))
                 if len(features) == len(self.feature_names):
                     print("EQUAL now")
 
                 return features
+        else:
+            return features
 
 if __name__ == "__main__":
     ext = Extractor()
-    # Vector = ext("https://stackoverflow.com/questions/42179046/what-flavor-of-regex-does-visual-studio-code-use")
-    Vector = ext("http://msmcomun662.000webhostapp.com/login3.php")
+    Vector = ext("https://stackoverflow.com/questions/42179046/what-flavor-of-regex-does-visual-studio-code-use")
+    # Vector = ext("http://msmcomun662.000webhostapp.com/login3.php")
     # print(len(Vector))
