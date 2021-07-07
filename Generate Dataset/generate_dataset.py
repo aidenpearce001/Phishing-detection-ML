@@ -3,9 +3,17 @@ import pandas as pd
 import requests
 import concurrent.futures
 import os
+from feature_extraction import Extractor
   
 Thread = os.cpu_count() * 10
 dataset = set()
+alive_dataset = []
+
+extractor = Extractor()
+feature_names = ['Speical_Char','Have_IP', 'Have_At','URL_length' ,'URL_Depth','redirection', 'time_get_redirect',
+                        'port_in_url','use_http', 'http_in_domain','TinyURL', 'Prefix/Suffix', 'DNS_Record','trusted_ca',
+                        'domain_lifespan', 'domain_timeleft', 'same_asn','iFrame', 'Mouse_Over','Right_Click', 'Web_Forwards','eval','unescape',
+                        'escape', 'ActiveXObject','fromCharCode','atob','Punny_Code', 'country_name']
 
 def blacklist():
     # phishtank = "http://data.phishtank.com/data/online-valid.csv"
@@ -30,6 +38,10 @@ def blacklist():
         for i in lines[9:]:
             dataset.add( (i.replace('"','').split(',')[2].strip(),1) )
 
+    cld_old = pd.read_csv("dataset/chongluadaov2.csv")
+    for i in range(len(cld_old)):
+        dataset.add( (cld_old['url'][i], cld_old['labels'][i]) )
+
 def whitelist():
     for i in range(2):
         number = str(i).zfill(2)
@@ -40,31 +52,38 @@ def whitelist():
         for i in white:
             dataset.add( ("https://"+i.strip(),0) )
 
-origin_dataset = pd.read_csv("dataset/chongluadaov2.csv")
 blacklist()
 whitelist()
 
-alive_dataset = []
-
 def check_alive(data):
-    try:
-        code = requests.get(data[0], timeout=5)
-        if code.status_code == 200:
-            alive_dataset.append(data)
-        else:
-            alive_dataset.append(data)
-    except:
-        pass
-    
-    print(f"{data[0]} Alive")
+    code = requests.get(data[0], timeout=5)
+    features = extractor(data[0])
+    print(features)
+    if len(features) > 0 and code.status_code == 200:
+        alive_dataset.append(( data[0],features, data[1]  ))
+    else:
+        alive_dataset.append(( data[0],features, data[1]  ))
 
+output = pd.DataFrame()
 def append_data(data):
     cld_dataset = []
       
-    new_row = {'url':data[0], 'labels':data[1], 'type':'train'}
+    new_row = {}
+
+    for index,value in enumerate(data[1]):
+        new_row[feature_names[index]] = value
+
+    new_row['labels'] = data[2]
+    # new_row = {'url':data[0], 'labels':data[1], 'type':'train'}
     print(new_row)
 
     cld_dataset.append(new_row)
+    output = output.append(new_row, ignore_index=True)
+    big_data.to_csv("chongluadao_dataset_process.csv", index = False)
+    total -=1
+
+    print(f"{total} URL Left")
+    
     return cld_dataset
 
 def main():
@@ -74,20 +93,17 @@ def main():
     with concurrent.futures.ThreadPoolExecutor(max_workers=Thread) as executor:
         executor.map(check_alive, sites)
 
+    total =len(alive_dataset)
     data = [url for url in alive_dataset]
     cld_dataset = []
-    with concurrent.futures.ProcessPoolExecutor() as executor:
+    with concurrent.futures.ProcessPoolExecutor(max_workers=os.cpu_count()-1) as executor:
         future_proc = {executor.submit(append_data, url): url for url in data}
         for future in concurrent.futures.as_completed(future_proc):
-            print(future.result())
             cld_dataset.extend(future.result())
     return cld_dataset
 if __name__ == '__main__':
     cld_dataset = main()
     print(len(dataset))
     if isinstance(cld_dataset, list):
-        cld_dataset = pd.DataFrame(cld_dataset)
-        big_data = cld_dataset.append(origin_dataset, ignore_index=True)
-        big_data.to_csv("chongluadao_dataset.csv", index = False)
-# append_data( ("https://google.com","1"))
-big_data.to_csv("chongluadao_dataset.csv", index = False)
+        big_data = pd.DataFrame(cld_dataset)
+    big_data.to_csv("chongluadao_dataset.csv", index = False)

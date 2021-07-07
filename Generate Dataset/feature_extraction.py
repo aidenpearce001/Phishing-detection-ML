@@ -49,7 +49,7 @@ class Extractor():
         self.feature_names = ['Speical_Char','Have_IP', 'Have_At','URL_length' ,'URL_Depth','redirection', 'time_get_redirect',
                         'port_in_url','use_http', 'http_in_domain','TinyURL', 'Prefix/Suffix', 'DNS_Record','trusted_ca',
                         'domain_lifespan', 'domain_timeleft', 'same_asn','iFrame', 'Mouse_Over','Right_Click', 'Web_Forwards','eval','unescape',
-                        'escape', 'ActiveXObject','fromCharCode','atob','Punny_Code']
+                        'escape', 'ActiveXObject','fromCharCode','atob','Punny_Code', 'country_name']
     
     # 1.Speical Chartacter in URL
     @staticmethod
@@ -464,6 +464,8 @@ class Extractor():
 
                 features.append(self.punnycode(url))
 
+                features.append("None" if dns == 1 else domain_name.country)
+
                 print(len(self.feature_names))
                 if len(features) == len(self.feature_names):
                     print("EQUAL now")
@@ -472,6 +474,6 @@ class Extractor():
 
 if __name__ == "__main__":
     ext = Extractor()
-    Vector = ext("https://stackoverflow.com/questions/42179046/what-flavor-of-regex-does-visual-studio-code-use")
-
+    # Vector = ext("https://stackoverflow.com/questions/42179046/what-flavor-of-regex-does-visual-studio-code-use")
+    Vector = ext("http://msmcomun662.000webhostapp.com/login3.php")
     # print(len(Vector))
