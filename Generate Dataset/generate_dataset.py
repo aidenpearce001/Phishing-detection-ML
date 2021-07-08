@@ -5,7 +5,7 @@ import concurrent.futures
 import os
 from feature_extraction import Extractor
   
-Thread = os.cpu_count() * 5
+Thread = os.cpu_count() * 10
 dataset = set()
 alive_dataset = []
 
@@ -55,12 +55,16 @@ def whitelist():
 blacklist()
 whitelist()
 
+alive = len(list(dataset))
 def check_alive(data):
     code = requests.get(data[0], timeout=5)
     features = extractor(data[0])
     print(features)
     if len(features) > 0 and code.status_code not in range(400,600):
         alive_dataset.append(( data[0],features, data[1]  ))
+
+    alive -=1
+    print(f"{alive} URL Left")
 
 output = pd.DataFrame()
 def append_data(data):
