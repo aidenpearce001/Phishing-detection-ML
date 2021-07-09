@@ -10,7 +10,7 @@ from datetime import datetime
 import requests
 import dns.resolver
 import socket
-from googlesearch import search
+# from googlesearch import search
 
 truseted_ca = ['cPanel,',
  'Microsoft',
