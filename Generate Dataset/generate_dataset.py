@@ -4,7 +4,8 @@ import requests
 import concurrent.futures
 import os
 from feature_extraction import Extractor
-  
+import gc  
+
 THREAD = os.cpu_count() * 10
 dataset = set()
 alive_dataset = []
@@ -59,13 +60,15 @@ def check_alive(data):
     try:
         code = requests.get(data[0], timeout=5)
         features = extractor(data[0])
+        gc.collect()
         if len(features) > 0 and code.status_code not in range(400,600):
-            # alive_dataset.append(( data[0],features, data[1]  ))
+            alive_dataset.append(( data[0],features, data[1]  ))
             
-            return data[0],features,data[1]
+            # return data[0],features,data[1]
         else:
             return None
     except:
+        gc.collect()
         return None
 
 # output = pd.DataFrame()
@@ -88,40 +91,10 @@ def append_data(data):
 def main():
     import time
 
-    sites = [url for url in list(dataset)[:1000]]
-
-    jobs = {}
-    # with concurrent.futures.ThreadPoolExecutor(max_workers=THREAD) as executor:
-    #     for idx in range(0, len(sites), THREAD):
-    #             batch_sites = sites[idx:idx+THREAD]
-    #             batch_outputs = p.map(check_alive, batch_sites)
-    #             print("output", batch_outputs)
-
+    sites = [url for url in list(dataset)]
+   
     with concurrent.futures.ThreadPoolExecutor(max_workers=THREAD) as executor:
-        for idx in range(0, len(sites), THREAD):
-            print(f"ID : {idx}")
-            batch_sites = sites[idx:idx+THREAD]
-            futures = {executor.submit(check_alive, url): url for url in iter(batch_sites)}
-
-            for job in concurrent.futures.as_completed(futures):
-            # try:
-                # print(jobs[job])
-                data = job.result()
-                print(f"OUTPUT :{data}")
-
-                if data != None:
-                    alive_dataset.append(( data[0], data[1],data[2]  ))
-                # print(f"TOTAL LEFT {urls_left}")
-                # urls_left -= 1 
-
-
-                # del jobs[job]
-            # except Exception as exc:
-            #     print(exc)
-                # print('%r generated an exception: %s' % (ur exc))
-        
-    # with concurrent.futures.ThreadPoolExecutor(max_workers=THREAD) as executor:
-    #     executor.map(check_alive, sites)
+        executor.map(check_alive, sites)
 
     total =len(alive_dataset)
     data = [url for url in alive_dataset]
@@ -131,6 +104,7 @@ def main():
         for future in concurrent.futures.as_completed(future_proc):
             cld_dataset.extend(future.result())
     return cld_dataset
+    
 if __name__ == '__main__':
     cld_dataset = main()
     print(len(dataset))
