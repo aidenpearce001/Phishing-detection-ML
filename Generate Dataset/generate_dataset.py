@@ -5,7 +5,7 @@ import concurrent.futures
 import os
 from feature_extraction import Extractor
   
-Thread = os.cpu_count() * 10
+THREAD = os.cpu_count() * 10
 dataset = set()
 alive_dataset = []
 
@@ -16,23 +16,23 @@ feature_names = ['Speical_Char','Have_IP', 'Have_At','URL_length' ,'URL_Depth','
                         'escape', 'ActiveXObject','fromCharCode','atob','Punny_Code', 'country_name']
 
 def blacklist():
-    # phishtank = "http://data.phishtank.com/data/online-valid.csv"
-    # phishtank_res = requests.get('http://data.phishtank.com/data/online-valid.csv', allow_redirects=True)
+    phishtank = "http://data.phishtank.com/data/online-valid.csv"
+    phishtank_res = requests.get('http://data.phishtank.com/data/online-valid.csv', allow_redirects=True)
     open('dataset/phishtank.csv', 'wb').write(phishtank_res.content)
     phistank = pd.read_csv("dataset/phishtank.csv")['url']
     for i in phistank:
         dataset.add( (i.strip(),1) )
 
-    # git_blacklist = requests.get("https://raw.githubusercontent.com/mitchellkrogza/Phishing.Database/master/phishing-links/output/domains/ACTIVE/list")
-    # file1 = open("dataset/phishing.txt","wb")
+    git_blacklist = requests.get("https://raw.githubusercontent.com/mitchellkrogza/Phishing.Database/master/phishing-links/output/domains/ACTIVE/list")
+    file1 = open("dataset/phishing.txt","wb")
     file1.write(git_blacklist.content)
     with open('dataset/phishing.txt', 'r+',encoding='utf-8') as f:
         lines = f.readlines()
     for i in lines[3:]:
         dataset.add( (i.strip(),1) )
 
-    # phishstat_res = requests.get('https://phishstats.info/phish_score.csv', allow_redirects=True)
-    # open('dataset/phishstats.txt', 'wb').write(phishstat_res.content)
+    phishstat_res = requests.get('https://phishstats.info/phish_score.csv', allow_redirects=True)
+    open('dataset/phishstats.txt', 'wb').write(phishstat_res.content)
     with open('dataset/phishstats.txt', 'r+',encoding='utf-8') as f:
         lines = f.readlines()
         for i in lines[9:]:
@@ -56,13 +56,19 @@ blacklist()
 whitelist()
 
 def check_alive(data):
-    code = requests.get(data[0], timeout=5)
-    features = extractor(data[0])
-    print(features)
-    if len(features) > 0 and code.status_code not in range(400,600):
-        alive_dataset.append(( data[0],features, data[1]  ))
+    try:
+        code = requests.get(data[0], timeout=5)
+        features = extractor(data[0])
+        if len(features) > 0 and code.status_code not in range(400,600):
+            # alive_dataset.append(( data[0],features, data[1]  ))
+            
+            return data[0],features,data[1]
+        else:
+            return None
+    except:
+        return None
 
-output = pd.DataFrame()
+# output = pd.DataFrame()
 def append_data(data):
     cld_dataset = []
       
@@ -76,18 +82,46 @@ def append_data(data):
     print(new_row)
 
     cld_dataset.append(new_row)
-    output = output.append(new_row, ignore_index=True)
-    output.to_csv("chongluadao_dataset_process.csv", index = False)
-    total -=1
 
     return cld_dataset
 
 def main():
     import time
 
-    sites = [url for url in list(dataset)]
-    with concurrent.futures.ThreadPoolExecutor(max_workers=Thread) as executor:
-        executor.map(check_alive, sites)
+    sites = [url for url in list(dataset)[:1000]]
+
+    jobs = {}
+    # with concurrent.futures.ThreadPoolExecutor(max_workers=THREAD) as executor:
+    #     for idx in range(0, len(sites), THREAD):
+    #             batch_sites = sites[idx:idx+THREAD]
+    #             batch_outputs = p.map(check_alive, batch_sites)
+    #             print("output", batch_outputs)
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=THREAD) as executor:
+        for idx in range(0, len(sites), THREAD):
+            print(f"ID : {idx}")
+            batch_sites = sites[idx:idx+THREAD]
+            futures = {executor.submit(check_alive, url): url for url in iter(batch_sites)}
+
+            for job in concurrent.futures.as_completed(futures):
+            # try:
+                # print(jobs[job])
+                data = job.result()
+                print(f"OUTPUT :{data}")
+
+                if data != None:
+                    alive_dataset.append(( data[0], data[1],data[2]  ))
+                # print(f"TOTAL LEFT {urls_left}")
+                # urls_left -= 1 
+
+
+                # del jobs[job]
+            # except Exception as exc:
+            #     print(exc)
+                # print('%r generated an exception: %s' % (ur exc))
+        
+    # with concurrent.futures.ThreadPoolExecutor(max_workers=THREAD) as executor:
+    #     executor.map(check_alive, sites)
 
     total =len(alive_dataset)
     data = [url for url in alive_dataset]
@@ -103,3 +137,4 @@ if __name__ == '__main__':
     if isinstance(cld_dataset, list):
         big_data = pd.DataFrame(cld_dataset)
     big_data.to_csv("chongluadao_dataset.csv", index = False)
+
