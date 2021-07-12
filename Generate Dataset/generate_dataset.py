@@ -4,14 +4,11 @@ import requests
 import concurrent.futures
 import os
 from feature_extraction import Extractor
-<<<<<<< HEAD
-  
-Thread = os.cpu_count() * 10
-=======
+
 import gc  
 
 THREAD = os.cpu_count() * 10
->>>>>>> c68a557636e9450f6325201df12faaa6a2c6b34e
+
 dataset = set()
 alive_dataset = []
 
@@ -62,15 +59,7 @@ blacklist()
 whitelist()
 
 def check_alive(data):
-<<<<<<< HEAD
-    code = requests.get(data[0], timeout=5)
-    features = extractor(data[0])
-    print(features)
-    if len(features) > 0 and code.status_code not in range(400,600):
-        alive_dataset.append(( data[0],features, data[1]  ))
 
-#output = pd.DataFrame()
-=======
     try:
         code = requests.get(data[0], timeout=5)
         features = extractor(data[0])
@@ -86,7 +75,6 @@ def check_alive(data):
         return None
 
 # output = pd.DataFrame()
->>>>>>> c68a557636e9450f6325201df12faaa6a2c6b34e
 def append_data(data):
     cld_dataset = []
       
@@ -109,20 +97,12 @@ def main():
     import time
 
     sites = [url for url in list(dataset)]
-<<<<<<< HEAD
-    with concurrent.futures.ThreadPoolExecutor(max_workers=Thread) as executor:
-        executor.map(check_alive, sites)
 
-    print("DONE")
-    time.sleep(10)
-    print(f"total {len(alive_dataset)}")
-=======
    
     with concurrent.futures.ThreadPoolExecutor(max_workers=THREAD) as executor:
         executor.map(check_alive, sites)
 
     total =len(alive_dataset)
->>>>>>> c68a557636e9450f6325201df12faaa6a2c6b34e
     data = [url for url in alive_dataset]
     cld_dataset = []
     with concurrent.futures.ProcessPoolExecutor(max_workers=os.cpu_count()-1) as executor:
