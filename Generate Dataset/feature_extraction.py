@@ -10,7 +10,7 @@ from datetime import datetime
 import requests
 import dns.resolver
 import socket
-# from googlesearch import search
+import time
 
 truseted_ca = ['cPanel,',
  'Microsoft',
@@ -412,72 +412,80 @@ class Extractor():
 
         return punny
     #Function to extract features
-    def __call__(self, url):
+    def __call__(self, url, max_retries=2):
         if isinstance(url, str):
             features = []
-            try:
-                if requests.get(url, timeout=5):
-                    url = url.rstrip()
-                    print(url)
-                    features.append(self.special_char(url))
-                    features.append(self.havingIP(url))
-                    features.append(self.haveAtSign(url))
-                    features.append(self.getLength(url))
-                    features.append(self.getDepth(url))
-                    features.append(self.redirection(url))
-                    features.append(self.redirect(url))
-                    features.append(self.port_in_url(url))
-                    features.append(self.notsafe_protocol(url))
-                    features.append(self.httpDomain(url))
-                    features.append(self.tinyURL(url))
-                    features.append(self.prefixSuffix(url))
-                    
-                    #Domain based features (4)
-                    dns = 0
-                    try:
-                        domain_name = whois.whois(urlparse(url).netloc)
-                    except:
-                        dns = 1
+            while max_retries > 0:
+                try:
+                    response = requests.get(url, timeout=5)
 
-                    features.append(dns)
-                    features.append(1 if dns == 1 else self.trusted_ca(domain_name))
-                    features.append(1 if dns == 1 else self.domain_lifespan(domain_name))
-                    features.append(1 if dns == 1 else self.domainEnd(domain_name))
-                    features.append(1 if dns == 1 else self.same_asn(domain_name))
-                    # features.append(1 if dns == 1 else self.top_n_google(domain_name))
-                    
-                    # HTML & Javascript based features
-                    try:
-                        response = requests.get(url)
-                    except:
-                        response = ""
+                    if response:
+                        url = url.rstrip()
 
-                    features.append(self.iframe(response))
-                    features.append(self.mouseOver(response))
-                    features.append(self.rightClick(response))
-                    features.append(self.forwarding(response))
-                    features.append(self.js_eval(response))
-                    features.append(self.js_unescape(response))
-                    features.append(self.js_escape(response))
-                    features.append(self.js_Active(response))
-                    features.append(self.js_charcode(response))
-                    features.append(self.js_atob(response))
+                        features.append(self.special_char(url))
+                        features.append(self.havingIP(url))
+                        features.append(self.haveAtSign(url))
+                        features.append(self.getLength(url))
+                        features.append(self.getDepth(url))
+                        features.append(self.redirection(url))
+                        features.append(self.redirect(url))
+                        features.append(self.port_in_url(url))
+                        features.append(self.notsafe_protocol(url))
+                        features.append(self.httpDomain(url))
+                        features.append(self.tinyURL(url))
+                        features.append(self.prefixSuffix(url))
+                        
+                        #Domain based features (4)
+                        dns = 0
+                        try:
+                            domain_name = whois.whois(urlparse(url).netloc)
+                        except:
+                            dns = 1
 
-                    features.append(self.punnycode(url))
+                        features.append(dns)
+                        features.append(1 if dns == 1 else self.trusted_ca(domain_name))
+                        features.append(1 if dns == 1 else self.domain_lifespan(domain_name))
+                        features.append(1 if dns == 1 else self.domainEnd(domain_name))
+                        features.append(1 if dns == 1 else self.same_asn(domain_name))
+                        # features.append(1 if dns == 1 else self.top_n_google(domain_name))
+                        
+                        # # HTML & Javascript based features
+                        # try:
+                        #     response = requests.get(url)
+                        # except:
+                        #     response = ""
 
-                    features.append("None" if dns == 1 else domain_name.country)
+                        features.append(self.iframe(response))
+                        features.append(self.mouseOver(response))
+                        features.append(self.rightClick(response))
+                        features.append(self.forwarding(response))
+                        features.append(self.js_eval(response))
+                        features.append(self.js_unescape(response))
+                        features.append(self.js_escape(response))
+                        features.append(self.js_Active(response))
+                        features.append(self.js_charcode(response))
+                        features.append(self.js_atob(response))
 
-                    print(features)
-                    print(len(self.feature_names))
-                    if len(features) == len(self.feature_names):
-                        print("EQUAL now")
+                        features.append(self.punnycode(url))
 
-                    return features
-            except:
-                return features
+                        features.append("None" if dns == 1 else domain_name.country)
+
+                        return features
+                    else:
+                        return []
+                except Exception as e: 
+                    if max_retries == 0:
+                        return []
+                    print(str(e))
+                    print(f"Error extracting features from {url}. Retrying #{max_retries}")
+                    time.sleep(0.5)
+                    max_retries -= 1
+        else:
+            return []
 
 if __name__ == "__main__":
     ext = Extractor()
-    Vector = ext("https://stackoverflow.com/questions/42179046/what-flavor-of-regex-does-visual-studio-code-use")
+    vector = ext("https://stackoverflow.com/questions/42179046/what-flavor-of-regex-does-visual-studio-code-use")
+    print(vector)
     # Vector = ext("http://msmcomun662.000webhostapp.com/login3.php")
     # print(len(Vector))

@@ -4,9 +4,14 @@ import requests
 import concurrent.futures
 import os
 from feature_extraction import Extractor
+<<<<<<< HEAD
+  
+Thread = os.cpu_count() * 10
+=======
 import gc  
 
 THREAD = os.cpu_count() * 10
+>>>>>>> c68a557636e9450f6325201df12faaa6a2c6b34e
 dataset = set()
 alive_dataset = []
 
@@ -24,20 +29,20 @@ def blacklist():
     for i in phistank:
         dataset.add( (i.strip(),1) )
 
-    git_blacklist = requests.get("https://raw.githubusercontent.com/mitchellkrogza/Phishing.Database/master/phishing-links/output/domains/ACTIVE/list")
-    file1 = open("dataset/phishing.txt","wb")
-    file1.write(git_blacklist.content)
-    with open('dataset/phishing.txt', 'r+',encoding='utf-8') as f:
-        lines = f.readlines()
-    for i in lines[3:]:
-        dataset.add( (i.strip(),1) )
+    # git_blacklist = requests.get("https://raw.githubusercontent.com/mitchellkrogza/Phishing.Database/master/phishing-links/output/domains/ACTIVE/list")
+    # file1 = open("dataset/phishing.txt","wb")
+    #file1.write(git_blacklist.content)
+    #with open('dataset/phishing.txt', 'r+',encoding='utf-8') as f:
+    #    lines = f.readlines()
+    #for i in lines[3:]:
+    #    dataset.add( (i.strip(),1) )
 
-    phishstat_res = requests.get('https://phishstats.info/phish_score.csv', allow_redirects=True)
-    open('dataset/phishstats.txt', 'wb').write(phishstat_res.content)
-    with open('dataset/phishstats.txt', 'r+',encoding='utf-8') as f:
-        lines = f.readlines()
-        for i in lines[9:]:
-            dataset.add( (i.replace('"','').split(',')[2].strip(),1) )
+    # phishstat_res = requests.get('https://phishstats.info/phish_score.csv', allow_redirects=True)
+    # open('dataset/phishstats.txt', 'wb').write(phishstat_res.content)
+    #with open('dataset/phishstats.txt', 'r+',encoding='utf-8') as f:
+    #    lines = f.readlines()
+    #    for i in lines[9:]:
+    #        dataset.add( (i.replace('"','').split(',')[2].strip(),1) )
 
     cld_old = pd.read_csv("dataset/chongluadaov2.csv")
     for i in range(len(cld_old)):
@@ -57,6 +62,15 @@ blacklist()
 whitelist()
 
 def check_alive(data):
+<<<<<<< HEAD
+    code = requests.get(data[0], timeout=5)
+    features = extractor(data[0])
+    print(features)
+    if len(features) > 0 and code.status_code not in range(400,600):
+        alive_dataset.append(( data[0],features, data[1]  ))
+
+#output = pd.DataFrame()
+=======
     try:
         code = requests.get(data[0], timeout=5)
         features = extractor(data[0])
@@ -72,6 +86,7 @@ def check_alive(data):
         return None
 
 # output = pd.DataFrame()
+>>>>>>> c68a557636e9450f6325201df12faaa6a2c6b34e
 def append_data(data):
     cld_dataset = []
       
@@ -85,6 +100,8 @@ def append_data(data):
     print(new_row)
 
     cld_dataset.append(new_row)
+    #output = output.append(new_row, ignore_index=True)
+    #output.to_csv("chongluadao_dataset_process.csv", index = False)
 
     return cld_dataset
 
@@ -92,11 +109,20 @@ def main():
     import time
 
     sites = [url for url in list(dataset)]
+<<<<<<< HEAD
+    with concurrent.futures.ThreadPoolExecutor(max_workers=Thread) as executor:
+        executor.map(check_alive, sites)
+
+    print("DONE")
+    time.sleep(10)
+    print(f"total {len(alive_dataset)}")
+=======
    
     with concurrent.futures.ThreadPoolExecutor(max_workers=THREAD) as executor:
         executor.map(check_alive, sites)
 
     total =len(alive_dataset)
+>>>>>>> c68a557636e9450f6325201df12faaa6a2c6b34e
     data = [url for url in alive_dataset]
     cld_dataset = []
     with concurrent.futures.ProcessPoolExecutor(max_workers=os.cpu_count()-1) as executor:
@@ -111,4 +137,3 @@ if __name__ == '__main__':
     if isinstance(cld_dataset, list):
         big_data = pd.DataFrame(cld_dataset)
     big_data.to_csv("chongluadao_dataset.csv", index = False)
-
