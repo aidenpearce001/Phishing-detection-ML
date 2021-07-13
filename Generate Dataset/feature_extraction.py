@@ -49,7 +49,8 @@ class Extractor():
         self.feature_names = ['Speical_Char','Have_IP', 'Have_At','URL_length' ,'URL_Depth','redirection', 'time_get_redirect',
                         'port_in_url','use_http', 'http_in_domain','TinyURL', 'Prefix/Suffix', 'DNS_Record','trusted_ca',
                         'domain_lifespan', 'domain_timeleft', 'same_asn','iFrame', 'Mouse_Over','Right_Click', 'Web_Forwards','eval','unescape',
-                        'escape', 'ActiveXObject','fromCharCode','atob','Punny_Code', 'country_name']
+                        'escape', 'ActiveXObject','fromCharCode','atob','Punny_Code',
+                        'TLDs','Title','country_name']
     
     # 1.Speical Chartacter in URL
     @staticmethod
@@ -411,6 +412,20 @@ class Extractor():
             punny = 0
 
         return punny
+
+
+    @staticmethod
+    def extract_title(response):
+        try:
+            if response == "":
+                return "No Title"
+            else:
+                soup = BeautifulSoup(response.content, 'html.parser')
+                title = soup.find('title')
+
+                return response.count(title.string)
+        except:
+            return "No Title"
     #Function to extract features
     def __call__(self, url, max_retries=2):
         if isinstance(url, str):
@@ -450,10 +465,10 @@ class Extractor():
                         # features.append(1 if dns == 1 else self.top_n_google(domain_name))
                         
                         # # HTML & Javascript based features
-                        # try:
-                        #     response = requests.get(url)
-                        # except:
-                        #     response = ""
+                        try:
+                            response = requests.get(url)
+                        except:
+                            response = ""
 
                         features.append(self.iframe(response))
                         features.append(self.mouseOver(response))
@@ -468,6 +483,9 @@ class Extractor():
 
                         features.append(self.punnycode(url))
 
+                        # Data for Dashboard plotting
+                        features.append(urlparse(url).netloc.split(".")[-1])
+                        features.append(self.extract_title(response))
                         features.append("None" if dns == 1 else domain_name.country)
 
                         return features
