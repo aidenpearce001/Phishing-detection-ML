@@ -24,35 +24,13 @@ polygonSeries.exclude = ["AQ"];
 // Pie Chart
 var piechart = am4core.create("piechart", am4charts.PieChart);
 
-piechart.data = [ {
-    "country": "com",
-    "litres": 501.9
-}, {
-    "country": "net",
-    "litres": 301.9
-}, {
-    "country": "org",
-    "litres": 201.1
-}, {
-    "country": "net",
-    "litres": 165.8
-}, {
-    "country": "tk",
-    "litres": 139.9
-}, {
-    "country": "me",
-    "litres": 128.3
-}, {
-    "country": "xyz",
-    "litres": 99
-}
-];
+piechart.data = piechart_data;
 
 // Add and configure Series
 
 var pieSeries = piechart.series.push(new am4charts.PieSeries());
-pieSeries.dataFields.value = "litres";
-pieSeries.dataFields.category = "country";
+pieSeries.dataFields.value = "count";
+pieSeries.dataFields.category = "tlds";
 pieSeries.slices.template.stroke = am4core.color("#fff");
 pieSeries.slices.template.strokeOpacity = 1;
 
@@ -67,26 +45,27 @@ piechart.hiddenState.properties.radius = am4core.percent(0);
 var barchart = am4core.create("barchart", am4charts.XYChart);
 
 // Add data
-barchart.data = [{
-  "category": "facebook.com",
-  "value": 450
-}, {
-  "category": "gmail.com",
-  "value": 1200
-}, {
-  "category": "paypal.com",
-  "value": 1850
-}];
+barchart.data = barchat_data;
+// [{
+//   "category": "facebook.com",
+//   "value": 450
+// }, {
+//   "category": "gmail.com",
+//   "value": 1200
+// }, {
+//   "category": "paypal.com",
+//   "value": 1850
+// }];
 
 var categoryAxis = barchart.yAxes.push(new am4charts.CategoryAxis());
-categoryAxis.dataFields.category = "category";
+categoryAxis.dataFields.category = "Title";
 categoryAxis.renderer.grid.template.location = 0;
 
 var valueAxis = barchart.xAxes.push(new am4charts.ValueAxis());
 
 var series = barchart.series.push(new am4charts.ColumnSeries());
-series.dataFields.valueX = "value";
-series.dataFields.categoryY = "category";
+series.dataFields.valueX = "Title_count";
+series.dataFields.categoryY = "Title";
 
 var valueLabel = series.bullets.push(new am4charts.LabelBullet());
 valueLabel.label.text = "{value}";

@@ -84,17 +84,17 @@
 				<div class="box-body">
 					<div id="world-map" style="height: 400px">
 						<script type="text/javascript">
-						  var map_data = [{
-						      "id": "US",
-						      "name": "united states",
-						      "value": 100,
-						      "fill": am4core.color("#F05C5C")
-						    }, {
-						      "id": "None",
-						      "name": "France",
-						      "value": 50
-						    }]
-						</script>
+							var map_data = [
+							{% for i in country_data %}
+						    {"id": "{{ i['id'] }}",
+							  "name": "{{ i['name'] }}",
+							  "value": "{{ i['value'] }}",
+							  "fill": am4core.color("{{ i['fill'] }}")
+						    },
+							{% endfor %}
+							]	
+							console.log(map_data);
+						</script>{
 					</div>
 				</div>
 				<!-- /.box-body -->
@@ -109,6 +109,18 @@
 				<!-- /.box-header -->
 				<div class="box-body">
 					<div id="piechart" style="height: 350px"></div>
+						<script type="text/javascript">
+							var piechart_data = [
+							{% for tld in top_tlds %}
+						    {
+							"tlds": "{{ tld['_id'] }}",
+							"count": "{{ tld['count'] }}"
+						    },
+							{% endfor %}
+							]	
+							console.log("piechart data");
+							console.log(piechart_data)
+						</script>
 				</div>
 				<!-- /.box-body -->
 			  </div>
@@ -135,6 +147,16 @@
 				<!-- /.box-header -->
 				<div class="box-body">
 					<div id="barchart" style="height: 350px"></div>
+					<script type="text/javascript">
+						var barchat_data = [
+						{% for title in top_title %}
+						{
+						"Title": "{{ title['_id'] }}",
+						"Title_count": "{{ title['count'] }}"
+						},
+						{% endfor %}
+						]	
+					</script>
 				</div>
 				<!-- /.box-body -->
 			  </div>

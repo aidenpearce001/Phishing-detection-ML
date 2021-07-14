@@ -3,11 +3,13 @@
 This is the Flask REST API that processes and outputs the prediction on the URL.
 """
 import numpy as np
+import pandas as pd
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.preprocessing.text import Tokenizer
 import tensorflow as tf
-# import label_data
+import seaborn as sns
+import matplotlib
 from flask import Flask, redirect, url_for, render_template, request,jsonify
 import json
 import pickle
@@ -18,12 +20,39 @@ from dotenv import load_dotenv
 import pymongo
 import os
 
+#for color 
+from matplotlib.colors import Normalize
+from matplotlib import colors
+import matplotlib.cm as cm
+
 load_dotenv()
 
 MONGODB = os.getenv('MONGODB')
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
-hex_color = ["85b0bd", "92bdca", "a0cad8", "add8e6" ,"bbe6f4", "c8f4ff", "d6ffff"]
+# hex_color = ["#1414ff","#2727ff","#3b3bff","#4e4eff","#108bff","#0f63b2","#1662ab","#1e62a3","#25629c","#1e62a3","#2494ff","#389eff","#4ba7ff","#5fb1ff",
+#     "#12ffff", "#25ffff", "#39ffff", "#4dffff" ,"#60ffff", "#74ffff", "#88ffff","#9bffff","#afffff","#c2ffff","#d6ffff","#eaffff"]
+
+def hex_color():
+
+    color_list = []
+
+    colors_data = np.random.randn(10, 10)
+    cmap = cm.get_cmap('Blues')
+
+    norm = Normalize(vmin=colors_data.min(), vmax=colors_data.max())
+    rgba_values = cmap(norm(colors_data))
+
+    for layer1 in rgba_values:
+        for layer2 in layer1:
+            color_list.append(colors.to_hex([ layer2[0], layer2[1], layer2[2] ]))
+
+    return color_list
+
+country_mapping = {}  
+country2digit = pd.read_csv("country_mapping.csv")
+for idx,_country in enumerate(country2digit['Code']):
+    country_mapping[_country]= country2digit['Name'][idx]
 
 with open('tokenizer.pickle', 'rb') as handle:
     tokenizer = pickle.load(handle)
@@ -96,6 +125,8 @@ def survey():
 
 @app.route('/dashboard', methods=["GET","POST"])
 def dashboard():
+    country_data = []
+
     contry_pipeline = [
     {
         '$group': {
@@ -122,7 +153,10 @@ def dashboard():
         '$sort': {
             'count': -1
         }
-    }]
+    },{
+        '$limit': 10
+    }
+    ]
 
     Title_pipeline = [
     {
@@ -136,11 +170,41 @@ def dashboard():
         '$sort': {
             'count': -1
         }
-    }]
+    },{
+        '$limit': 10
+    }
+    ]
 
     total = db['DATA'].count_documents({})
+    contry_query = list(db['DATA'].aggregate(contry_pipeline))
+    top_country = list(contry_query)
+    colors = hex_color()
 
-    return render_template('dashboard.html')
+    start = 0
+    if top_country[0]['_id'] == None:
+        start = 1 
+    top_country = top_country[start:start+len(colors)]
+
+    for idx,_data in enumerate(colors):
+        try:
+            country_dict = {}
+            country_dict['id'] = top_country[idx]['_id']
+            country_dict['name'] = country_mapping[top_country[idx]['_id']]
+            country_dict['value'] = top_country[idx]['count']
+            country_dict['fill'] = _data
+        except:
+            continue
+
+        country_data.append(country_dict)
+
+    top_tlds = list(db['DATA'].aggregate(TLDs_pipeline))
+    top_title = list(db['DATA'].aggregate(Title_pipeline))
+
+    print(country_data)
+    print(top_tlds)
+    print(top_title)
+
+    return render_template('dashboard.html',country_data=country_data,top_tlds=top_tlds,top_title=top_title)
 
 @app.route("/feedback", methods=["GET","POST"])
 def feedback():
