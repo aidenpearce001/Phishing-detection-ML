@@ -14,8 +14,14 @@ import pickle
 import joblib
 import time 
 from model import ConvModel
-# Initialize our Flask application and the Keras model.
+from dotenv import load_dotenv
+import pymongo
 import os
+
+load_dotenv()
+
+MONGODB = os.getenv('MONGODB')
+
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 hex_color = ["85b0bd", "92bdca", "a0cad8", "add8e6" ,"bbe6f4", "c8f4ff", "d6ffff"]
 
@@ -24,7 +30,7 @@ with open('tokenizer.pickle', 'rb') as handle:
 num_chars = len(tokenizer.word_index)+1
 embedding_vector_length = 128
 maxlen = 128
-max_words = 20000\
+max_words = 20000
 
 with tf.device('/cpu:0'):
     model_pre = "./checkpointModel/bestModelCNN"
@@ -34,6 +40,9 @@ with tf.device('/cpu:0'):
 
 app = Flask(__name__)
 app.config["CACHE_TYPE"] = "null"
+client = pymongo.MongoClient(MONGODB)
+db = client['chongluadao']
+
 def preprocess_url(url, tokenizer):
     url = url.strip()
     sequences = tokenizer.texts_to_sequences([url])
@@ -87,6 +96,50 @@ def survey():
 
 @app.route('/dashboard', methods=["GET","POST"])
 def dashboard():
+    contry_pipeline = [
+    {
+        '$group': {
+            '_id': '$country_name', 
+            'count': {
+                '$sum': 1
+            }
+        }
+    }, {
+        '$sort': {
+            'count': -1
+        }
+    }]
+
+    TLDs_pipeline = [
+    {
+        '$group': {
+            '_id': '$TLDs', 
+            'count': {
+                '$sum': 1
+            }
+        }
+    }, {
+        '$sort': {
+            'count': -1
+        }
+    }]
+
+    Title_pipeline = [
+    {
+        '$group': {
+            '_id': '$Title', 
+            'count': {
+                '$sum': 1
+            }
+        }
+    }, {
+        '$sort': {
+            'count': -1
+        }
+    }]
+
+    total = db['DATA'].count_documents({})
+
     return render_template('dashboard.html')
 
 @app.route("/feedback", methods=["GET","POST"])
