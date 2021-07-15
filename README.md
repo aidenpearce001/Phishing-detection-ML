@@ -15,7 +15,7 @@
   <h3 align="center">Chongluadao</h3>
 
   <p align="center">
-    [name] is a part of Project ChongLuaDao by using Model **D**eep **L**earning to detect the Phishing Website
+    [name] is a part of Project ChongLuaDao by using Model Deep Learning to detect the Phishing Website
     <br />
     <br />
     <br />
@@ -69,12 +69,12 @@
 - https://repository.asu.edu/attachments/189603/content/Namasivayam_asu_0010N_17146.pdf
 
 
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
+[contributors-shield]:https://img.shields.io/badge/CONTRIBUTORS-5-green?style=for-the-badge
 [contributors-url]: https://github.com/aidenpearce001/Phishing-detection-ML/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
+[forks-shield]: https://img.shields.io/badge/FORKS-2-green?style=for-the-badge
+[forks-url]: https://github.com/aidenpearce001/Phishing-detection-ML/network/members
+[stars-shield]: https://img.shields.io/badge/STARS-2-green?style=for-the-badge
+[stars-url]: https://github.com/aidenpearce001/Phishing-detection-ML/stargazers
 [organization-shield]: https://img.shields.io/badge/organization-YoungIT-lightgrey?style=for-the-badge&logo=appveyor
 [organization-url]: https://www.facebook.com/youngit.org
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
