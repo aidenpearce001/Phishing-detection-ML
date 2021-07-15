@@ -55,16 +55,14 @@
 ## About The Project
 [![cld][cld-dashhboard]](https://example.com)
 
-###About 
-... is a part of Project ChongLuaDao by using Model **D**eep **L**earning to detect the Phishing Website
-### Requirements
-
+### Built With
 -   Python **3.7.x** | **3.8.x**
 
-### Server tested on
-
--   Windows 10
--   Ubuntu 18.04
+### Prerequisites
+* python
+  ```sh
+  pip install -r requirement.txt
+  ```
 
 ### Source for collecting data
 #### Blacklist
