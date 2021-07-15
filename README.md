@@ -7,12 +7,15 @@
 [![Version](https://img.shields.io/badge/organization-YoungIT-lightgrey)](https://www.facebook.com/youngit.org)
 [![Version](https://img.shields.io/badge/Project-chongluadao-green)](https://www.facebook.com/chongluadao.vn)
 
+[![Version](https://img.shields.io/badge/Version-v1.0-blue)]()
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
+
 [![LinkedIn][linkedin-shield]][linkedin-url]
+[![Organization][organization-shield]][organization-url]
+[![Version](https://img.shields.io/badge/Project-chongluadao-green)](https://www.facebook.com/chongluadao.vn)
 
 <img src="Images/dashboard.PNG" atl=""/>
 
@@ -55,15 +58,15 @@
 
 
 [contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
+[contributors-url]: https://github.com/aidenpearce001/Phishing-detection-ML/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
 [forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
 [stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
 [stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
+[organization-shield]: https://img.shields.io/badge/organization-YoungIT-lightgrey
+[organization-url]: https://www.facebook.com/youngit.org
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
 [license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-shield]: https://img.shields.io/badge/--black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/othneildrew
 [product-screenshot]: images/screenshot.png
