@@ -2,7 +2,6 @@
 
 ... is a part of Project ChongLuaDao by using Model **D**eep **L**earning to detect the Phishing Website
 
-[![Version](https://img.shields.io/badge/Version-v1.0-blue)]()
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
