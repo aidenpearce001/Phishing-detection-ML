@@ -67,11 +67,19 @@
 ### Installation
 
 ### Interface
+* HomePage : /
+[![cld][cld-home]]
+<br>
+[![cld][cld-check]]
+
+* Dashboard : /dashboard
+[![cld][cld-dashhboard]]
 
 ### Model Deep Learning
 
 
 ### License
+Distributed under the MIT License. See `LICENSE` for more information.
 
 ### Research (On going)
 - https://www.academia.edu/10918579/A_WEB_CONTENT_ANALYTICS_ARCHITECTURE_FOR_MALICIOUS_JAVASCRIPT_DETECTION
@@ -133,4 +141,7 @@ Thanks goes to these wonderful people
 [license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
 [project-shield]: https://img.shields.io/badge/Project-chongluadao-green?style=for-the-badge&logo=appveyor
 [project-url]: https://www.facebook.com/chongluadao.vn
+[cld-home]: Images/home.PNG
+[cld-check]: Images/check.PNG
 [cld-dashhboard]: Images/dashboard.PNG
+
