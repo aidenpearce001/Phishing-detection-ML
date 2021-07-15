@@ -43,12 +43,12 @@
       </ul>
     </li>
     <li><a href="#interface">Interface</a></li>
-    <li><a href="#Model Deep Learning">Model Deep Learning</a></li>
+    <li><a href="#model-deep-learningg">Model Deep Learning</a></li>
     <li><a href="#license">License</a></li>
-    <li><a href="#On going">On Going Research</a></li>
-    <li><a href="#Dataset">Dataset</a></li>
-    <li><a href="#References">References</a></li>
-    <li><a href="#Contributor">Contributor</a></li>
+    <li><a href="#research-on-going">On Going Research</a></li>
+    <li><a href="##source-for-collecting-data">Dataset</a></li>
+    <li><a href="#references">References</a></li>
+    <li><a href="#contributors-">Contributor</a></li>
   </ol>
 </details>
 
@@ -81,13 +81,13 @@
 - https://www.mdpi.com/2073-8994/12/10/1681/pdf
 
 ### Source for collecting data
-Blacklist
+#### Blacklist
 - https://phishingreel.io/api/v1/panels/today
 - https://api.chongluadao.vn/v1/blacklist
 - http://data.phishtank.com/data/online-valid.csv (update every hour)
 - https://raw.githubusercontent.com/mitchellkrogza/Phishing.Database/master/phishing-links/output/domains/ACTIVE/list (update every day)
 
-Whitelist
+#### Whitelist
 - https://api.chongluadao.vn/v1/whitelist
 - https://www.alexa.com/topsites/countries/VN
 - https://webrank.vn/top-website-vietnam
