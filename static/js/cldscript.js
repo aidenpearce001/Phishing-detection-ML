@@ -2,7 +2,7 @@ $(document).ready(function(){
     $("#submit").on('click', function(){
         $.ajax({
             type: "POST",
-            url: '/survey',
+            url: '/',
             data: $("#form").serialize(), 
             cache: 'false',
             processData: false,
@@ -18,17 +18,18 @@ $(document).ready(function(){
             }
         })
         .done(function(data) {
-            if (data.notvalid) {
+            if (data.notsafe) {
                 swal({
-                    title: data.notsend,
-                    text: "Input the Phone Number and Get the OTP code",
+                    title: data.notsafe,
+                    text: "Score :"+data.score,
                     icon: "error",
                     });
                 console.log(data);
             }
-            if (data.send){
+            if (data.safe){
                 swal({
-                    title: data.send,
+                    title: data.safe,
+                    text: "Score :"+data.score,
                     icon: "success",
                     });
             }
