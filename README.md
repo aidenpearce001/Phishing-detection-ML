@@ -71,9 +71,9 @@
 
 [contributors-shield]:https://img.shields.io/badge/CONTRIBUTORS-5-green?style=for-the-badge
 [contributors-url]: https://github.com/aidenpearce001/Phishing-detection-ML/graphs/contributors
-[forks-shield]: https://img.shields.io/badge/FORKS-2-green?style=for-the-badge
+[forks-shield]: https://img.shields.io/badge/FORKS-2-blue?style=for-the-badge
 [forks-url]: https://github.com/aidenpearce001/Phishing-detection-ML/network/members
-[stars-shield]: https://img.shields.io/badge/STARS-2-green?style=for-the-badge
+[stars-shield]: https://img.shields.io/badge/STARS-2-blue?style=for-the-badge
 [stars-url]: https://github.com/aidenpearce001/Phishing-detection-ML/stargazers
 [organization-shield]: https://img.shields.io/badge/organization-YoungIT-lightgrey?style=for-the-badge&logo=appveyor
 [organization-url]: https://www.facebook.com/youngit.org
