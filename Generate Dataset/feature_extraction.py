@@ -464,7 +464,7 @@ class Extractor():
                         features.append(1 if dns == 1 else self.same_asn(domain_name))
                         # features.append(1 if dns == 1 else self.top_n_google(domain_name))
                         
-                        # # HTML & Javascript based features
+                        #HTML & Javascript based features
                         try:
                             response = requests.get(url)
                         except:

@@ -74,39 +74,10 @@ valueLabel.label.horizontalCenter = "left";
 
 
 // pie chart Features
-var piechartf = am4core.create("piechartf", am4charts.PieChart);
+// var piechartf = am4core.create("piechartf", am4charts.PieChart);
 
 // Set data
 var selected;
-var types = [{
-  type: "Fossil Energy",
-  percent: 70,
-  color: piechartf.colors.getIndex(0),
-  subs: [{
-    type: "Oil",
-    percent: 15
-  }, {
-    type: "Coal",
-    percent: 35
-  }, {
-    type: "Nuclear",
-    percent: 20
-  }]
-}, {
-  type: "Green Energy",
-  percent: 30,
-  color: piechartf.colors.getIndex(1),
-  subs: [{
-    type: "Hydro",
-    percent: 15
-  }, {
-    type: "Wind",
-    percent: 10
-  }, {
-    type: "Other",
-    percent: 5
-  }]
-}];
 
 // Add data
 piechartf.data = generateChartData();

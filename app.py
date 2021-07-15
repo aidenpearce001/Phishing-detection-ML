@@ -199,12 +199,25 @@ def dashboard():
 
     top_tlds = list(db['DATA'].aggregate(TLDs_pipeline))
     top_title = list(db['DATA'].aggregate(Title_pipeline))
+    Importances = list(db["Models"].find({}, {"_id": 0}))
 
+    url_based = ['Speical_Char','URL_Depth','use_http', 'redirection','URL_length','time_get_redirect','Prefix/Suffix','TinyURL','port_in_url','Have_At','http_in_domain','Have_IP','Punny_Code']
+    domain_based = ['same_asn','domain_lifespan','domain_timeleft','DNS_Record','trusted_ca']
+    content_based = ['iFrame','Web_Forwards','Mouse_Over','Right_Click','fromCharCode','ActiveXObject','escape','eval','atob','unescape']
+    percent_list = []
+
+    for _features in (url_based,domain_based,content_based):
+        percent = 0
+        for i in _features:
+            percent += Importances[0][i]
+        percent_list.append(percent*100)
+        
+    print(percent*100)
     print(country_data)
     print(top_tlds)
     print(top_title)
 
-    return render_template('dashboard.html',country_data=country_data,top_tlds=top_tlds,top_title=top_title)
+    return render_template('dashboard.html',country_data=country_data,top_tlds=top_tlds,top_title=top_title,Importances=Importances[0],url_based=url_based,domain_based=domain_based,content_based=content_based,percent_list=percent_list)
 
 @app.route("/feedback", methods=["GET","POST"])
 def feedback():
