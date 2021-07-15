@@ -81,13 +81,13 @@
 - https://www.mdpi.com/2073-8994/12/10/1681/pdf
 
 ### Source for collecting data
-#### Blacklist
+Blacklist
 - https://phishingreel.io/api/v1/panels/today
 - https://api.chongluadao.vn/v1/blacklist
 - http://data.phishtank.com/data/online-valid.csv (update every hour)
 - https://raw.githubusercontent.com/mitchellkrogza/Phishing.Database/master/phishing-links/output/domains/ACTIVE/list (update every day)
 
-#### Whitelist
+Whitelist
 - https://api.chongluadao.vn/v1/whitelist
 - https://www.alexa.com/topsites/countries/VN
 - https://webrank.vn/top-website-vietnam
