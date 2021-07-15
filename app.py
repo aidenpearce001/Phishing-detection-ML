@@ -30,8 +30,6 @@ load_dotenv()
 MONGODB = os.getenv('MONGODB')
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
-# hex_color = ["#1414ff","#2727ff","#3b3bff","#4e4eff","#108bff","#0f63b2","#1662ab","#1e62a3","#25629c","#1e62a3","#2494ff","#389eff","#4ba7ff","#5fb1ff",
-#     "#12ffff", "#25ffff", "#39ffff", "#4dffff" ,"#60ffff", "#74ffff", "#88ffff","#9bffff","#afffff","#c2ffff","#d6ffff","#eaffff"]
 
 def hex_color():
 
