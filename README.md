@@ -9,7 +9,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/aidenpearce001/Phishing-detection-ML">
-    <img src="Images/logo.jpg" alt="Logo" width="100" height="100">
+    <img src="Images/logo.jpg" alt="Logo" width="200" height="200">
   </a>
 
   <h3 align="center">Chongluadao</h3>
