@@ -17,8 +17,6 @@
   <p align="center">
     [name] is a part of Project ChongLuaDao by using Model Deep Learning to detect the Phishing Website
     <br />
-    <br />
-    <br />
     <a href="http://103.90.227.67:45000/">View Demo</a>
     ·
     <a href="https://github.com/aidenpearce001/Phishing-detection-ML/issues">Report Bug</a>
