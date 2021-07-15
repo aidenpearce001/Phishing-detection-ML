@@ -1,14 +1,12 @@
 # Phishing-detection-ML
-
-... is a part of Project ChongLuaDao by using Model **D**eep **L**earning to detect the Phishing Website
-
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![MIT License][license-shield]][license-url]
 [![Organization][organization-shield]][organization-url]
-[![Organization][project-shield]][organization-url]
-<!-- [![Project][project-shield]][project-url] -->
+[![Organization][project-shield]][project-url]
+
+... is a part of Project ChongLuaDao by using Model **D**eep **L**earning to detect the Phishing Website
 
 <img src="Images/dashboard.PNG" atl=""/>
 
