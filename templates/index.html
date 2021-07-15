@@ -89,7 +89,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Hòm thư góp ý</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Feedback</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -99,10 +99,10 @@
           <div class="form-group col-md-12">
             <label class="select" for="slct">
               <select id="slct" required="required">
-                <option value="" disabled="disabled" selected="selected">Chủ đề góp ý</option>
-                <option value="design">Giao diện</option>
-                <option value="features_feedback">Thêm đặc trưng</option>
-                <option value="other">Khác..</option>
+                <option value="" disabled="disabled" selected="selected">Topic</option>
+                <option value="design">Interface</option>
+                <option value="features_feedback">Features for Model</option>
+                <option value="other">Others..</option>
               </select>
               <svg>
                 <use xlink:href="#select-arrow-down"></use>
@@ -116,14 +116,13 @@
             </svg>
           </div>
           <div class="form-group col-md-12">
-            <!-- <input type="text" class="form-control" id="searchTxt" name="url" aria-describedby="urlHelp" placeholder="Nội dung góp ý"> -->
             <textarea placeholder="This is an awesome comment box" rows="20" name="comment[text]" id="comment_text" cols="40" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></textarea>
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-        <button id="feedback" type="button" class="btn btn-primary">Góp ý</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button id="feedback" type="button" class="btn btn-primary">Send</button>
       </div>
     </div>
   </div>
@@ -137,13 +136,13 @@
           <div class="m-bot-6">
             <h1 class="f-35 font-bold uppercase">Phishing detection</h1>
             <div class="hr-line blue-color m-bot-2"></div>
-            <p>Điền Link Website</p>
+            <p>Fill in Link Website</p>
             <form id="form" method="post">
               <row>
                 <div class="form-group col-md-11">
                   <input type="text" class="form-control" id="searchTxt" name="url" aria-describedby="urlHelp" placeholder="https://www.google.com/">
                 </div>
-                <button id="submit" type="button" class="col-md-1 btn btn-primary"><i class="fa fa-check"></i> Check</button>
+                <button id="submit" type="button" class="col-md-1 btn btn-primary"><i class="fa fa-check"></i>Check</button>
               </row>
               
             </form>
@@ -160,25 +159,25 @@
     <div class="container">
       <div class="row">
         <div class="col-sm-8 col-sm-offset-2 text-center m-bot-4">
-          <h3 class="f-30 font-bold">Các thành phần của một đường link</h3>
+          <h3 class="f-30 font-bold">The Anatomy of a Full Path URL</h3>
           <div class="container">
             
           </div>
           <p class="f-18"><a class="js-mytooltip "
             data-mytooltip-custom-class="align-center"
-            data-mytooltip-content="Giao thức" style="color: black;background-color: #96be25; ">http </a><a class="js-mytooltip"
+            data-mytooltip-content="Protocol" style="color: black;background-color: #96be25; ">http </a><a class="js-mytooltip"
             data-mytooltip-custom-class="align-center"
             data-mytooltip-content="" style="color: black;">:// </a><a class="js-mytooltip"
             data-mytooltip-custom-class="align-center"
-            data-mytooltip-content="Tên miền" style="color: black;background-color: #749F9F;">www.example.com </a><a class="js-mytooltip"
+            data-mytooltip-content="Domain name" style="color: black;background-color: #749F9F;">example.com </a><a class="js-mytooltip"
             data-mytooltip-custom-class="align-center"
             data-mytooltip-content="" style="color:black;">:</a><a class="js-mytooltip"
             data-mytooltip-custom-class="align-center"
-            data-mytooltip-content="Cổng" style="color:black;background-color: yellow;">80 </a><a class="js-mytooltip"
+            data-mytooltip-content="Port" style="color:black;background-color: yellow;">80 </a><a class="js-mytooltip"
             data-mytooltip-custom-class="align-center"
-            data-mytooltip-content="Đường dẫn" style="color: black;background-color: #F49907">/path/file.html </a><a class="js-mytooltip"
+            data-mytooltip-content="Directory Path" style="color: black;background-color: #F49907">/path/file.html </a><a class="js-mytooltip"
             data-mytooltip-custom-class="align-center"
-            data-mytooltip-content="Tham số" style="color: black;background-color: #D3DCF5; ">?key1=value1&key2=value2 </a><a class="js-mytooltip"
+            data-mytooltip-content="Parameter" style="color: black;background-color: #D3DCF5; ">?key1=value1&key2=value2 </a><a class="js-mytooltip"
             data-mytooltip-custom-class="align-center"
             data-mytooltip-content="Anchor" style="color: black;background-color: #CF97C3; ">#SomeWhere </a>
           </p>
@@ -201,7 +200,7 @@
     <div class="container">
       <div style="width:100%">
         <div class="sec-title">
-          <h2>Các đặc trưng Model sử dụng</h2>
+          <h2>Model's Features</h2>
         </div>
 
     {% for sublist in data %} 

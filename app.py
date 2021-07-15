@@ -30,8 +30,6 @@ load_dotenv()
 MONGODB = os.getenv('MONGODB')
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
-# hex_color = ["#1414ff","#2727ff","#3b3bff","#4e4eff","#108bff","#0f63b2","#1662ab","#1e62a3","#25629c","#1e62a3","#2494ff","#389eff","#4ba7ff","#5fb1ff",
-#     "#12ffff", "#25ffff", "#39ffff", "#4dffff" ,"#60ffff", "#74ffff", "#88ffff","#9bffff","#afffff","#c2ffff","#d6ffff","#eaffff"]
 
 def hex_color():
 
@@ -83,22 +81,34 @@ def preprocess_url(url, tokenizer):
 @app.route('/', methods=["GET","POST"])
 def survey():
 
-    features =  {
-        'Chứa địa chỉ IP trong URL' :'Các trang web lừa đảo thường không đăng ký tên miền thay vào đó là sử dụng nguyên IP vì vậy hãy cẩn thận', 
-        'Chứa ký tự @ trong URL' : 'Dấu @ có tác dụng bỏ quả tất cả ký tự xuất hiện trước nó (VD: http://totally-legit-site.com@192.168.50.20/account sẽ đưa nạn nhân đến trang 192.168.50.20/account là trang web lửa đảo', 
-        'Địa chỉ trang web chứa nhiều path' : 'Tìm kiếm điểm chung của trang web lừa đảo giựa vào số đường dẫn có trong url',
-        'Có ký tự // trong tên miền' : 'Ký tự // nằm trong đường dẫn nhằm chuyển hướng người dùng đến trang web lừa đảo', 
-        'HTTPS hoặc HTTP trong tên miền' : 'sử dụng https trong domain khiến người dùng nhìn nhầm và chủ quan (VD: http:https://vietcombank.com.vn)', 
-        'Sử dụng địa chỉ rút gọn' : 'Sử dụng địa chỉ rút gọn như bit.ly để giấu đi địa chỉ thật sự của trang web lừa đảo', 
-        'Có chứa ký tự - trong domain': 'sử dụng ký tự - trong tên miền khiến tên trang web nhìn "có vẻ" không lừa đảo', 
-        'Kiểm tra xem DNS có nhận được website không' : 'Kiểm tra xem DNS có trỏ đến được trang web không, nếu không thì trang web đó được đăng ký với dịch vụ không rõ ràng', 
-        'Tuổi thọ của tên miền có dưới 6 tháng' : 'Nhưng trang web lừa đảo thường bị báo cáo liên tục đẫn đến việc gỡ xuống và nhưng tên lừa đảo thường không hay bỏ chi phí duy trì server nên tuổi thọ thường rất ngắn', 
-        'Tên miền đã hết hạn' : 'Tên miền đã hết hạn đăng ký', 
-        'Website có sử dụng Iframe' : 'Sử dụng Iframe chạy chầm trong các trang web để ăn cắp thông tin cá nhân', 
-        'Website có sử dụng Mouse_Over' : 'Sử dụng hàm mouse_over trong javscript để khi người dùng đung đưa con chuột qua 1 cái link bất kỳ trang web lừa đảo sẽ tự động bật lên',
-        'Website tắt chức năng Right_Click' : 'Trang web vô hiệu hóa chuột phải vì lo sợ ta sẽ nhìn thấy những đoạn mã độc trong trang web', 
-        'Sô lần bị forward có quá 2 lần khi vào trang web' : 'Khi vào 1 trang web số lần ta bị tự động forward quá nhiều nhằm qua mặt các công cụ quét',
-        'Địa chỉ Website có chứa punny code' : 'Sử dụng punnycode để đánh lừa url (VD: dı sẽ nhìn khá giống với di nhưng punnycode của adıdas.de là trang web lừa đảo với đủ ký tự là http://xn--addas-o4a.de/ nhưng trình duyệt sẽ encode và hiển thị giống như là adidas.de'
+    features =  {'Speical_Char':'Number of Speicial Character in URL like ~,!,@,#,$,%,^,&,*,...',
+    'Have_IP': 'Checks if IP address in URL', 
+    'Have_At': 'Checks the presence of @ in URL',
+    'URL_length': 'Finding the length of URL and categorizing' ,
+    'URL_Depth': 'Gives number of / in URL',
+    'redirection' :'Checking for redirection // in the URL', 
+    'time_get_redirect':'Number of time get redirect after click URL',
+    'port_in_url':'Suspicous port appear in the URL',
+    'use_http':'Use HTTP insted of HTTPS', 
+    'http_in_domain':'HTTP(S) in the URL (example: https://report?https://reportId=https://QYJT9PC9YPFTDC7JJ&https://reportType=https://question)',
+    'TinyURL': 'Checking for Shortening Services in URL', 
+    'Prefix/Suffix':'Checking for Prefix or Suffix Separated by (-) in the URL', 
+    'DNS_Record': 'Check if the DNS record A point to the right Website',
+    'trusted_ca': 'Checking if the Certificate provide by trusted provider like cPanel,Microsoft,Go,DigiCert,...',              
+    'domain_lifespan':'Checking if Life span of domain under 6 months', 
+    'domain_timeleft':'Checking if time left of domain under 6 months', 
+    'same_asn':'Check if others server like Domain, Dns Server,... on the same IP',
+    'iFrame':'Check if Iframe Function in Web content', 
+    'Mouse_Over':'Check if Mouse_Over Function in Web content',
+    'Right_Click':'Check if Right_Click Function in Web content', 
+    'Web_Forwards':'Checks the number of forwardings in Web content',
+    'eval':'Check if Eval Function in Web content',
+    'unescape':'Check if Unescape Function in Web content',
+    'escape':'Check if Escape Function in Web content', 
+    'ActiveXObject':'Check if ActiveXObject Function in Web content',
+    'fromCharCode':'Check if fromCharCode Function in Web content',
+    'atob':'Check if atob Function in Web content',
+    'Punny_Code':'Check if punny code in URL'
     }
     sublist = [list(features.keys())[n:n+3] for n in range(0, len(list(features.keys())), 3)]
     if request.method == "POST" and request.form['url'] != None:

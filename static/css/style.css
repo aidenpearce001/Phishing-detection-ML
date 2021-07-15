@@ -22426,7 +22426,7 @@ td .label {
   border: 1px solid transparent;
   cursor: pointer;
   line-height: inherit;
-  padding: 8px 16px;
+  /* padding: 8px 16px; */
   font-size: 1.1rem;
   -webkit-transition: all .5s ease-in-out;
   -o-transition: all .5s ease-in-out;
