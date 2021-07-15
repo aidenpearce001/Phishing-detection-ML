@@ -68,15 +68,12 @@
 
 ### Interface
 * HomePage : /
+[cld][cld-home]
 
-[![cld][cld-home]]
-
-[![cld][cld-check]]
+[cld][cld-check]
 
 * Dashboard : /dashboard
-
-
-[![cld][cld-dashhboard]]
+[cld][cld-dashhboard]
 
 ### Model Deep Learning
 
