@@ -25,7 +25,35 @@
   </p>
 </p>
 
-<img src="Images/dashboard.PNG" atl=""/>
+<!-- TABLE OF CONTENTS -->
+<details open="open">
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgements">Acknowledgements</a></li>
+  </ol>
+</details>
+
+<!-- ABOUT THE PROJECT -->
+## About The Project
+[![cld][cld-dashhboard]](https://example.com)
 
 ###About 
 ... is a part of Project ChongLuaDao by using Model **D**eep **L**earning to detect the Phishing Website
@@ -79,3 +107,4 @@
 [license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
 [project-shield]: https://img.shields.io/badge/Project-chongluadao-green?style=for-the-badge&logo=appveyor
 [project-url]: https://www.facebook.com/chongluadao.vn
+[cld-dashhboard]: Images/dashboard.PNG
