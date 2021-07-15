@@ -6,7 +6,8 @@
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![MIT License][license-shield]][license-url]
-[![Organization][project-shield]][organization-url]
+[![Organization][organization-shield]][organization-url]
+[![Project][project-shield]][project-url]
 
 <img src="Images/dashboard.PNG" atl=""/>
 
@@ -58,5 +59,5 @@
 [organization-url]: https://www.facebook.com/youngit.org
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
 [license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
-[projoect-shield]: https://img.shields.io/badge/Project-chongluadao-green?style=for-the-badge
+[projoect-shield]: https://img.shields.io/badge/Project-chongluadao-green?style=for-the-badge&logo=appveyor
 [projoect-url]: https://www.facebook.com/chongluadao.vn
