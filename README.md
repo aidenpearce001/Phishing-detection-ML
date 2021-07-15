@@ -6,10 +6,31 @@
 [![Organization][organization-shield]][organization-url]
 [![Organization][project-shield]][project-url]
 
-... is a part of Project ChongLuaDao by using Model **D**eep **L**earning to detect the Phishing Website
+<br />
+<p align="center">
+  <a href="https://github.com/aidenpearce001/Phishing-detection-ML">
+    <img src="Images/logo.png" alt="Logo" width="80" height="80">
+  </a>
+
+  <h3 align="center">Chongluadao</h3>
+
+  <p align="center">
+    [name] is a part of Project ChongLuaDao by using Model **D**eep **L**earning to detect the Phishing Website
+    <br />
+    <br />
+    <br />
+    <a href="http://103.90.227.67:45000/">View Demo</a>
+    ·
+    <a href="https://github.com/aidenpearce001/Phishing-detection-ML/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/aidenpearce001/Phishing-detection-ML/issues">Request Feature</a>
+  </p>
+</p>
 
 <img src="Images/dashboard.PNG" atl=""/>
 
+###About 
+... is a part of Project ChongLuaDao by using Model **D**eep **L**earning to detect the Phishing Website
 ### Requirements
 
 -   Python **3.7.x** | **3.8.x**
