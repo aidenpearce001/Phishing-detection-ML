@@ -6,8 +6,7 @@
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![MIT License][license-shield]][license-url]
-[![Organization][organization-shield]][organization-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
+[![Organization][https://img.shields.io/badge/Project-chongluadao-green?style=for-the-badge]][organization-url]
 
 <img src="Images/dashboard.PNG" atl=""/>
 
