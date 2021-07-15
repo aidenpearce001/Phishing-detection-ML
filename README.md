@@ -1,10 +1,23 @@
 # Phishing-detection-ML
 <hr>
-
+... is a part of Project ChongLuaDao by using Model **D**eep **L**earning to detect the Phishing Website
+<br>
 [![Version](https://img.shields.io/badge/Version-v1.0-blue)]()
 [![Version](https://img.shields.io/badge/Python-v3.7%2B-green)]()
 [![Version](https://img.shields.io/badge/organization-YoungIT-lightgrey)](https://www.facebook.com/youngit.org)
 [![Version](https://img.shields.io/badge/Project-chongluadao-green)](https://www.facebook.com/chongluadao.vn)
+<br>
+
+<img src="Images/dashboard.png" atl=""/>
+
+### Requirements
+
+-   Python **3.7.x** | **3.8.x**
+
+### Server tested on
+
+-   Windows 10
+-   Ubuntu 18.04
 
 ### Source for collecting data
 #### Blacklist
