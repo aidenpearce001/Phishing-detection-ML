@@ -3,19 +3,12 @@
 ... is a part of Project ChongLuaDao by using Model **D**eep **L**earning to detect the Phishing Website
 
 [![Version](https://img.shields.io/badge/Version-v1.0-blue)]()
-[![Version](https://img.shields.io/badge/Python-v3.7%2B-green)]()
-[![Version](https://img.shields.io/badge/organization-YoungIT-lightgrey)](https://www.facebook.com/youngit.org)
-[![Version](https://img.shields.io/badge/Project-chongluadao-green)](https://www.facebook.com/chongluadao.vn)
-
-[![Version](https://img.shields.io/badge/Version-v1.0-blue)]()
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![MIT License][license-shield]][license-url]
-
-[![LinkedIn][linkedin-shield]][linkedin-url]
 [![Organization][organization-shield]][organization-url]
-[![Version](https://img.shields.io/badge/Project-chongluadao-green)](https://www.facebook.com/chongluadao.vn)
+[![Project][project-shield]][project-url]
 
 <img src="Images/dashboard.PNG" atl=""/>
 
@@ -67,6 +60,5 @@
 [organization-url]: https://www.facebook.com/youngit.org
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
 [license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/--black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
-[product-screenshot]: images/screenshot.png
+[projoect-shield]: https://img.shields.io/badge/Project-chongluadao-green?style=for-the-badge
+[projoect-url]: https://www.facebook.com/chongluadao.vn
