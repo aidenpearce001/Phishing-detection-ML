@@ -1,5 +1,9 @@
 # Phishing-detection-ML
-
+[![Version](https://img.shields.io/badge/Version-v1.0-blue)]()
+[![Version](https://img.shields.io/badge/Python-v3.7%2B-green)]()
+[![Version](https://img.shields.io/badge/organization-YoungIT-lightgrey)](https://www.facebook.com/youngit.org)
+[![Version](https://img.shields.io/badge/Version-v1.0-blue)]()
+https://img.shields.io/badge/Version-v1.0-blue
 ### Source for collecting data
 #### Blacklist
 - https://phishingreel.io/api/v1/panels/today
