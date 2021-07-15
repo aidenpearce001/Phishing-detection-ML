@@ -7,7 +7,7 @@
 [![Stargazers][stars-shield]][stars-url]
 [![MIT License][license-shield]][license-url]
 [![Organization][organization-shield]][organization-url]
-[![LinkedIn][project-shield]][project-url]
+[![LinkedIn][linkedin-shield]][linkedin-url]
 
 <img src="Images/dashboard.PNG" atl=""/>
 
