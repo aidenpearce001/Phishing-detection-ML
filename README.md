@@ -42,12 +42,13 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#interface">Interface</a></li>
+    <li><a href="#Model Deep Learning">Model Deep Learning</a></li>
     <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgements">Acknowledgements</a></li>
+    <li><a href="#On going">On Going Research</a></li>
+    <li><a href="#Dataset">Dataset</a></li>
+    <li><a href="#References">References</a></li>
+    <li><a href="#Contributor">Contributor</a></li>
   </ol>
 </details>
 
@@ -63,6 +64,21 @@
   ```sh
   pip install -r requirement.txt
   ```
+### Installation
+
+### Interface
+
+### Model Deep Learning
+
+
+### License
+
+### Research (On going)
+- https://www.academia.edu/10918579/A_WEB_CONTENT_ANALYTICS_ARCHITECTURE_FOR_MALICIOUS_JAVASCRIPT_DETECTION
+- https://www.sciencedirect.com/science/article/pii/S1568494619305022
+- https://www.just.edu.jo/~munzer/MyPubs/MALURLs_ITA2011.pdf
+- https://www.researchgate.net/publication/228906286_Visual-Similarity-Based_Phishing_Detection
+- https://www.mdpi.com/2073-8994/12/10/1681/pdf
 
 ### Source for collecting data
 #### Blacklist
@@ -78,21 +94,14 @@
 - https://majestic.com/reports/majestic-million
 - https://github.com/csirtgadgets/suspect-domains-dataset/blob/master/whitelist.txt
 
-## Research (On going)
-- https://www.academia.edu/10918579/A_WEB_CONTENT_ANALYTICS_ARCHITECTURE_FOR_MALICIOUS_JAVASCRIPT_DETECTION
-- https://www.sciencedirect.com/science/article/pii/S1568494619305022
-- https://www.just.edu.jo/~munzer/MyPubs/MALURLs_ITA2011.pdf
-- https://www.researchgate.net/publication/228906286_Visual-Similarity-Based_Phishing_Detection
-- https://www.mdpi.com/2073-8994/12/10/1681/pdf
-
-## References
+### References
 - http://docnum.univ-lorraine.fr/public/DDOC_T_2015_0058_MARCHAL.pdf
 - https://research.aalto.fi/en/datasets/phishstorm-phishing-legitimate-url-dataset
 - https://www.sciencedirect.com/science/article/pii/S1877050920310966
 - https://www.atlantis-press.com/proceedings/iccsee-13/4487
 - https://repository.asu.edu/attachments/189603/content/Namasivayam_asu_0010N_17146.pdf
 
-## Contributors ✨
+### Contributors ✨
 
 Thanks goes to these wonderful people 
 
