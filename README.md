@@ -100,9 +100,14 @@ Thanks goes to these wonderful people
 <table>
   <tr>
     <td align="center"><a href="https://github.com/LeDuySon"><img src="https://avatars.githubusercontent.com/u/33374938?v=4" width="100px;" alt=""/><br /><sub><b>Le Duy Son</b></sub></a></td>
+    <td align="center"><a href="https://github.com/CaoHoangTung"><img src="https://avatars.githubusercontent.com/u/22815550?v=4" width="100px;" alt=""/><br /><sub><b>Cao Hoang Tung</b></sub></a></td>
+    <td align="center"><a href="https://github.com/ngocanhnckh"><img src="https://avatars.githubusercontent.com/u/12997699?v=4" width="100px;" alt=""/><br /><sub><b>Nguyen Ngoc Anh</b></sub></a></td>
+    <td align="center"><a href="https://github.com/chpiano2000"><img src="https://avatars.githubusercontent.com/u/22815550?v=4" width="100px;" alt=""/><br /><sub><b>Vo Chi Dat</b></sub></a></td>
+    <td align="center"><a href="https://github.com/rxng8"><img src="https://avatars.githubusercontent.com/u/60036798?v=4" width="100px;" alt=""/><br /><sub><b>Nguyen Viet Dung</b></sub></a></td>
+    <td align="center"><a href="https://github.com/quangminhdinh"><img src="https://avatars.githubusercontent.com/u/31373940?v=4" width="100px;" alt=""/><br /><sub><b>Dinh Quang Minh</b></sub></a></td>
+    <td align="center"><a href="https://github.com/duongdanghung20"><img src="https://avatars.githubusercontent.com/u/74593730?v=4" width="100px;" alt=""/><br /><sub><b>Duong Dang Hung</b></sub></a></td>
   </tr>
   <tr>
-    <td align="center"><a href="https://kentcdodds.com"><img src="https://avatars.githubusercontent.com/u/1500684?v=3?s=100" width="100px;" alt=""/><br /><sub><b>Kent C. Dodds</b></sub></a><br /><a href="#question-kentcdodds" title="Answering Questions">💬</a> <a href="https://github.com/all-contributors/all-contributors/commits?author=kentcdodds" title="Documentation">📖</a> <a href="https://github.com/all-contributors/all-contributors/pulls?q=is%3Apr+reviewed-by%3Akentcdodds" title="Reviewed Pull Requests">👀</a> <a href="#talk-kentcdodds" title="Talks">📢</a></td>
   </tr>
 </table>
 
