@@ -1,4 +1,6 @@
 # Phishing-detection-ML
+<hr>
+
 [![Version](https://img.shields.io/badge/Version-v1.0-blue)]()
 [![Version](https://img.shields.io/badge/Python-v3.7%2B-green)]()
 [![Version](https://img.shields.io/badge/organization-YoungIT-lightgrey)](https://www.facebook.com/youngit.org)
