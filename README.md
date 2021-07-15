@@ -69,7 +69,7 @@
 ### Interface
 * HomePage : /
 [![cld][cld-home]]
-<br>
+
 [![cld][cld-check]]
 
 * Dashboard : /dashboard
