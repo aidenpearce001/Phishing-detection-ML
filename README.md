@@ -8,7 +8,7 @@
 [![Version](https://img.shields.io/badge/Project-chongluadao-green)](https://www.facebook.com/chongluadao.vn)
 <br><br/>
 
-<img src="Images/dashboard.png" atl=""/>
+<img src="Images/dashboard.PNG" atl=""/>
 
 ### Requirements
 
