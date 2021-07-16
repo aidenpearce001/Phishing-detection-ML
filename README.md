@@ -136,7 +136,7 @@ Thanks goes to these wonderful people
 [organization-shield]: https://img.shields.io/badge/organization-YoungIT-lightgrey?style=for-the-badge&logo=appveyor
 [organization-url]: https://www.facebook.com/youngit.org
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
+[license-url]: https://github.com/aidenpearce001/Phishing-detection-ML/blob/main/LICENSE
 [project-shield]: https://img.shields.io/badge/Project-chongluadao-green?style=for-the-badge&logo=appveyor
 [project-url]: https://www.facebook.com/chongluadao.vn
 [cld-home]: Images/home.PNG
