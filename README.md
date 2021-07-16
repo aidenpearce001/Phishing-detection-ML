@@ -43,10 +43,10 @@
       </ul>
     </li>
     <li><a href="#interface">Interface</a></li>
-    <li><a href="#model-deep-learningg">Model Deep Learning</a></li>
+    <li><a href="#model-deep-learning">Model Deep Learning</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#research-on-going">On Going Research</a></li>
-    <li><a href="##source-for-collecting-data">Dataset</a></li>
+    <li><a href="#source-for-collecting-data">Dataset</a></li>
     <li><a href="#references">References</a></li>
     <li><a href="#contributors-">Contributor</a></li>
   </ol>
