@@ -111,7 +111,6 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 Thanks goes to these wonderful people 
 
-
 <table>
   <tr>
     <td align="center"><a href="https://github.com/LeDuySon"><img src="https://avatars.githubusercontent.com/u/33374938?v=4" width="100px;" alt=""/><br /><sub><b>Le Duy Son</b></sub></a></td>
