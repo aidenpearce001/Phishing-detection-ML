@@ -125,7 +125,6 @@ Thanks goes to these wonderful people
   </tr>
 </table>
 
-
 [contributors-shield]:https://img.shields.io/badge/CONTRIBUTORS-7-green?style=for-the-badge
 [contributors-url]: https://github.com/aidenpearce001/Phishing-detection-ML/graphs/contributors
 [forks-shield]: https://img.shields.io/badge/FORKS-2-blue?style=for-the-badge
