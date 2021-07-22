@@ -43,10 +43,10 @@
       </ul>
     </li>
     <li><a href="#interface">Interface</a></li>
-    <li><a href="#model-deep-learningg">Model Deep Learning</a></li>
+    <li><a href="#model-deep-learning">Model Deep Learning</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#research-on-going">On Going Research</a></li>
-    <li><a href="##source-for-collecting-data">Dataset</a></li>
+    <li><a href="#source-for-collecting-data">Dataset</a></li>
     <li><a href="#references">References</a></li>
     <li><a href="#contributors-">Contributor</a></li>
   </ol>
@@ -67,11 +67,16 @@
 ### Installation
 
 ### Interface
+* HomePage : /
+![cld][cld-check]
+
+* Dashboard : /dashboard
+![cld][cld-dashhboard]
 
 ### Model Deep Learning
 
-
 ### License
+Distributed under the MIT License. See `LICENSE` for more information.
 
 ### Research (On going)
 - https://www.academia.edu/10918579/A_WEB_CONTENT_ANALYTICS_ARCHITECTURE_FOR_MALICIOUS_JAVASCRIPT_DETECTION
@@ -105,7 +110,6 @@
 
 Thanks goes to these wonderful people 
 
-
 <table>
   <tr>
     <td align="center"><a href="https://github.com/LeDuySon"><img src="https://avatars.githubusercontent.com/u/33374938?v=4" width="100px;" alt=""/><br /><sub><b>Le Duy Son</b></sub></a></td>
@@ -120,8 +124,7 @@ Thanks goes to these wonderful people
   </tr>
 </table>
 
-
-[contributors-shield]:https://img.shields.io/badge/CONTRIBUTORS-5-green?style=for-the-badge
+[contributors-shield]:https://img.shields.io/badge/CONTRIBUTORS-7-green?style=for-the-badge
 [contributors-url]: https://github.com/aidenpearce001/Phishing-detection-ML/graphs/contributors
 [forks-shield]: https://img.shields.io/badge/FORKS-2-blue?style=for-the-badge
 [forks-url]: https://github.com/aidenpearce001/Phishing-detection-ML/network/members
@@ -130,7 +133,10 @@ Thanks goes to these wonderful people
 [organization-shield]: https://img.shields.io/badge/organization-YoungIT-lightgrey?style=for-the-badge&logo=appveyor
 [organization-url]: https://www.facebook.com/youngit.org
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
+[license-url]: https://github.com/aidenpearce001/Phishing-detection-ML/blob/main/LICENSE
 [project-shield]: https://img.shields.io/badge/Project-chongluadao-green?style=for-the-badge&logo=appveyor
 [project-url]: https://www.facebook.com/chongluadao.vn
+[cld-home]: Images/home.PNG
+[cld-check]: Images/check.PNG
 [cld-dashhboard]: Images/dashboard.PNG
+
