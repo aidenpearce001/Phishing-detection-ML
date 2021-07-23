@@ -97,7 +97,6 @@ def main():
     import time
 
     sites = [url for url in list(dataset)]
-
    
     with concurrent.futures.ThreadPoolExecutor(max_workers=THREAD) as executor:
         executor.map(check_alive, sites)

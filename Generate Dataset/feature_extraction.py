@@ -48,7 +48,7 @@ class Extractor():
     def __init__(self):
         self.feature_names = ['Speical_Char','Have_IP', 'Have_At','URL_length' ,'URL_Depth','redirection', 'time_get_redirect',
                         'port_in_url','use_http', 'http_in_domain','TinyURL', 'Prefix/Suffix', 'DNS_Record','trusted_ca',
-                        'domain_lifespan', 'domain_timeleft', 'same_asn','iFrame', 'Mouse_Over','Right_Click', 'Web_Forwards','eval','unescape',
+                        'domain_lifespan', 'domain_timeleft', 'same_asn','iFrame', 'Mouse_Over','Right_Click','eval','unescape',
                         'escape', 'ActiveXObject','fromCharCode','atob','Punny_Code',
                         'TLDs','Title','country_name']
     
@@ -108,9 +108,8 @@ class Extractor():
 
     # 7.Redirect time 
     @staticmethod
-    def redirect(url):
+    def forwarding(response):
         try:
-            responses = requests.get(url)
 
             n_redirect = len([response for response in responses.history])
 
@@ -324,16 +323,6 @@ class Extractor():
                 return 0
             else:
                 return 1
-    # 20.Checks the number of forwardings (Web_Forwards)    
-    @staticmethod
-    def forwarding(response):
-        if response == "":
-            return 1
-        else:
-            if len(response.history) <= 2:
-                return 0
-            else:
-                return 1
 
     # 21       
     @staticmethod
@@ -423,81 +412,71 @@ class Extractor():
                 soup = BeautifulSoup(response.content, 'html.parser')
                 title = soup.find('title')
 
-                return response.count(title.string)
+                return title.string
         except:
             return "No Title"
     #Function to extract features
     def __call__(self, url, max_retries=2):
         if isinstance(url, str):
             features = []
-            while max_retries > 0:
-                try:
-                    response = requests.get(url, timeout=5)
+            try:
+                response = requests.get(url, timeout=3)
+                print("HELLO")
 
-                    if response:
-                        url = url.rstrip()
+                if response:
+                    url = url.rstrip()
 
-                        features.append(self.special_char(url))
-                        features.append(self.havingIP(url))
-                        features.append(self.haveAtSign(url))
-                        features.append(self.getLength(url))
-                        features.append(self.getDepth(url))
-                        features.append(self.redirection(url))
-                        features.append(self.redirect(url))
-                        features.append(self.port_in_url(url))
-                        features.append(self.notsafe_protocol(url))
-                        features.append(self.httpDomain(url))
-                        features.append(self.tinyURL(url))
-                        features.append(self.prefixSuffix(url))
-                        
-                        #Domain based features (4)
-                        dns = 0
-                        try:
-                            domain_name = whois.whois(urlparse(url).netloc)
-                        except:
-                            dns = 1
+                    features.append(self.special_char(url))
+                    features.append(self.havingIP(url))
+                    features.append(self.haveAtSign(url))
+                    features.append(self.getLength(url))
+                    features.append(self.getDepth(url))
+                    features.append(self.redirection(url))
+                    features.append(self.forwarding(response))
+                    features.append(self.port_in_url(url))
+                    features.append(self.notsafe_protocol(url))
+                    features.append(self.httpDomain(url))
+                    features.append(self.tinyURL(url))
+                    features.append(self.prefixSuffix(url))
+                    
+                    #Domain based features (4)
+                    dns = 0
+                    try:
+                        domain_name = whois.whois(urlparse(url).netloc)
+                    except:
+                        dns = 1
 
-                        features.append(dns)
-                        features.append(1 if dns == 1 else self.trusted_ca(domain_name))
-                        features.append(1 if dns == 1 else self.domain_lifespan(domain_name))
-                        features.append(1 if dns == 1 else self.domainEnd(domain_name))
-                        features.append(1 if dns == 1 else self.same_asn(domain_name))
-                        # features.append(1 if dns == 1 else self.top_n_google(domain_name))
-                        
-                        #HTML & Javascript based features
-                        try:
-                            response = requests.get(url)
-                        except:
-                            response = ""
+                    features.append(dns)
+                    features.append(1 if dns == 1 else self.trusted_ca(domain_name))
+                    features.append(1 if dns == 1 else self.domain_lifespan(domain_name))
+                    features.append(1 if dns == 1 else self.domainEnd(domain_name))
+                    features.append(1 if dns == 1 else self.same_asn(domain_name))
+                    # features.append(1 if dns == 1 else self.top_n_google(domain_name))
+                    
+                    #HTML & Javascript based features
 
-                        features.append(self.iframe(response))
-                        features.append(self.mouseOver(response))
-                        features.append(self.rightClick(response))
-                        features.append(self.forwarding(response))
-                        features.append(self.js_eval(response))
-                        features.append(self.js_unescape(response))
-                        features.append(self.js_escape(response))
-                        features.append(self.js_Active(response))
-                        features.append(self.js_charcode(response))
-                        features.append(self.js_atob(response))
+                    features.append(self.iframe(response))
+                    features.append(self.mouseOver(response))
+                    features.append(self.rightClick(response))
+                    features.append(self.js_eval(response))
+                    features.append(self.js_unescape(response))
+                    features.append(self.js_escape(response))
+                    features.append(self.js_Active(response))
+                    features.append(self.js_charcode(response))
+                    features.append(self.js_atob(response))
 
-                        features.append(self.punnycode(url))
+                    features.append(self.punnycode(url))
 
-                        # Data for Dashboard plotting
-                        features.append(urlparse(url).netloc.split(".")[-1])
-                        features.append(self.extract_title(response))
-                        features.append("None" if dns == 1 else domain_name.country)
+                    # Data for Dashboard plotting
+                    features.append(urlparse(url).netloc.split(".")[-1])
+                    features.append(self.extract_title(response))
+                    features.append("None" if dns == 1 else domain_name.country)
 
-                        return features
-                    else:
-                        return []
-                except Exception as e: 
-                    if max_retries == 0:
-                        return []
-                    print(str(e))
-                    print(f"Error extracting features from {url}. Retrying #{max_retries}")
-                    time.sleep(0.5)
-                    max_retries -= 1
+                    return features
+                else:
+                    return []
+            except Exception as e: 
+                return []
         else:
             return []
 
