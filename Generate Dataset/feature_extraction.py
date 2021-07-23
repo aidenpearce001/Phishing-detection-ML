@@ -421,9 +421,7 @@ class Extractor():
             features = []
             try:
                 response = requests.get(url, timeout=3)
-                print("HELLO")
-
-                if response:
+                if response.status_code not in range(400,600):
                     url = url.rstrip()
 
                     features.append(self.special_char(url))
