@@ -5,11 +5,20 @@ import concurrent.futures
 import os
 from feature_extraction import Extractor
 import csv
+
+#debug lib
+import logging
 import gc  
+import tracemalloc
+
+# log = logging.getLogger()
+logging.basicConfig(filename='logging.log',
+                            filemode='a',
+                            format='[%(levelname)s] %(asctime)s,d %(name)s %(message)s',
+                            datefmt='%H:%M:%S',
+                            level=logging.INFO)
 
 THREAD = os.cpu_count() * 10
-
-alive_dataset = []
 
 extractor = Extractor()
 feature_names = ['url','Speical_Char','Have_IP', 'Have_At','URL_length' ,'URL_Depth','redirection', 'time_get_redirect',
@@ -56,7 +65,6 @@ def whitelist():
 
     for i in range(2):
         number = str(i).zfill(2)
-        print(f'dataset/majestic_million-0{number}.csv')
         cols = ['GlobalRank', 'TldRank', 'Domain', 'TLD', 'RefSubNets', 'RefIPs',
             'IDN_Domain', 'IDN_TLD', 'PrevGlobalRank', 'PrevTldRank','PrevRefSubNets', 'PrevRefIPs']
         white = pd.read_csv(f'dataset/majestic_million-0{number}.csv',names= cols)["Domain"]
@@ -77,7 +85,6 @@ def check_alive(data):
         # code = requests.get(data[0], timeout=3)
         features = extractor(data[0])
         if len(features) > 0:
-            print(f"THis {data[0]} ALIVE")
             # alive_dataset.append(( data[0],features, data[1]  ))
             # alive.append(( data[0],features, data[1]  ))
             # print(features)
@@ -91,7 +98,6 @@ def check_alive(data):
 
             _dict['label'] = data[1]
 
-            print(_dict)
             return _dict
         # else:
         #     return None
@@ -110,7 +116,6 @@ def append_data(data):
 
     new_row['labels'] = data[2]
     # new_row = {'url':data[0], 'labels':data[1], 'type':'train'}
-    print(new_row)
 
     cld_dataset.append(new_row)
     output = output.append(new_row, ignore_index=True)
@@ -122,8 +127,7 @@ def main():
     import time
 
     dataset = list(get_dataset())
-    # _size = 10000
-    _size = 10
+    _size = 10000
     for idx,sub_list in enumerate([dataset[i:i + _size] for i in range(0, len(dataset), _size)]):
 
         alive_dataset = []
@@ -137,6 +141,9 @@ def main():
             # gc.collect()
             total = len(futures)
 
+            tracemalloc.start()  # save upto 5 stack frames
+            first_log = tracemalloc.take_snapshot()
+
             with open(csv_name, 'a',encoding='utf-8') as f:
                 writer = csv.writer(f)
                 # writer.writerow(feature_names)
@@ -145,11 +152,12 @@ def main():
                 for future in concurrent.futures.as_completed(futures):
 
                     print(f"{total} left")
-                    print(f"OUTPUT :{future.result()}")
                     if future.result() != None:
-                        print("YES")
                         writer.writerow(future.result())
-
+                        second_log = tracemalloc.take_snapshot()
+                        stats = second_log.compare_to(first_log, 'lineno')
+                        for stat in stats[:3]:
+                            logging.info(stat)
                     total -=1
                 time.sleep(3)
                 gc.collect()
