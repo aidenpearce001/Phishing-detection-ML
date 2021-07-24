@@ -12,6 +12,7 @@ import dns.resolver
 import socket
 import time
 from functools import lru_cache
+import gc
 
 truseted_ca = ['cPanel,',
  'Microsoft',
@@ -418,6 +419,7 @@ class Extractor():
                 soup = BeautifulSoup(response.content, 'html.parser')
                 title = soup.find('title')
 
+                gc.collect()
                 return title.string
         except:
             return "No Title"

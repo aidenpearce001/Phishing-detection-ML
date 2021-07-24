@@ -12,11 +12,6 @@ import gc
 import tracemalloc
 import functools
 
-#Little color for the logging :)
-from colorlog import ColoredFormatter
-
-# log = logging.getLogger()
-
 class CustomFormatter(logging.Formatter):
 
     grey = "\x1b[38;21m"
@@ -41,11 +36,10 @@ class CustomFormatter(logging.Formatter):
 
 logger = logging.getLogger("cld")
 logger.setLevel(logging.INFO)
-ch = logging.StreamHandler()
-ch.setLevel(logging.DEBUG)
+ch = logging.FileHandler('logging/memory_leak_trace.log', 'w+')
 
 ch.setFormatter(CustomFormatter())
-
+# logger.FileHandler('logging/memory_leak_trace.log', 'w+')
 logger.addHandler(ch)
 # handler = colorlog.StreamHandler()
 # handler.setFormatter(colorlog.ColoredFormatter(
@@ -181,18 +175,16 @@ def main():
                         writer.writerow(future.result())
                         second_log = tracemalloc.take_snapshot()
                         stats = second_log.compare_to(first_log, 'lineno')
-                        for stat in stats[:3]:
+                        for stat in stats[:10]:
                             logger.info(stat)
                     total -=1
 
-                gc.collect()
-                wrappers = [
-                    a for a in gc.get_objects() 
-                    if isinstance(a, functools._lru_cache_wrapper)]
+            gc.collect()
+            wrappers = [a for a in gc.get_objects() if isinstance(a, functools._lru_cache_wrapper)]
 
-                for wrapper in wrappers:
-                    wrapper.cache_clear()
-                time.sleep(3)
+            for wrapper in wrappers:
+                wrapper.cache_clear()
+            time.sleep(3)
                 
                     # print(future.result())
         # print(alive_dataset)

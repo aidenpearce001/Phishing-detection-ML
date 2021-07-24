@@ -14,3 +14,18 @@ url,Speical_Char,Have_IP,Have_At,URL_length,URL_Depth,redirection,time_get_redir
 https://plus.google.com/+Azalpen/,4,0,0,0,1,6,0,0,0,0,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,com,Đăng nhập - Tài khoản Google,US,0
 https://mobigyaan.com,2,0,0,0,0,6,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,com,MobiGyaan - Your Daily Dose of Tech,IO,0
 http://amazona.cam/,2,0,0,0,0,5,0,0,1,0,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,cam,Amazonサインイン,CN,1
+url,Speical_Char,Have_IP,Have_At,URL_length,URL_Depth,redirection,time_get_redirect,port_in_url,use_http,http_in_domain,TinyURL,Prefix/Suffix,DNS_Record,trusted_ca,domain_lifespan,domain_timeleft,same_asn,iFrame,Mouse_Over,Right_Click,eval,unescape,escape,ActiveXObject,fromCharCode,atob,Punny_Code,TLDs,Title,country_name,label
+https://20d281fb-ad14-4ba8-9c76-9857bbcac2a3.id.repl.co/index3.php,5,0,0,1,1,6,0,0,0,0,0,1,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,co,Verificacion Requerida,US,1
+https://forms.office.com/Pages/ResponsePage.aspx?id=YLr5XW0hUkih1cpB5PakUv4nFQaOPTxHsAiUbCtiu95UOE1CUUk2Q0EwWTJXTzZDVDgyTE9XUkM1Ry4u,6,0,0,1,2,6,0,0,0,0,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,com,"
+        Microsoft Forms
+    ",US,1
+https://fbs.com,2,0,0,0,0,6,0,0,0,0,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,com,Forex Trading Broker: Trade and Grow with FBS,US,0
+https://babycenter.com.au,3,0,0,0,0,6,0,0,0,0,0,0,0,1,1,1,0,0,0,1,0,0,0,0,0,0,0,au,"BabyCenter Australia - Information on conception, pregnancy, baby and toddler health - BabyCenter Australia",,0
+url,Speical_Char,Have_IP,Have_At,URL_length,URL_Depth,redirection,time_get_redirect,port_in_url,use_http,http_in_domain,TinyURL,Prefix/Suffix,DNS_Record,trusted_ca,domain_lifespan,domain_timeleft,same_asn,iFrame,Mouse_Over,Right_Click,eval,unescape,escape,ActiveXObject,fromCharCode,atob,Punny_Code,TLDs,Title,country_name,label
+http://hb-red-link-vcc.support2110.repl.co/,4,0,0,0,0,5,0,0,1,0,0,1,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,co,Red Link - BANCO DE LA NACION ARGENTINA,US,1
+https://plus.google.com/+BensalemOutreach,4,0,0,0,1,6,0,0,0,0,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,com,Đăng nhập - Tài khoản Google,US,0
+https://atmire.com,2,0,0,0,0,6,0,0,0,0,0,0,0,1,0,1,1,0,0,1,0,0,0,0,0,0,0,com,"
+                            Atmire - Certified DSpace provider | Atmire
+            ",BE,0
+https://inshop.cz,2,0,0,0,0,6,0,0,0,0,0,0,0,1,0,1,0,0,0,1,0,0,0,0,0,0,0,cz,Moderní řešení pro vlastní e-shop | ZONER inShop,,0
+https://wolterskluwer.com,2,0,0,0,0,6,0,0,0,0,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,com,Wolters Kluwer - Combining Domain Expertise With Advanced Technology | Wolters Kluwer,US,0
