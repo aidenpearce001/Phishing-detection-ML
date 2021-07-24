@@ -10,13 +10,51 @@ import csv
 import logging
 import gc  
 import tracemalloc
+import functools
+
+#Little color for the logging :)
+from colorlog import ColoredFormatter
 
 # log = logging.getLogger()
-logging.basicConfig(filename='logging.log',
-                            filemode='a',
-                            format='[%(levelname)s] %(asctime)s,d %(name)s %(message)s',
-                            datefmt='%H:%M:%S',
-                            level=logging.INFO)
+
+class CustomFormatter(logging.Formatter):
+
+    grey = "\x1b[38;21m"
+    yellow = "\x1b[33;21m"
+    red = "\x1b[31;21m"
+    bold_red = "\x1b[31;1m"
+    reset = "\x1b[0m"
+    format = "[%(levelname)s] %(asctime)s:d %(name)s %(message)s)"
+
+    FORMATS = {
+        logging.DEBUG: grey + format + reset,
+        logging.INFO: grey + format + reset,
+        logging.WARNING: yellow + format + reset,
+        logging.ERROR: red + format + reset,
+        logging.CRITICAL: bold_red + format + reset
+    }
+
+    def format(self, record):
+        log_fmt = self.FORMATS.get(record.levelno)
+        formatter = logging.Formatter(log_fmt)
+        return formatter.format(record)
+
+logger = logging.getLogger("cld")
+logger.setLevel(logging.INFO)
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+
+ch.setFormatter(CustomFormatter())
+
+logger.addHandler(ch)
+# handler = colorlog.StreamHandler()
+# handler.setFormatter(colorlog.ColoredFormatter(
+# 	'[%(log_color)s%(levelname)s]:%(name)s:%(message)s'))
+# logging.basicConfig(filename='logging/memory_leak_trace.log',
+#                             filemode='a',
+#                             format='[%(log_color)%s(levelname)s] %(asctime)s,d %(name)s %(log_color)s%(message)s',
+#                             datefmt='%H:%M:%S',
+#                             level=logging.INFO)
 
 THREAD = os.cpu_count() * 10
 
@@ -79,33 +117,20 @@ def get_dataset():
 
 def check_alive(data):
 
-    # try:
 
-        _dict = {}
-        # code = requests.get(data[0], timeout=3)
-        features = extractor(data[0])
-        if len(features) > 0:
-            # alive_dataset.append(( data[0],features, data[1]  ))
-            # alive.append(( data[0],features, data[1]  ))
-            # print(features)
-            # print(','.join(str(v) for v in features))
-            _dict['url'] = data[0]
+    _dict = {}
+    features = extractor(data[0])
+    if len(features) > 0:
+        _dict['url'] = data[0]
+        for _idx,_value in enumerate(features):
+            _idx +=1
+            _dict[feature_names[_idx]] = _value
+        # _data = data[0]+','+','.join(str(v) for v in features)+ ',' +str(data[1])
 
-            for _idx,_value in enumerate(features):
-                _idx +=1
-                _dict[feature_names[_idx]] = _value
-            # _data = data[0]+','+','.join(str(v) for v in features)+ ',' +str(data[1])
+        _dict['label'] = data[1]
 
-            _dict['label'] = data[1]
-
-            return _dict
-        # else:
-        #     return None
+        return _dict
         
-        # return alive
-    # except:
-    #     return None
-
 def append_data(data):
     cld_dataset = []
       
@@ -115,7 +140,6 @@ def append_data(data):
         new_row[feature_names[index]] = value
 
     new_row['labels'] = data[2]
-    # new_row = {'url':data[0], 'labels':data[1], 'type':'train'}
 
     cld_dataset.append(new_row)
     output = output.append(new_row, ignore_index=True)
@@ -138,7 +162,7 @@ def main():
             # executor.map(check_alive, sub_list)
             for url in sub_list:
                 futures.append(executor.submit(check_alive, url))
-            # gc.collect()
+
             total = len(futures)
 
             tracemalloc.start()  # save upto 5 stack frames
@@ -149,6 +173,7 @@ def main():
                 # writer.writerow(feature_names)
                 writer = csv.DictWriter(f, fieldnames = feature_names)
                 writer.writeheader()
+                
                 for future in concurrent.futures.as_completed(futures):
 
                     print(f"{total} left")
@@ -157,10 +182,18 @@ def main():
                         second_log = tracemalloc.take_snapshot()
                         stats = second_log.compare_to(first_log, 'lineno')
                         for stat in stats[:3]:
-                            logging.info(stat)
+                            logger.info(stat)
                     total -=1
-                time.sleep(3)
+
                 gc.collect()
+                wrappers = [
+                    a for a in gc.get_objects() 
+                    if isinstance(a, functools._lru_cache_wrapper)]
+
+                for wrapper in wrappers:
+                    wrapper.cache_clear()
+                time.sleep(3)
+                
                     # print(future.result())
         # print(alive_dataset)
         # total = len(alive_dataset)

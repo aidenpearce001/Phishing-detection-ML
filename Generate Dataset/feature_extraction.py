@@ -11,6 +11,7 @@ import requests
 import dns.resolver
 import socket
 import time
+from functools import lru_cache
 
 truseted_ca = ['cPanel,',
  'Microsoft',
@@ -43,6 +44,12 @@ truseted_ca = ['cPanel,',
  'InCommon',
  'Sectigo',
  'Secure']
+
+headers = {
+
+    "Cache-Control": "no-cache",
+    "Pragma": "no-cache"
+}
 
 class Extractor():
     def __init__(self):
@@ -402,7 +409,6 @@ class Extractor():
 
         return punny
 
-
     @staticmethod
     def extract_title(response):
         try:
@@ -420,7 +426,7 @@ class Extractor():
         if isinstance(url, str):
             features = []
             try:
-                response = requests.get(url, timeout=3)
+                response = requests.get(url, headers=headers, timeout=3)
                 if response.status_code not in range(400,600):
                     url = url.rstrip()
 
@@ -477,6 +483,7 @@ class Extractor():
                 return []
         else:
             return []
+
 
 if __name__ == "__main__":
     ext = Extractor()
