@@ -1,16 +1,20 @@
 #!/usr/bin/python3
 import pandas as pd
 import requests
-import concurrent.futures
+# import concurrent.futures
 import os
 from feature_extraction import Extractor
 import csv
+from queue import Queue
 
 #debug lib
 import logging
 import gc  
 import tracemalloc
 import functools
+
+#some mtfk suggest using this cause simultaneously process several million data, then a queue of workers will take up all the free memory
+from bounded_pool_executor import BoundedProcessPoolExecutor
 
 class CustomFormatter(logging.Formatter):
 
@@ -57,7 +61,7 @@ feature_names = ['url','Speical_Char','Have_IP', 'Have_At','URL_length' ,'URL_De
                 'port_in_url','use_http', 'http_in_domain','TinyURL', 'Prefix/Suffix', 'DNS_Record','trusted_ca',
                 'domain_lifespan', 'domain_timeleft', 'same_asn','iFrame', 'Mouse_Over','Right_Click','eval','unescape',
                 'escape', 'ActiveXObject','fromCharCode','atob','Punny_Code',
-                'TLDs','Title','country_name','label']
+                'TLDs','country_name','label']
 
 def blacklist():
 
@@ -106,13 +110,16 @@ def whitelist():
     return dataset 
 
 def get_dataset():
-    dataset = blacklist() | whitelist() # Merge blacklist and whitelist
+    # dataset = blacklist() | whitelist() # Merge blacklist and whitelist
+    dataset = blacklist()
     return dataset
 
 def check_alive(data):
 
-
     _dict = {}
+
+    first_log = tracemalloc.take_snapshot()
+    gc.collect()
     features = extractor(data[0])
     if len(features) > 0:
         _dict['url'] = data[0]
@@ -122,6 +129,14 @@ def check_alive(data):
         # _data = data[0]+','+','.join(str(v) for v in features)+ ',' +str(data[1])
 
         _dict['label'] = data[1]
+
+        second_log = tracemalloc.take_snapshot()
+        stats = second_log.compare_to(first_log, 'lineno')
+        for stat in stats[:10]:
+            logger.info(stat)
+
+        # print("Iteration %d: %0.3f MB" %
+        #       (i, psutil.Process().memory_info().rss / 1e6))
 
         return _dict
         
@@ -141,6 +156,13 @@ def append_data(data):
 
     return cld_dataset
 
+def get_queue(queue):
+    item = queue.get()
+    self.__log.info(str(item))
+    return True
+
+tracemalloc.start()
+
 def main():
     import time
 
@@ -149,42 +171,59 @@ def main():
     for idx,sub_list in enumerate([dataset[i:i + _size] for i in range(0, len(dataset), _size)]):
 
         alive_dataset = []
-        futures = []
+        # futures = []
+        futures = Queue()
         
         csv_name = 'dataset_'+str(idx) + '.csv'
-        with concurrent.futures.ThreadPoolExecutor(max_workers=THREAD) as executor:
-            # executor.map(check_alive, sub_list)
+        # with concurrent.futures.ThreadPoolExecutor(max_workers=THREAD) as executor:
+        #     # executor.map(check_alive, sub_list)
+        #     for url in sub_list:
+        #         futures.append(executor.submit(check_alive, url))
+
+        #     total = len(futures)
+
+        #     # tracemalloc.start()  # save upto 5 stack frames
+        #     # first_log = tracemalloc.take_snapshot()
+
+            # with open(csv_name, 'a',encoding='utf-8') as f:
+            #     writer = csv.writer(f)
+            #     # writer.writerow(feature_names)
+            #     writer = csv.DictWriter(f, fieldnames = feature_names)
+            #     writer.writeheader()
+                
+            #     for future in concurrent.futures.as_completed(futures):
+
+            #         print(f"{total} left")
+            #         if future.result() != None:
+            #             writer.writerow(future.result())
+            #             # second_log = tracemalloc.take_snapshot()
+            #             # stats = second_log.compare_to(first_log, 'lineno')
+            #             # for stat in stats[:10]:
+            #             #     logger.info(stat)
+            #         total -=1
+        with BoundedProcessPoolExecutor(max_workers=THREAD) as worker:
             for url in sub_list:
-                futures.append(executor.submit(check_alive, url))
+               futures.put(worker.submit(check_alive, url))
 
-            total = len(futures)
+            csv_name = 'dataset_'+str(idx) + '.csv'
 
-            tracemalloc.start()  # save upto 5 stack frames
-            first_log = tracemalloc.take_snapshot()
-
-            with open(csv_name, 'a',encoding='utf-8') as f:
+            with open(csv_name, 'w+',encoding='utf-8') as f:
                 writer = csv.writer(f)
-                # writer.writerow(feature_names)
                 writer = csv.DictWriter(f, fieldnames = feature_names)
                 writer.writeheader()
                 
-                for future in concurrent.futures.as_completed(futures):
+                while not futures.empty():
+                    print(f"{futures.qsize()} left")
+                    item = futures.get().result()
+                    if item != None:
+                        writer.writerow(item)
 
-                    print(f"{total} left")
-                    if future.result() != None:
-                        writer.writerow(future.result())
-                        second_log = tracemalloc.take_snapshot()
-                        stats = second_log.compare_to(first_log, 'lineno')
-                        for stat in stats[:10]:
-                            logger.info(stat)
-                    total -=1
+            # gc.collect()
+            # wrappers = [a for a in gc.get_objects() if isinstance(a, functools._lru_cache_wrapper)]
 
-            gc.collect()
-            wrappers = [a for a in gc.get_objects() if isinstance(a, functools._lru_cache_wrapper)]
-
-            for wrapper in wrappers:
-                wrapper.cache_clear()
-            time.sleep(3)
+            # for wrapper in wrappers:
+            #     wrapper.cache_clear()
+            # time.sleep(3)
                 
                     # print(future.result())
         # print(alive_dataset)

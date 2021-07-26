@@ -1,15 +1,19 @@
-[38;21m[INFO] 2021-07-24 18:46:30,652:d cld C:\Users\Watch Dogs\Anaconda3\lib\site-packages\whois\__init__.py:84: size=857 KiB (+857 KiB), count=8069 (+8069), average=109 B)[0m
-[38;21m[INFO] 2021-07-24 18:46:30,652:d cld C:\Users\Watch Dogs\Anaconda3\lib\site-packages\requests\models.py:829: size=155 KiB (+155 KiB), count=3 (+3), average=51.6 KiB)[0m
-[38;21m[INFO] 2021-07-24 18:46:30,652:d cld C:\Users\Watch Dogs\Anaconda3\lib\csv.py:154: size=129 KiB (+129 KiB), count=6 (+6), average=21.5 KiB)[0m
-[38;21m[INFO] 2021-07-24 18:46:31,093:d cld C:\Users\Watch Dogs\Anaconda3\lib\site-packages\whois\__init__.py:84: size=857 KiB (+857 KiB), count=8069 (+8069), average=109 B)[0m
-[38;21m[INFO] 2021-07-24 18:46:31,094:d cld C:\Users\Watch Dogs\Anaconda3\lib\site-packages\bs4\element.py:899: size=163 KiB (+163 KiB), count=1303 (+1303), average=128 B)[0m
-[38;21m[INFO] 2021-07-24 18:46:31,094:d cld C:\Users\Watch Dogs\Anaconda3\lib\site-packages\requests\models.py:829: size=163 KiB (+163 KiB), count=3 (+3), average=54.2 KiB)[0m
-[38;21m[INFO] 2021-07-24 18:46:31,725:d cld C:\Users\Watch Dogs\Anaconda3\lib\site-packages\whois\__init__.py:84: size=857 KiB (+857 KiB), count=8069 (+8069), average=109 B)[0m
-[38;21m[INFO] 2021-07-24 18:46:31,726:d cld C:\Users\Watch Dogs\Anaconda3\lib\site-packages\bs4\element.py:899: size=223 KiB (+223 KiB), count=2305 (+2305), average=99 B)[0m
-[38;21m[INFO] 2021-07-24 18:46:31,726:d cld C:\Users\Watch Dogs\Anaconda3\lib\site-packages\requests\models.py:829: size=163 KiB (+163 KiB), count=3 (+3), average=54.2 KiB)[0m
-[38;21m[INFO] 2021-07-24 18:46:32,441:d cld C:\Users\Watch Dogs\Anaconda3\lib\site-packages\whois\__init__.py:84: size=857 KiB (+857 KiB), count=8069 (+8069), average=109 B)[0m
-[38;21m[INFO] 2021-07-24 18:46:32,441:d cld C:\Users\Watch Dogs\Anaconda3\lib\site-packages\bs4\element.py:899: size=346 KiB (+346 KiB), count=3989 (+3989), average=89 B)[0m
-[38;21m[INFO] 2021-07-24 18:46:32,441:d cld C:\Users\Watch Dogs\Anaconda3\lib\site-packages\bs4\element.py:1104: size=267 KiB (+267 KiB), count=2339 (+2339), average=117 B)[0m
-[38;21m[INFO] 2021-07-24 18:46:34,174:d cld C:\Users\Watch Dogs\Anaconda3\lib\site-packages\whois\__init__.py:84: size=857 KiB (+857 KiB), count=8069 (+8069), average=109 B)[0m
-[38;21m[INFO] 2021-07-24 18:46:34,174:d cld C:\Users\Watch Dogs\Anaconda3\lib\site-packages\bs4\element.py:899: size=597 KiB (+597 KiB), count=8240 (+8240), average=74 B)[0m
-[\033[1m[INFO] 2021-07-24 18:46:34,174:d cld C:\Users\Watch Dogs\Anaconda3\lib\site-packages\bs4\element.py:1104: size=577 KiB (+577 KiB), count=5076 (+5076), average=116 B)[0m
+[38;21m[INFO] 2021-07-26 17:02:20,497:d cld C:\Users\Watch Dogs\Anaconda3\lib\site-packages\whois\__init__.py:84: size=857 KiB (+857 KiB), count=8070 (+8070), average=109 B)[0m
+[38;21m[INFO] 2021-07-26 17:02:20,497:d cld <frozen importlib._bootstrap_external>:580: size=72.7 KiB (+29.1 KiB), count=851 (+358), average=87 B)[0m
+[38;21m[INFO] 2021-07-26 17:02:20,497:d cld C:\Users\Watch Dogs\Anaconda3\lib\sre_parse.py:529: size=19.5 KiB (+19.5 KiB), count=356 (+356), average=56 B)[0m
+[38;21m[INFO] 2021-07-26 17:02:20,497:d cld C:\Users\Watch Dogs\Anaconda3\lib\sre_compile.py:780: size=17.2 KiB (+17.0 KiB), count=28 (+27), average=631 B)[0m
+[38;21m[INFO] 2021-07-26 17:02:20,497:d cld C:\Users\Watch Dogs\Anaconda3\lib\sre_compile.py:517: size=3976 B (+3976 B), count=71 (+71), average=56 B)[0m
+[38;21m[INFO] 2021-07-26 17:02:20,497:d cld C:\Users\Watch Dogs\Anaconda3\lib\sre_parse.py:220: size=3752 B (+3752 B), count=67 (+67), average=56 B)[0m
+[38;21m[INFO] 2021-07-26 17:02:20,497:d cld C:\Users\Watch Dogs\Anaconda3\lib\sre_parse.py:427: size=3360 B (+3360 B), count=60 (+60), average=56 B)[0m
+[38;21m[INFO] 2021-07-26 17:02:20,497:d cld C:\Users\Watch Dogs\Anaconda3\lib\sre_parse.py:114: size=3360 B (+3360 B), count=60 (+60), average=56 B)[0m
+[38;21m[INFO] 2021-07-26 17:02:20,498:d cld C:\Users\Watch Dogs\Anaconda3\lib\site-packages\dns\_immutable_ctx.py:37: size=3312 B (+3312 B), count=36 (+36), average=92 B)[0m
+[38;21m[INFO] 2021-07-26 17:02:20,498:d cld C:\Users\Watch Dogs\Anaconda3\lib\http\cookiejar.py:956: size=2768 B (+2768 B), count=6 (+6[38;21m[INFO] 2021-07-26 17:02:23,187:d cld C:\Users\Watch Dogs\Anaconda3\lib\tracemalloc.py:111: size=0 B (-69.1 KiB), count=0 (-884))[0m
+[38;21m[INFO] 2021-07-26 17:02:23,187:d cld C:\Users\Watch Dogs\Anaconda3\lib\tracemalloc.py:185: size=0 B (-34.5 KiB), count=0 (-736))[0m
+[38;21m[INFO] 2021-07-26 17:02:23,187:d cld <frozen importlib._bootstrap_external>:580: size=72.7 KiB (+29.6 KiB), count=851 (+362), average=87 B)[0m
+[38;21m[INFO] 2021-07-26 17:02:23,187:d cld C:\Users\Watch Dogs\Anaconda3\lib\tracemalloc.py:532: size=53.9 KiB (+12.1 KiB), count=1040 (+271), average=53 B)[0m
+[38;21m[INFO] 2021-07-26 17:02:23,187:d cld C:\Users\Watch Dogs\Anaconda3\lib\site-packages\requests\structures.py:51: size=8449 B (+8449 B), count=138 (+138), average=61 B)[0m
+[38;21m[INFO] 2021-07-26 17:02:23,187:d cld C:\Users\Watch Dogs\Anaconda3\lib\sre_parse.py:112: size=0 B (-4480 B), count=0 (-70))[0m
+[38;21m[INFO] 2021-07-26 17:02:23,187:d cld C:\Users\Watch Dogs\Anaconda3\lib\site-packages\dns\_immutable_ctx.py:37: size=3312 B (+3312 B), count=36 (+36), average=92 B)[0m
+[38;21m[INFO] 2021-07-26 17:02:23,187:d cld C:\Users\Watch Dogs\Anaconda3\lib\sre_parse.py:114: size=0 B (-3304 B), count=0 (-59))[0m
+[38;21m[INFO] 2021-07-26 17:02:23,188:d cld C:\Users\Watch Dogs\Anaconda3\lib\site-packages\urllib3\_collections.py:224: size=3032 B (+3032 B), count=67 (+67), average=45 B)[0m
+[38;21m[INFO] 2021-07-26 17:02:23,188:d cld C:\Users\Watch Dogs\Anaconda3\lib\email\message.py:484: size=2944 B (+2944 B), count=50 (+50), average=59 B)[0m

@@ -58,7 +58,7 @@ class Extractor():
                         'port_in_url','use_http', 'http_in_domain','TinyURL', 'Prefix/Suffix', 'DNS_Record','trusted_ca',
                         'domain_lifespan', 'domain_timeleft', 'same_asn','iFrame', 'Mouse_Over','Right_Click','eval','unescape',
                         'escape', 'ActiveXObject','fromCharCode','atob','Punny_Code',
-                        'TLDs','Title','country_name']
+                        'TLDs','country_name']
     
     # 1.Speical Chartacter in URL
     @staticmethod
@@ -419,7 +419,8 @@ class Extractor():
                 soup = BeautifulSoup(response.content, 'html.parser')
                 title = soup.find('title')
 
-                gc.collect()
+                # gc.collect()
+                soup.decompose()
                 return title.string
         except:
             return "No Title"
@@ -475,7 +476,7 @@ class Extractor():
 
                     # Data for Dashboard plotting
                     features.append(urlparse(url).netloc.split(".")[-1])
-                    features.append(self.extract_title(response))
+                    # features.append(self.extract_title(response))
                     features.append("None" if dns == 1 else domain_name.country)
 
                     return features
