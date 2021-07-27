@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import pandas as pd
 import requests
-# import concurrent.futures
+import concurrent.futures
 import os
 from feature_extraction import Extractor
 import csv
@@ -54,7 +54,7 @@ logger.addHandler(ch)
 #                             datefmt='%H:%M:%S',
 #                             level=logging.INFO)
 
-THREAD = os.cpu_count() * 10
+THREAD = os.cpu_count() * 10 
 
 extractor = Extractor()
 feature_names = ['url','Speical_Char','Have_IP', 'Have_At','URL_length' ,'URL_Depth','redirection', 'time_get_redirect',
@@ -170,40 +170,43 @@ def main():
     _size = 10000
     for idx,sub_list in enumerate([dataset[i:i + _size] for i in range(0, len(dataset), _size)]):
 
-        alive_dataset = []
-        # futures = []
-        futures = Queue()
+        # alive_dataset = []
+        futures = []
+        # futures = Queue()
         
-        csv_name = 'dataset_'+str(idx) + '.csv'
+        # csv_name = 'dataset_'+str(idx) + '.csv'
         # with concurrent.futures.ThreadPoolExecutor(max_workers=THREAD) as executor:
         #     # executor.map(check_alive, sub_list)
         #     for url in sub_list:
-        #         futures.append(executor.submit(check_alive, url))
-
-        #     total = len(futures)
+        #         # futures.append(executor.submit(check_alive, url))
+        #         futures.put(worker.submit(check_alive, url))
 
         #     # tracemalloc.start()  # save upto 5 stack frames
         #     # first_log = tracemalloc.take_snapshot()
 
-            # with open(csv_name, 'a',encoding='utf-8') as f:
-            #     writer = csv.writer(f)
-            #     # writer.writerow(feature_names)
-            #     writer = csv.DictWriter(f, fieldnames = feature_names)
-            #     writer.writeheader()
+        #     with open(csv_name, 'w+',encoding='utf-8') as f:
+        #         writer = csv.writer(f)
+        #         writer = csv.DictWriter(f, fieldnames = feature_names)
+        #         writer.writeheader()
                 
-            #     for future in concurrent.futures.as_completed(futures):
+        #         while not futures.empty():
+        #             print(f"{futures.qsize()} left")
+        #             item = futures.get().result()
+        #             if item != None:
+        #                 writer.writerow(item)
 
-            #         print(f"{total} left")
-            #         if future.result() != None:
-            #             writer.writerow(future.result())
-            #             # second_log = tracemalloc.take_snapshot()
-            #             # stats = second_log.compare_to(first_log, 'lineno')
-            #             # for stat in stats[:10]:
-            #             #     logger.info(stat)
-            #         total -=1
-        with BoundedProcessPoolExecutor(max_workers=THREAD) as worker:
+                # for future in concurrent.futures.as_completed(futures):
+
+                #     print(f"{total} left")
+                #     if future.result() != None:
+                #         writer.writerow(future.result())
+                #         second_log = tracemalloc.take_snapshot()
+                #         stats = second_log.compare_to(first_log, 'lineno')
+                #         for stat in stats[:10]:
+                #             logger.info(stat)
+        with BoundedProcessPoolExecutor(max_workers=THREAD-10) as executor:
             for url in sub_list:
-               futures.put(worker.submit(check_alive, url))
+               futures.append(executor.submit(check_alive, url))
 
             csv_name = 'dataset_'+str(idx) + '.csv'
 
@@ -211,13 +214,19 @@ def main():
                 writer = csv.writer(f)
                 writer = csv.DictWriter(f, fieldnames = feature_names)
                 writer.writeheader()
-                
-                while not futures.empty():
-                    print(f"{futures.qsize()} left")
-                    item = futures.get().result()
-                    if item != None:
-                        writer.writerow(item)
 
+                total = len(futures)
+                
+                for future in concurrent.futures.as_completed(futures):
+                    print(f"{total} left")
+                    if future.result() != None:
+                        writer.writerow(future.result())
+                        # second_log = tracemalloc.take_snapshot()
+                        # stats = second_log.compare_to(first_log, 'lineno')
+                        # for stat in stats[:10]:
+                        #     logger.info(stat)
+                    total -=1
+            gc.collect()
             # gc.collect()
             # wrappers = [a for a in gc.get_objects() if isinstance(a, functools._lru_cache_wrapper)]
 
