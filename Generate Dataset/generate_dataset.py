@@ -14,7 +14,7 @@ import tracemalloc
 import functools
 
 #some mtfk suggest using this cause simultaneously process several million data, then a queue of workers will take up all the free memory
-from bounded_pool_executor import BoundedProcessPoolExecutor
+from bounded_pool_executor import BoundedThreadPoolExecutor
 
 class CustomFormatter(logging.Formatter):
 
@@ -115,11 +115,8 @@ def get_dataset():
     return dataset
 
 def check_alive(data):
-
     _dict = {}
 
-    first_log = tracemalloc.take_snapshot()
-    gc.collect()
     features = extractor(data[0])
     if len(features) > 0:
         _dict['url'] = data[0]
@@ -129,50 +126,29 @@ def check_alive(data):
         # _data = data[0]+','+','.join(str(v) for v in features)+ ',' +str(data[1])
 
         _dict['label'] = data[1]
-
-        second_log = tracemalloc.take_snapshot()
-        stats = second_log.compare_to(first_log, 'lineno')
-        for stat in stats[:10]:
-            logger.info(stat)
-
         # print("Iteration %d: %0.3f MB" %
         #       (i, psutil.Process().memory_info().rss / 1e6))
+        dc = _dict.copy()
+        _dict.clear()
 
-        return _dict
-        
-def append_data(data):
-    cld_dataset = []
-      
-    new_row = {}
-
-    for index,value in enumerate(data[1]):
-        new_row[feature_names[index]] = value
-
-    new_row['labels'] = data[2]
-
-    cld_dataset.append(new_row)
-    output = output.append(new_row, ignore_index=True)
-    output.to_csv("chongluadao_dataset_process.csv", index = False)
-
-    return cld_dataset
+        # print(futures.qsize())
+        return dc
 
 def get_queue(queue):
     item = queue.get()
     self.__log.info(str(item))
     return True
 
-tracemalloc.start()
-
 def main():
     import time
 
-    dataset = list(get_dataset())
+    dataset = list(get_dataset())[:30]
     _size = 10000
     for idx,sub_list in enumerate([dataset[i:i + _size] for i in range(0, len(dataset), _size)]):
 
         # alive_dataset = []
-        futures = []
-        # futures = Queue()
+        # futures = []
+        futures = Queue()
         
         # csv_name = 'dataset_'+str(idx) + '.csv'
         # with concurrent.futures.ThreadPoolExecutor(max_workers=THREAD) as executor:
@@ -204,28 +180,49 @@ def main():
                 #         stats = second_log.compare_to(first_log, 'lineno')
                 #         for stat in stats[:10]:
                 #             logger.info(stat)
-        with BoundedProcessPoolExecutor(max_workers=THREAD-10) as executor:
+
+        tracemalloc.start() 
+        first_log = tracemalloc.take_snapshot()
+        with BoundedThreadPoolExecutor(max_workers=THREAD) as executor:
+
+            _futures = []
+
             for url in sub_list:
-               futures.append(executor.submit(check_alive, url))
+                _futures.append(executor.submit(check_alive, url))
 
             csv_name = 'dataset_'+str(idx) + '.csv'
 
-            with open(csv_name, 'w+',encoding='utf-8') as f:
+            for future in concurrent.futures.as_completed(_futures):
+                futures.put(future.result())
+                _futures.clear()
+
+            with open(csv_name,'w', newline='',encoding='utf-8') as f:
                 writer = csv.writer(f)
                 writer = csv.DictWriter(f, fieldnames = feature_names)
                 writer.writeheader()
-
-                total = len(futures)
                 
-                for future in concurrent.futures.as_completed(futures):
-                    print(f"{total} left")
-                    if future.result() != None:
-                        writer.writerow(future.result())
-                        # second_log = tracemalloc.take_snapshot()
-                        # stats = second_log.compare_to(first_log, 'lineno')
-                        # for stat in stats[:10]:
-                        #     logger.info(stat)
-                    total -=1
+                while not futures.empty():
+                    print(f"{futures.qsize()} left")
+                    
+                    try:
+                        writer.writerow(futures.get())
+                        econd_log = tracemalloc.take_snapshot()
+                        stats = second_log.compare_to(first_log, 'lineno')
+                        for stat in stats[:10]:
+                            logger.info(stat)
+                    except:
+                        continue
+
+                    # item = futures.get()
+                    # if item != None:
+                    #     writer.writerow(item)
+
+                    # second_log = tracemalloc.take_snapshot()
+                    # stats = second_log.compare_to(first_log, 'lineno')
+                    # for stat in stats[:10]:
+                    #     logger.info(stat)
+
+            # _futures.clear()
             gc.collect()
             # gc.collect()
             # wrappers = [a for a in gc.get_objects() if isinstance(a, functools._lru_cache_wrapper)]
