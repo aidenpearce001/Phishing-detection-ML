@@ -241,7 +241,7 @@ class Extractor():
             return 1
         else:
             ageofdomain = abs((expiration_date - creation_date).days)
-            print("Domain Age: ", ageofdomain)
+            # print("Domain Age: ", ageofdomain)
             if ((ageofdomain/30) < 6):
                 age = 1
             else:
