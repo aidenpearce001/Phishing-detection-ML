@@ -229,6 +229,11 @@ def dashboard():
 
     return render_template('dashboard.html',country_data=country_data,top_tlds=top_tlds,top_title=top_title,Importances=Importances[0],url_based=url_based,domain_based=domain_based,content_based=content_based,percent_list=percent_list)
 
+@app.route('/comparison', methods=["GET","POST"])
+def comparison():
+
+    return render_template('dashboard-model.html')
+    
 @app.route("/feedback", methods=["GET","POST"])
 def feedback():
     from datetime import datetime

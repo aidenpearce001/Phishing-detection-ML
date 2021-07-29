@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../images/favicon.ico">
 
-    <title>Dashboard</title>
+    <title>Comparison Dashboard</title>
   
 	<!-- Vendors Style-->
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/vendors_css.css') }}" />
@@ -16,11 +16,10 @@
 	<!-- Style-->  
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/skin_color.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/upload.css') }}" />
 	<script src="https://cdn.amcharts.com/lib/4/core.js"></script>
 	<script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
 	<script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
-	<script src="https://cdn.amcharts.com/lib/4/maps.js"></script>
-	<script src="https://cdn.amcharts.com/lib/4/geodata/worldLow.js"></script>
 	
 </head>
 
@@ -58,7 +57,7 @@
 		<div class="content-header">
 			<div class="d-flex align-items-center">
 				<div class="mr-auto">
-					<h3 class="page-title">Dashboard</h3>
+					<h3 class="page-title">Comparison Dashboard</h3>
 					<div class="d-inline-block align-items-center">
 						<nav>
 							<ol class="breadcrumb">
@@ -82,7 +81,6 @@
 				</div>
 				<!-- /.box-header -->
 				<div class="box-body">
-					<div id="world-map" style="height: 400px">
 						<div class="upload">
 							<div class="upload__info">
 							  <svg
@@ -123,7 +121,6 @@
 							  Completed
 							</div>
 						</div>
-					</div>
 				</div>
 				<!-- /.box-body -->
 			  </div>
@@ -136,8 +133,12 @@
 				</div>
 				<!-- /.box-header -->
 				<div class="box-body">
-					<div id="piechart" style="height: 350px"></div>
-						
+					<div class="parent" style="height: 350px">
+						<div class="div1"><h1>Hello</h1></div>
+						<div class="div2"><h1>Hello</h1></div>
+						<div class="div3"><h1>Hello</h1></div>
+						<div class="div4"><h1>Hello</h1></div>
+					</div>
 				</div>
 				<!-- /.box-body -->
 			  </div>
@@ -150,7 +151,15 @@
 				</div>
 				<!-- /.box-header -->
 				<div class="box-body">
-					<div id="piechartf" style="height: 350px"></div>
+					<div class="container-scroll custom-scrollbar">
+						<h1>Beautiful Custom Scrollbar</h1>
+						<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt ipsa sapiente expedita aperiam iste suscipit cum voluptates voluptatibus facilis incidunt perferendis dolore iure iusto, minima culpa id velit consequatur quae?</p>
+						<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt ipsa sapiente expedita aperiam iste suscipit cum voluptates voluptatibus facilis incidunt perferendis dolore iure iusto, minima culpa id velit consequatur quae?</p>
+						<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt ipsa sapiente expedita aperiam iste suscipit cum voluptates voluptatibus facilis incidunt perferendis dolore iure iusto, minima culpa id velit consequatur quae?</p>
+						<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt ipsa sapiente expedita aperiam iste suscipit cum voluptates voluptatibus facilis incidunt perferendis dolore iure iusto, minima culpa id velit consequatur quae?</p>
+						<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt ipsa sapiente expedita aperiam iste suscipit cum voluptates voluptatibus facilis incidunt perferendis dolore iure iusto, minima culpa id velit consequatur quae?</p>
+						<p style="margin-bottom: 0;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt ipsa sapiente expedita aperiam iste suscipit cum voluptates voluptatibus facilis incidunt perferendis dolore iure iusto, minima culpa id velit consequatur quae?</p>
+					</div>	
 					
 				</div>
 				<!-- /.box-body -->
