@@ -6,6 +6,7 @@ import os
 from feature_extraction import Extractor
 import csv
 from queue import Queue
+from threading import Thread
 
 #debug lib
 import logging
@@ -65,16 +66,16 @@ def blacklist():
     for i in phistank:
         dataset.add( (i.strip(),1) )
 
-    git_blacklist = requests.get("https://raw.githubusercontent.com/mitchellkrogza/Phishing.Database/master/phishing-links/output/domains/ACTIVE/list")
-    file1 = open("dataset/phishing.txt","wb")
-    file1.write(git_blacklist.content)
+    # git_blacklist = requests.get("https://raw.githubusercontent.com/mitchellkrogza/Phishing.Database/master/phishing-links/output/domains/ACTIVE/list")
+    # file1 = open("dataset/phishing.txt","wb")
+    # file1.write(git_blacklist.content)
     with open('dataset/phishing.txt', 'r+',encoding='utf-8') as f:
        lines = f.readlines()
     for i in lines[3:]:
        dataset.add( (i.strip(),1) )
 
-    phishstat_res = requests.get('https://phishstats.info/phish_score.csv', allow_redirects=True)
-    open('dataset/phishstats.txt', 'wb').write(phishstat_res.content)
+    # phishstat_res = requests.get('https://phishstats.info/phish_score.csv', allow_redirects=True)
+    # open('dataset/phishstats.txt', 'wb').write(phishstat_res.content)
     with open('dataset/phishstats.txt', 'r+',encoding='utf-8') as f:
        lines = f.readlines()
        for i in lines[9:]:
@@ -105,7 +106,7 @@ def get_dataset():
     dataset = blacklist()
     return dataset
 
-def check_alive(data):
+def check_alive(queue, data):
     _dict = {}
 
     features = extractor(data[0])
@@ -125,42 +126,60 @@ def check_alive(data):
         # print(futures.qsize())
         return dc
 
-def get_queue(queue):
-    item = queue.get()
-    self.__log.info(str(item))
-    return True
+def task_handler(task_q,url):
+    while True:
+        item = task_q.get()
+        task_q.put(check_alive(item))
+        
+        del item
+        task_q.task_done()
+        gc.collect()
 
 def main():
     import time
 
-    dataset = list(get_dataset())
-    _size = 10000
+    futures = Queue()
+    dataset = list(get_dataset())[:20]
+    _size = 1000
+   
+    # task_q = Queue()
+    # writer_q = Queue(maxsize=0)
+
+    # for idx,sub_list in enumerate([dataset[i:i + _size] for i in range(0, len(dataset), _size)]):
+    #     for _ in range(THREAD):
+    #         item = dataset.pop(0)
+    #         print(item)
+            # worker = Thread(target=task_handler, args=(check_alive, url))
+            # worker = Thread(target=check_alive,args=(futures, item))
+            # worker.setDaemon(True)
+    #         worker.start()
+    # print(futures.qsize()) 
+        
+    _size = 1000
     for idx,sub_list in enumerate([dataset[i:i + _size] for i in range(0, len(dataset), _size)]):
 
-        # alive_dataset = []
-        # futures = []
-        # futures = Queue()
+        futures = Queue()
         
-        # csv_name = 'dataset_'+str(idx) + '.csv'
-        # with concurrent.futures.ThreadPoolExecutor(max_workers=THREAD) as executor:
-        #     # executor.map(check_alive, sub_list)
-        #     for url in sub_list:
-        #         # futures.append(executor.submit(check_alive, url))
-        #         futures.put(worker.submit(check_alive, url))
+        csv_name = 'dataset_'+str(idx) + '.csv'
+        with concurrent.futures.ThreadPoolExecutor(max_workers=THREAD) as executor:
+            # executor.map(check_alive, sub_list)
+            for url in sub_list:
+                # futures.append(executor.submit(check_alive, url))
+                futures.put(worker.submit(check_alive, url))
 
-        #     # tracemalloc.start()  # save upto 5 stack frames
-        #     # first_log = tracemalloc.take_snapshot()
+            # tracemalloc.start()  # save upto 5 stack frames
+            # first_log = tracemalloc.take_snapshot()
 
-        #     with open(csv_name, 'w+',encoding='utf-8') as f:
-        #         writer = csv.writer(f)
-        #         writer = csv.DictWriter(f, fieldnames = feature_names)
-        #         writer.writeheader()
+            with open(csv_name, 'w+',encoding='utf-8') as f:
+                writer = csv.writer(f)
+                writer = csv.DictWriter(f, fieldnames = feature_names)
+                writer.writeheader()
                 
-        #         while not futures.empty():
-        #             print(f"{futures.qsize()} left")
-        #             item = futures.get().result()
-        #             if item != None:
-        #                 writer.writerow(item)
+                while not futures.empty():
+                    print(f"{futures.qsize()} left")
+                    item = futures.get().result()
+                    if item != None:
+                        writer.writerow(item)
 
                 # for future in concurrent.futures.as_completed(futures):
 
@@ -172,8 +191,8 @@ def main():
                 #         for stat in stats[:10]:
                 #             logger.info(stat)
 
-        tracemalloc.start() 
-        first_log = tracemalloc.take_snapshot()
+        # tracemalloc.start() 
+        # first_log = tracemalloc.take_snapshot()
 
         # _futures = dict()
 
@@ -189,36 +208,35 @@ def main():
                 #     print(future.result())
 
             # print(_futures)
-        csv_name = 'dataset_'+str(idx) + '.csv'
 
-            # for future in concurrent.futures.as_completed(_futures):
-            #     futures.put(future.result())
-            #     _futures.clear()
+        # csv_name = 'dataset_'+str(idx) + '.csv'
+        # _futures = list()
+        # with BoundedThreadPoolExecutor(max_workers=THREAD) as executor: 
 
-        with open(csv_name,'w+', newline='',encoding='utf-8') as f:
-            writer = csv.writer(f)
-            writer = csv.DictWriter(f, fieldnames = feature_names)
-            writer.writeheader()
+        #     for url in sub_list:
+        #         _futures.append(executor.submit(check_alive, url))
 
-            with BoundedThreadPoolExecutor(max_workers=THREAD) as executor:
+        #     for future in concurrent.futures.as_completed(_futures):
+        #         futures.put(future.result())
+        #         print(futures.qsize()) 
 
-                _futures = list()
+        #         # second_log = tracemalloc.take_snapshot()    
+        #         # stats = second_log.compare_to(first_log, 'lineno')
+        #         # for stat in stats[:10]:
+        #         #     logger.info(stat)
 
-                for url in sub_list:
-                    _futures.append(executor.submit(check_alive, url))
-            
-                for future in concurrent.futures.as_completed(_futures):
-                    print(future.result())
-                    try:
-                        writer.writerow(future.result())
-                    except:
-                        continue
-                    second_log = tracemalloc.take_snapshot()    
-                    stats = second_log.compare_to(first_log, 'lineno')
-                    for stat in stats[:10]:
-                        logger.info(stat)
+        # del _futures  
 
-                del _futures
+    with open('dataset_queue.csv','w+', newline='',encoding='utf-8') as f:
+        writer = csv.writer(f)
+        writer = csv.DictWriter(f, fieldnames = feature_names)
+        writer.writeheader()
+        while not futures.empty():    
+            print(futures.qsize())    
+            try:
+                writer.writerow(futures.get())
+            except:
+                continue
 
                     # item = futures.get()
                     # if item != None:
@@ -230,7 +248,7 @@ def main():
                     #     logger.info(stat)
 
             # _futures.clear()
-            gc.collect()
+            # gc.collect()
             # gc.collect()
             # wrappers = [a for a in gc.get_objects() if isinstance(a, functools._lru_cache_wrapper)]
 
