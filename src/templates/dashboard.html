@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../images/favicon.ico">
+
+    <title>Dashboard</title>
+  
+	<!-- Vendors Style-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/vendors_css.css') }}" />
+	  
+	<!-- Style-->  
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/skin_color.css') }}" />
+	<script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+	<script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+	<script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+	<script src="https://cdn.amcharts.com/lib/4/maps.js"></script>
+	<script src="https://cdn.amcharts.com/lib/4/geodata/worldLow.js"></script>
+	
+</head>
+
+<body class="hold-transition light-skin sidebar-mini theme-primary">
+<div class="wrapper">
+
+  <header class="main-header">
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-static-top pl-30">
+      <!-- Sidebar toggle button-->
+	  <div>
+		  <ul class="nav">
+			<li class="btn-group nav-item">
+				<a href="/" class="waves-effect waves-light nav-link rounded svg-bt-icon">
+					<i class="mdi mdi-home-outline"></i>
+			    </a>
+			</li>
+			<li class="btn-group nav-item">
+				<a href="/dashboard" class="waves-effect waves-light nav-link rounded svg-bt-icon">
+				  <i class="mdi mdi-poll-box"></i>
+				  </a>
+			</li>			
+					
+		  </ul>
+	  </div>
+		
+    </nav>
+  </header>
+
+  </aside>
+  
+  <div class="content-wrapper">
+	  <div class="container-full">
+		<!-- Content Header (Page header) -->
+		<div class="content-header">
+			<div class="d-flex align-items-center">
+				<div class="mr-auto">
+					<h3 class="page-title">Dashboard</h3>
+					<div class="d-inline-block align-items-center">
+						<nav>
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="/"><i class="mdi mdi-home-outline"></i></a></li>
+							</ol>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Main content -->
+		<section class="content">
+
+		  <!-- START Map -->
+		  <div class="row">
+			<div class="col-12">
+			  <div class="box">
+				<div class="box-header with-border">
+				  <h4 class="box-title">World Map</h4>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body">
+					<div id="world-map" style="height: 400px">
+						<script type="text/javascript">
+							var map_data = [
+							{% for i in country_data %}
+						    {"id": "{{ i['id'] }}",
+							  "name": "{{ i['name'] }}",
+							  "value": "{{ i['value'] }}",
+							  "fill": am4core.color("{{ i['fill'] }}")
+						    },
+							{% endfor %}
+							]	
+						</script>{
+					</div>
+				</div>
+				<!-- /.box-body -->
+			  </div>
+			  <!-- /.box -->
+			</div>
+			<div class="col-lg-6 col-12">  
+			  <div class="box">
+				<div class="box-header with-border">
+				  <h4 class="box-title">Top 10 TLDs</h4>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body">
+					<div id="piechart" style="height: 350px"></div>
+						<script type="text/javascript">
+							var piechart_data = [
+							{% for tld in top_tlds %}
+						    {
+							"tlds": "{{ tld['_id'] }}",
+							"count": "{{ tld['count'] }}"
+						    },
+							{% endfor %}
+							]	
+						</script>
+				</div>
+				<!-- /.box-body -->
+			  </div>
+			  <!-- /.box -->
+			</div>
+			<div class="col-lg-6 col-12">  
+			  <div class="box">
+				<div class="box-header with-border">
+				  <h4 class="box-title">Top Features Based on</h4>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body">
+					<div id="piechartf" style="height: 350px"></div>
+					<script type="text/javascript">
+						var piechartf = am4core.create("piechartf", am4charts.PieChart);
+						var types = [{
+							type: "URL",
+							percent: {{percent_list[0]}},
+							subs: [
+							{% for urlb in url_based %}
+								{
+								type: "{{urlb}}",
+								percent: "{{ Importances[urlb]*100}}"
+							}, 
+							{% endfor %}
+							]
+							}, {
+							type: "Domain",
+							percent: {{percent_list[1]}},
+							subs: [
+							{% for domainb in domain_based %}
+								{
+								type: "{{domainb}}",
+								percent: "{{ Importances[domainb]*100}}"
+							}, 
+							{% endfor %}
+							]
+							}, {
+							type: "Content",
+							percent: {{percent_list[2]}},
+							subs: [
+							{% for contentb in content_based %}
+								{
+								type: "{{contentb}}",
+								percent: "{{ Importances[contentb]*100}}"
+							}, 
+							{% endfor %}
+							]
+							}
+							];
+
+					</script>
+				</div>
+				<!-- /.box-body -->
+			  </div>
+			  <!-- /.box -->
+			</div>
+			<div class="col-lg-6 col-12">          
+			  <div class="box">
+				<div class="box-header with-border">
+				  <h4 class="box-title">Top Title</h4>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body">
+					<div id="barchart" style="height: 350px"></div>
+					<script type="text/javascript">
+						var barchat_data = [
+						{% for title in top_title %}
+						{
+						"Title": "{{ title['_id'] }}",
+						"Title_count": "{{ title['count'] }}"
+						},
+						{% endfor %}
+						]	
+					</script>
+				</div>
+				<!-- /.box-body -->
+			  </div>
+			  <!-- /.box -->
+			</div>
+			<div class="col-lg-6 col-12">          
+			  <div class="box">
+				<div class="box-header with-border">
+				  <h4 class="box-title">New detections by day</h4>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body">
+					<div id="linechart" style="height: 350px"></div>
+				</div>
+			  </div>
+
+			</div>
+		  </div>
+
+		</section>
+	  </div>
+  	</div>
+  
+	<footer class="footer black-bg">
+
+		<div class="copyright sty-one">
+			<div class="container">
+			<div class="text-center">Copyright © 2021 YoungIT</div>
+			</div>
+		</div>
+	</footer>
+  
+  <div class="control-sidebar-bg"></div>
+</div>
+
+	<!-- Vendor JS -->
+	<script src="{{ url_for('static', filename='js/vendors.min.js') }}" ></script>
+	<script src="{{ url_for('static', filename='assets/icons/feather-icons/feather.min.js') }}" ></script>
+	<script src="{{ url_for('static', filename='assets/vendor_components/jvectormap/lib2/jquery-jvectormap-2.0.2.min.js') }}" ></script>
+	<script src="{{ url_for('static', filename='assets/vendor_components/jvectormap/lib2/jquery-jvectormap-world-mill-en.js') }}" ></script>
+	<script src="{{ url_for('static', filename='assets/vendor_components/jvectormap/lib2/jquery-jvectormap-in-mill.js') }}" ></script>
+	<script src="{{ url_for('static', filename='assets/vendor_components/jvectormap/lib2/jquery-jvectormap-us-aea-en.js') }}" ></script>
+	<script src="{{ url_for('static', filename='assets/vendor_components/jvectormap/lib2/jquery-jvectormap-uk-mill-en.js') }}" ></script>
+	<script src="{{ url_for('static', filename='assets/vendor_components/jvectormap/lib2/jquery-jvectormap-au-mill.js') }}" ></script>
+	<script src="{{ url_for('static', filename='assets/vendor_components/jvectormap/lib2/jvectormap.custom.js') }}" ></script>
+	<!-- <script src="{{ url_for('static', filename='js/script.js') }}" ></script> -->
+	<script src="{{ url_for('static', filename='js/world.js') }}" ></script>
+	<script src="{{ url_for('static', filename='js/template.js') }}" ></script>
+	
+</body>
+</html>

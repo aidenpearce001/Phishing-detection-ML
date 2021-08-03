@@ -1,0 +1,179 @@
+/*
+* 	Owl Carousel Owl Demo Theme 
+*	v1.3.3
+*/
+
+.owl-theme .owl-controls {
+	margin-top: 10px;
+	text-align: center;
+}
+.common_section .owl-theme .owl-controls {
+	margin-top: 30px;
+	text-align: center;
+}
+.section27 .owl-theme .owl-controls {
+	margin-top: 60px;
+	text-align: center;
+}
+.section7 .owl-controls .owl-buttons, .section21 .owl-controls .owl-buttons, .section25 .owl-controls .owl-buttons, .section27 .owl-controls .owl-buttons, .section30 .owl-controls .owl-buttons {
+	display:none;
+}
+/* Styling Next and Prev buttons */
+
+.owl-theme .owl-controls .owl-buttons div {
+	color: #FFF;
+	display: inline-block;
+	zoom: 1;
+ *display: inline;/*IE7 life-saver */
+	margin: 5px;
+	padding: 3px 10px;
+	font-size: 12px;
+	-webkit-border-radius: 30px;
+	-moz-border-radius: 30px;
+	border-radius: 30px;
+	background: #869791;
+	filter: Alpha(Opacity=50);/*IE7 fix*/
+	opacity: 0.5;
+}
+/* Clickable class fix problem with hover on touch devices */
+/* Use it for non-touch hover action */
+.owl-theme .owl-controls.clickable .owl-buttons div:hover {
+	filter: Alpha(Opacity=100);/*IE7 fix*/
+	opacity: 1;
+	text-decoration: none;
+}
+/* Styling Pagination*/
+
+.owl-theme .owl-controls .owl-page {
+	display: inline-block;
+	zoom: 1;
+	margin-right:10px;
+ *display: inline;/*IE7 life-saver */
+}
+.owl-theme .owl-controls .owl-page span {
+	display: block;
+	width: 12px;
+	height: 12px;
+	margin: 2px;
+	filter: Alpha(Opacity=50);/*IE7 fix*/
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+	background: #b2b2b2;
+}
+.carousel_holder .owl-theme .owl-controls .owl-page span {
+	display: block;
+	width: 12px;
+	height: 12px;
+	margin: 2px;
+	filter: Alpha(Opacity=50);/*IE7 fix*/
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+	background: #cccccc;
+}
+.section27 .owl-theme .owl-controls .owl-page span {
+	display: block;
+	width: 12px;
+	height: 12px;
+	margin: 2px;
+	filter: Alpha(Opacity=50);/*IE7 fix*/
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+	background: #9e9e9e;
+}
+.section30 .owl-theme .owl-controls .owl-page {
+	margin-top:20px;
+}
+.section30 .owl-theme .owl-controls .owl-page span {
+	display: block;
+	width: 12px;
+	height: 12px;
+	margin: 2px;
+	filter: Alpha(Opacity=50);/*IE7 fix*/
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+	background: #9e9e9e;
+}
+.owl-page.active {
+	border:0px solid #3d3d3d;
+	border-radius: 100%;
+}
+.owl-theme .owl-controls .owl-page.active span, .owl-theme .owl-controls.clickable .owl-page:hover span {
+	background: #3d3d3d;
+}
+.owl-carousel.one .owl-controls .owl-page span {
+	background: #222222;
+}
+.owl-carousel.one .owl-controls .owl-page.active {
+	border: 1px solid #3d3d3d;
+	border-radius: 100%;
+}
+.owl-carousel.one .owl-controls .owl-page.active span, .owl-carousel.one .owl-controls.clickable .owl-page:hover span {
+	background: #3d3d3d;
+}
+/* If PaginationNumbers is true */
+
+.owl-theme .owl-controls .owl-page span.owl-numbers {
+	height: auto;
+	width: auto;
+	color: #FFF;
+	padding: 2px 10px;
+	font-size: 12px;
+	-webkit-border-radius: 30px;
+	-moz-border-radius: 30px;
+	border-radius: 30px;
+}
+/* preloading images */
+.owl-item.loading {
+	min-height: 150px;
+	background: url(AjaxLoader.gif) no-repeat center center
+}
+.owl-carousel .item {
+	text-align:center;
+	width:85%;
+	margin:0 auto;
+}
+.owl-carousel .item.fullwide {
+	width:100%;
+}
+.thumb {
+	margin:50px 0;
+	text-align:center;
+}
+.item p {
+	font-size:20px;
+	color:#ffffff;
+	font-style:italic;
+	text-align:center;
+	line-height:35px;
+	font-weight:300;
+	margin-bottom:35px;
+}
+.item.itemone {
+	width:100%;
+}
+.item.itemone p {
+	font-size:14px;
+	color:#b3bac4;
+	font-style:normal;
+	text-align:center;
+	line-height:30px;
+	font-weight:normal;
+	margin-top:50px;
+}
+.client-info {
+	color:#3d3d3d;
+	font-family:Open Sans, sans-serif;
+	font-weight:bold;
+	font-size:14px;
+	padding-bottom:40px;
+}
+.client-info span {
+	color:#a1a1a1;
+	font-size:13px;
+	font-weight:normal;
+	font-style:italic;
+}

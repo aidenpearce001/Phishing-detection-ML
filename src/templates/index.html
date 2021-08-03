@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<title>Phishing Detection</title>
+
+<!-- Google Font -->
+
+<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/vendors_css.css') }}" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/skin_color.css') }}" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
+
+<!-- Template Styles -->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome/css/font-awesome.min.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/Simple-Line-Icons-Webfont/simple-line-icons.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/et-line-font/et-line-font.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='js/tooltip/tooltip.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='js/bootstrap-switch/bootstrap-switch.css') }}" />
+
+<!-- Base MasterSlider style sheet -->
+
+<link rel="stylesheet" href="{{ url_for('static', filename='js/masterslider/style/masterslider.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='js/masterslider/skins/default/style.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='js/masterslider/style/style.css') }}" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/masterslider/style/ms-tablet-style.css') }}" />
+
+<!-- Responsive Devices Styles -->
+<link rel="stylesheet"  media="screen" href="{{ url_for('static', filename='css/responsive-leyouts.css') }}" />
+<!-- Mega Menu -->
+<link rel="stylesheet" href="{{ url_for('static', filename='js/megamenu/stylesheets/screen.css') }}" />
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+</head>
+<body>
+<div class="site-wrapper">
+  <div class="temp-header sty1">
+    <header class="main-header">
+      <nav class="navbar navbar-static-top pl-30" style="background: #272e48;min-height: 70px">
+        <!-- Sidebar toggle button-->
+        <div>
+          <ul class="nav" >
+          <li class="btn-group nav-item" >
+            <a href="/" class="waves-effect waves-light nav-link rounded svg-bt-icon">
+              <i class="mdi mdi-home-outline"></i>
+              </a>
+          </li>
+          <li class="btn-group nav-item">
+            <a href="/dashboard" class="waves-effect waves-light nav-link rounded svg-bt-icon">
+              <i class="mdi mdi-poll-box"></i>
+              </a>
+          </li>		
+          
+          <li class="btn-group nav-item">
+            <a class="waves-effect waves-light nav-link rounded svg-bt-icon" data-toggle="modal" data-target="#reportModal">
+              <i class="mdi mdi-email-outline" data-toggle="modal" data-target="#reportModal"></i>
+            </a>
+          </li>	
+          
+          </ul>
+        </div>
+        
+      </nav>
+    </header>
+    <!-- <div class="top-bar solid-dark">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6"><i style="color: black" class="fa fa-envelope-o" data-toggle="modal" data-target="#reportModal"></i> <a data-toggle="modal" data-target="#reportModal"><b style="color: black">Hòm thư góp ý</b></a>  </div>
+        </div>
+        end of row
+      </div>
+    </div> -->
+    <!--end menu--> 
+  </div>
+  <div class="clearfix"></div>
+  <style>
+
+  </style>
+  <!-- Modal -->
+<div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Feedback</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group col-md-12">
+            <label class="select" for="slct">
+              <select id="slct" required="required">
+                <option value="" disabled="disabled" selected="selected">Topic</option>
+                <option value="design">Interface</option>
+                <option value="features_feedback">Features for Model</option>
+                <option value="other">Others..</option>
+              </select>
+              <svg>
+                <use xlink:href="#select-arrow-down"></use>
+              </svg>
+            </label>
+            <!-- SVG Sprites-->
+            <svg class="sprites">
+              <symbol id="select-arrow-down" viewbox="0 0 10 6">
+                <polyline points="1 1 5 5 9 1"></polyline>
+              </symbol>
+            </svg>
+          </div>
+          <div class="form-group col-md-12">
+            <textarea placeholder="This is an awesome comment box" rows="20" name="comment[text]" id="comment_text" cols="40" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button id="feedback" type="button" class="btn btn-primary">Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+  <div class="clearfix"></div>
+  <div class="section-lg">
+    <div class="container">
+      
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <div class="m-bot-6">
+            <h1 class="f-35 font-bold uppercase">Phishing detection</h1>
+            <div class="hr-line blue-color m-bot-2"></div>
+            <p>Fill in Link Website</p>
+            <form id="form" method="post">
+              <row>
+                <div class="form-group col-md-11">
+                  <input type="text" class="form-control" id="searchTxt" name="url" aria-describedby="urlHelp" placeholder="https://www.google.com/">
+                </div>
+                <button id="submit" type="button" class="col-md-1 btn btn-primary"><i class="fa fa-check"></i>Check</button>
+              </row>
+              
+            </form>
+          </div>
+        </div>
+        
+        <div class="col-md-12 col-sm-12 col-xs-12 m-bot-3 animate-in" data-anim-type="fade-in-down" data-anim-delay="100">
+      
+      </div>
+      
+    </div>
+  </div>
+  <div class="section-lg bg-grey m-top-20">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-8 col-sm-offset-2 text-center m-bot-4">
+          <h3 class="f-30 font-bold">The Anatomy of a Full Path URL</h3>
+          <div class="container">
+            
+          </div>
+          <p class="f-18"><a class="js-mytooltip "
+            data-mytooltip-custom-class="align-center"
+            data-mytooltip-content="Protocol" style="color: black;background-color: #96be25; ">http </a><a class="js-mytooltip"
+            data-mytooltip-custom-class="align-center"
+            data-mytooltip-content="" style="color: black;">:// </a><a class="js-mytooltip"
+            data-mytooltip-custom-class="align-center"
+            data-mytooltip-content="Domain name" style="color: black;background-color: #749F9F;">example.com </a><a class="js-mytooltip"
+            data-mytooltip-custom-class="align-center"
+            data-mytooltip-content="" style="color:black;">:</a><a class="js-mytooltip"
+            data-mytooltip-custom-class="align-center"
+            data-mytooltip-content="Port" style="color:black;background-color: yellow;">80 </a><a class="js-mytooltip"
+            data-mytooltip-custom-class="align-center"
+            data-mytooltip-content="Directory Path" style="color: black;background-color: #F49907">/path/file.html </a><a class="js-mytooltip"
+            data-mytooltip-custom-class="align-center"
+            data-mytooltip-content="Parameter" style="color: black;background-color: #D3DCF5; ">?key1=value1&key2=value2 </a><a class="js-mytooltip"
+            data-mytooltip-custom-class="align-center"
+            data-mytooltip-content="Anchor" style="color: black;background-color: #CF97C3; ">#SomeWhere </a>
+          </p>
+        </div>
+       
+      </div>
+    </div>
+  </div>
+  <!-- <script>
+    swal({
+      title: "Phishing Website",
+      text: "Score : detect[1] ",
+      icon: "error",
+    });
+  </script> -->
+  <h1>{{something}}</h1>
+  {% if detect %}
+  {% endif %}
+  <div class="section-lg">
+    <div class="container">
+      <div style="width:100%">
+        <div class="sec-title">
+          <h2>Model's Features</h2>
+        </div>
+
+    {% for sublist in data %} 
+    <div class="grid">
+      {% for i in sublist%}  
+      <div class="column">
+        <div class="card element">
+          <div class="parent">
+            <div class="div1"> 
+              <h3>{{i}} {{detect}}</h3>
+            </div>
+            <div class="div2"> 
+              <p data-tooltip="{{ features[i] }}"><i class="fa fa-info-circle" style="font-size:24px"></i></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endfor %}
+  
+  <footer class="footer black-bg">
+  
+    <div class="copyright sty-one">
+      <div class="container">
+        <div class="text-center">Copyright © 2021 YoungIT</div>
+      </div>
+    </div>
+  </footer>
+  <!-- end footer --> 
+  <!-- end site wrapper--> 
+</div>
+
+<a href="#" class="scrollup"></a> 
+{% block script %}
+<!-- jQuery first, then Tether, then Bootstrap JS. --> 
+<script src="{{ url_for('static', filename='js/vendors.min.js') }}" ></script>
+<script src="{{ url_for('static', filename='js/jquery.js') }}" ></script>
+<script src="{{ url_for('static', filename='js/cldscript.js') }}" ></script>
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}" ></script>
+
+<!-- Mega Menu --> 
+<script src="{{ url_for('static', filename='js/megamenu/js/main.js') }}" ></script>
+<script src="{{ url_for('static', filename='js/megamenu/js/onepage.js') }}" ></script>
+
+<!-- MasterSlider --> 
+<script src="{{ url_for('static', filename='js/masterslider/jquery.easing.min.js') }}" ></script>
+<script src="{{ url_for('static', filename='js/masterslider/masterslider.min.js') }}" ></script>
+<script src="{{ url_for('static', filename='js/masterslider/masterslider.int.js') }}" ></script>
+
+<!-- Counters --> 
+<script src="{{ url_for('static', filename='js/aninum/jquery.animateNumber.min.js') }}" ></script>
+
+<!-- Scroll Up --> 
+<script src="{{ url_for('static', filename='js/scrolltotop/totop.js') }}" ></script>
+
+<!-- tooltip --> 
+<script src="{{ url_for('static', filename='js/tooltip/tooltip.js') }}" ></script>
+<script src="{{ url_for('static', filename='js/tooltip/script.js') }}" ></script>
+
+<!-- bootstrap-switch --> 
+<script src="{{ url_for('static', filename='js/bootstrap-switch/bootstrap-switch.js') }}" ></script>
+<script src="{{ url_for('static', filename='js/bootstrap-switch/highlight.js') }}" ></script>
+<script src="{{ url_for('static', filename='js/bootstrap-switch/main.js') }}" ></script>
+<script src="{{ url_for('static', filename='js/template.js') }}" ></script>
+{% endblock %}
+</body>
+</html>
