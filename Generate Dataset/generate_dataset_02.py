@@ -121,7 +121,7 @@ def check_alive(data):
 
 def task_handler(task_q,item):
     # print(f"Number of url has been check : {task_q.qsize()}")
-    print("Iteration %d: %0.3f MB" %
+    print("has been check %d: %0.3f MB" %
               (task_q.qsize(), psutil.Process().memory_info().rss / 1e6))
     task_q.put(check_alive(item))
     task_q.task_done()

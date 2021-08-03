@@ -2,7 +2,6 @@
 from urllib.parse import urlparse,urlencode
 import ipaddress
 import re
-from bs4 import BeautifulSoup
 import whois
 import urllib
 import urllib.request
@@ -11,7 +10,6 @@ import requests
 import dns.resolver
 import socket
 import time
-from functools import lru_cache
 import gc
 
 truseted_ca = ['cPanel,',
@@ -416,12 +414,12 @@ class Extractor():
             if response == "":
                 return "No Title"
             else:
-                soup = BeautifulSoup(response.content, 'html.parser')
-                title = soup.find('title')
-
-                # gc.collect()
-                soup.decompose()
-                return title.string
+                match_title = re.search("<title.*?>(.*?)</title>", response.text)
+                if match_title is not None:
+                    title = match_title.group(1)
+                    return title
+                else:
+                    return "No Title"
         except:
             return "No Title"
     #Function to extract features
