@@ -4,19 +4,12 @@ This is the Flask REST API that processes and outputs the prediction on the URL.
 """
 import numpy as np
 import pandas as pd
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing.sequence import pad_sequences
-from tensorflow.keras.preprocessing.text import Tokenizer
-import tensorflow as tf
 import seaborn as sns
 import matplotlib
 from flask import Flask, redirect, url_for, render_template, request,jsonify
 import json
-import pickle
-import joblib
 import time 
-# from model import ConvModel
-from model.random_forest import RandomForest
+from model import RandomForest, ConvModel
 from dotenv import load_dotenv
 import pymongo
 import os
@@ -65,20 +58,13 @@ max_words = 20000
 # model.built = True
 # model.load_weights(model_pre)
 
-model = RandomForest("model/ckpt/rf_final.pkl")
+model = RandomForest("model/ckpt/rf_data_balance.pkl")
 
 app = Flask(__name__)
 app.config["CACHE_TYPE"] = "null"
 client = pymongo.MongoClient(MONGODB)
 db = client['chongluadao']
 
-def preprocess_url(url, tokenizer):
-    url = url.strip()
-    sequences = tokenizer.texts_to_sequences([url])
-    word_index = tokenizer.word_index
-    url_prepped = pad_sequences(sequences, maxlen=maxlen)
-    
-    return url_prepped
 
 @app.route('/', methods=["GET","POST"])
 def survey():
@@ -120,9 +106,11 @@ def survey():
 
         if(isinstance(url, str)):
 
-            # prediction = model.predict(url_prepped)
-            prediction = model.predict(url)[0]
-            print("PRED", prediction, type(prediction))
+            prediction = model.predict(url)
+            if(prediction is not None):
+                prediction = prediction[0]
+            else:
+                return jsonify({'notsafe' : 'Maybe your input not correct'})
             
             if prediction > 0.5:
                 return jsonify({'notsafe' : 'Website Phishing ','score': str(prediction)})
@@ -269,9 +257,7 @@ def predict():
             
     data["predictions"] = []
     if(isinstance(url, str)):
-        url_prepped = preprocess_url(url, tokenizer)
-        prediction = model.predict(url_prepped)
-        print(prediction)
+        prediction = model.predict(url)[0]
         end = time.time() - start
             
         if prediction > 0.5:

@@ -14,7 +14,7 @@ class RandomForest():
         
         if url_feature_vector is not None:
             vector = np.array(url_feature_vector[:-3])
-            vector = np.concatenate((vector, np.array([1]))) # This line is for testing only. Erase it
+            #vector = np.concatenate((vector, np.array([1]))) # This line is for testing only. Erase it
             prediction = self.classifier.predict(vector.reshape(1, -1))
             
             return prediction

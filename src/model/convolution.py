@@ -7,7 +7,7 @@ from tensorflow.keras.preprocessing.text import Tokenizer
 import tensorflow as tf
 import pickle 
 from joblib import load
-from feature_extraction import Extractor
+from utils.feature_extraction import Extractor
 import numpy as np 
 
 class ConvModel(tf.keras.Model):

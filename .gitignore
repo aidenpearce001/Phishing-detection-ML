@@ -1,2 +1,4 @@
 .env
 Generate Dataset/.env
+src/model/ckpt/
+__pycache__

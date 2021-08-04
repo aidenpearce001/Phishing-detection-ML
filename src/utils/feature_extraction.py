@@ -444,14 +444,18 @@ class Extractor():
         print("RESPONSE", response.status_code)
         if response.status_code not in range(600,600):
             url = url.rstrip()
+            
+            """Invalid Index(['Have_IP', 'time_get_redirect', 'trusted_ca', 'eval', 'unescape',
+       'escape', 'ActiveXObject', 'fromCharCode', 'atob', 'Punny_Code'],
+      dtype='object')"""
 
             features.append(self.special_char(url))
-            features.append(self.havingIP(url))
+            #features.append(self.havingIP(url))
             features.append(self.haveAtSign(url))
             features.append(self.getLength(url))
             features.append(self.getDepth(url))
             features.append(self.redirection(url))
-            features.append(self.forwarding(response))
+            #features.append(self.forwarding(response))
             features.append(self.port_in_url(url))
             features.append(self.notsafe_protocol(url))
             features.append(self.httpDomain(url))
@@ -466,7 +470,7 @@ class Extractor():
                 dns = 1
 
             features.append(dns)
-            features.append(1 if dns == 1 else self.trusted_ca(domain_name))
+            #features.append(1 if dns == 1 else self.trusted_ca(domain_name))
             features.append(1 if dns == 1 else self.domain_lifespan(domain_name))
             features.append(1 if dns == 1 else self.domainEnd(domain_name))
             features.append(1 if dns == 1 else self.same_asn(domain_name))
@@ -477,14 +481,14 @@ class Extractor():
             features.append(self.iframe(response))
             features.append(self.mouseOver(response))
             features.append(self.rightClick(response))
-            features.append(self.js_eval(response))
-            features.append(self.js_unescape(response))
-            features.append(self.js_escape(response))
-            features.append(self.js_Active(response))
-            features.append(self.js_charcode(response))
-            features.append(self.js_atob(response))
+            #features.append(self.js_eval(response))
+            #features.append(self.js_unescape(response))
+            # features.append(self.js_escape(response))
+            # features.append(self.js_Active(response))
+            # features.append(self.js_charcode(response))
+            # features.append(self.js_atob(response))
 
-            features.append(self.punnycode(url))
+            # features.append(self.punnycode(url))
 
             # Data for Dashboard plotting
             features.append(urlparse(url).netloc.split(".")[-1])
