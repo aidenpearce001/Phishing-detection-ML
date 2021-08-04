@@ -1,21 +1,24 @@
 #!/usr/bin/python3
 import pandas as pd
 import requests
-import concurrent.futures
+# import concurrent.futures
 import os
+import sys
 from feature_extraction import Extractor
 import csv
 from queue import Queue
-from threading import Thread
+from alive_progress import alive_bar
 
 #debug lib
 import logging
 import gc  
+import psutil
 import tracemalloc
-import functools
 
 #some mtfk suggest using this cause simultaneously process several million data, then a queue of workers will take up all the free memory
 from bounded_pool_executor import BoundedThreadPoolExecutor
+
+sys.tracebacklimit = 0
 
 class CustomFormatter(logging.Formatter):
 
@@ -41,7 +44,7 @@ class CustomFormatter(logging.Formatter):
 
 logger = logging.getLogger("cld")
 logger.setLevel(logging.INFO)
-ch = logging.FileHandler('logging/memory_leak_trace.log', 'w+')
+ch = logging.FileHandler('logging/logging.log', 'w+')
 
 ch.setFormatter(CustomFormatter())
 logger.addHandler(ch)
@@ -49,33 +52,33 @@ logger.addHandler(ch)
 THREAD = os.cpu_count() * 10 
 
 extractor = Extractor()
+
 feature_names = ['url','Speical_Char','Have_IP', 'Have_At','URL_length' ,'URL_Depth','redirection', 'time_get_redirect',
                 'port_in_url','use_http', 'http_in_domain','TinyURL', 'Prefix/Suffix', 'DNS_Record','trusted_ca',
                 'domain_lifespan', 'domain_timeleft', 'same_asn','iFrame', 'Mouse_Over','Right_Click','eval','unescape',
                 'escape', 'ActiveXObject','fromCharCode','atob','Punny_Code',
-                'TLDs','country_name','label']
-
+                'TLDs','Title','country_name','label']
 def blacklist():
 
     dataset = set()
 
-    # phishtank = "http://data.phishtank.com/data/online-valid.csv"
-    # phishtank_res = requests.get('http://data.phishtank.com/data/online-valid.csv', allow_redirects=True)
-    # open('dataset/phishtank.csv', 'wb').write(phishtank_res.content)
+    phishtank = "http://data.phishtank.com/data/online-valid.csv"
+    phishtank_res = requests.get('http://data.phishtank.com/data/online-valid.csv', allow_redirects=True)
+    open('dataset/phishtank.csv', 'wb').write(phishtank_res.content)
     phistank = pd.read_csv("dataset/phishtank.csv")['url']
     for i in phistank:
         dataset.add( (i.strip(),1) )
 
-    # git_blacklist = requests.get("https://raw.githubusercontent.com/mitchellkrogza/Phishing.Database/master/phishing-links/output/domains/ACTIVE/list")
-    # file1 = open("dataset/phishing.txt","wb")
-    # file1.write(git_blacklist.content)
+    git_blacklist = requests.get("https://raw.githubusercontent.com/mitchellkrogza/Phishing.Database/master/phishing-links/output/domains/ACTIVE/list")
+    file1 = open("dataset/phishing.txt","wb")
+    file1.write(git_blacklist.content)
     with open('dataset/phishing.txt', 'r+',encoding='utf-8') as f:
        lines = f.readlines()
     for i in lines[3:]:
        dataset.add( (i.strip(),1) )
 
-    # phishstat_res = requests.get('https://phishstats.info/phish_score.csv', allow_redirects=True)
-    # open('dataset/phishstats.txt', 'wb').write(phishstat_res.content)
+    phishstat_res = requests.get('https://phishstats.info/phish_score.csv', allow_redirects=True)
+    open('dataset/phishstats.txt', 'wb').write(phishstat_res.content)
     with open('dataset/phishstats.txt', 'r+',encoding='utf-8') as f:
        lines = f.readlines()
        for i in lines[9:]:
@@ -102,11 +105,11 @@ def whitelist():
     return dataset 
 
 def get_dataset():
-    # dataset = blacklist() | whitelist() # Merge blacklist and whitelist
-    dataset = blacklist()
+    dataset = blacklist() | whitelist() # Merge blacklist and whitelist
+
     return dataset
 
-def check_alive(queue, data):
+def check_alive(data):
     _dict = {}
 
     features = extractor(data[0])
@@ -115,178 +118,55 @@ def check_alive(queue, data):
         for _idx,_value in enumerate(features):
             _idx +=1
             _dict[feature_names[_idx]] = _value
-        # _data = data[0]+','+','.join(str(v) for v in features)+ ',' +str(data[1])
 
         _dict['label'] = data[1]
-        # print("Iteration %d: %0.3f MB" %
-        #       (i, psutil.Process().memory_info().rss / 1e6))
-        dc = _dict.copy()
-        _dict.clear()
 
-        # print(futures.qsize())
-        return dc
+        return _dict
 
-def task_handler(task_q,url):
-    while True:
-        item = task_q.get()
-        task_q.put(check_alive(item))
-        
-        del item
-        task_q.task_done()
-        gc.collect()
+def task_handler(task_q,item):
+    # print("has been check %d: %0.3f MB" %
+    #           (task_q.qsize(), psutil.Process().memory_info().rss / 1e6))
+    task_q.put(check_alive(item))
+    task_q.task_done()
+
+    snapshot = tracemalloc.take_snapshot()
+    for stat in snapshot.statistics("lineno"):
+        logging.info(stat[:5])
+
+    gc.collect()
+
 
 def main():
     import time
 
     futures = Queue()
-    dataset = list(get_dataset())[:20]
-    _size = 1000
-   
-    # task_q = Queue()
-    # writer_q = Queue(maxsize=0)
+    dataset = list(get_dataset())
+    tracemalloc.start(5)
 
-    # for idx,sub_list in enumerate([dataset[i:i + _size] for i in range(0, len(dataset), _size)]):
-    #     for _ in range(THREAD):
-    #         item = dataset.pop(0)
-    #         print(item)
-            # worker = Thread(target=task_handler, args=(check_alive, url))
-            # worker = Thread(target=check_alive,args=(futures, item))
-            # worker.setDaemon(True)
-    #         worker.start()
-    # print(futures.qsize()) 
-        
-    _size = 1000
-    for idx,sub_list in enumerate([dataset[i:i + _size] for i in range(0, len(dataset), _size)]):
+    print(f"Checking {len(dataset)} urls")
+    with BoundedThreadPoolExecutor(max_workers=THREAD) as executor: 
+        with alive_bar(len(dataset)) as bar:
+            for url in dataset:
+                executor.submit(task_handler, futures, url)
+                bar()  
 
-        futures = Queue()
-        
-        csv_name = 'dataset_'+str(idx) + '.csv'
-        with concurrent.futures.ThreadPoolExecutor(max_workers=THREAD) as executor:
-            # executor.map(check_alive, sub_list)
-            for url in sub_list:
-                # futures.append(executor.submit(check_alive, url))
-                futures.put(worker.submit(check_alive, url))
-
-            # tracemalloc.start()  # save upto 5 stack frames
-            # first_log = tracemalloc.take_snapshot()
-
-            with open(csv_name, 'w+',encoding='utf-8') as f:
-                writer = csv.writer(f)
-                writer = csv.DictWriter(f, fieldnames = feature_names)
-                writer.writeheader()
-                
-                while not futures.empty():
-                    print(f"{futures.qsize()} left")
-                    item = futures.get().result()
-                    if item != None:
-                        writer.writerow(item)
-
-                # for future in concurrent.futures.as_completed(futures):
-
-                #     print(f"{total} left")
-                #     if future.result() != None:
-                #         writer.writerow(future.result())
-                #         second_log = tracemalloc.take_snapshot()
-                #         stats = second_log.compare_to(first_log, 'lineno')
-                #         for stat in stats[:10]:
-                #             logger.info(stat)
-
-        # tracemalloc.start() 
-        # first_log = tracemalloc.take_snapshot()
-
-        # _futures = dict()
-
-
-
-            # for url in sub_list:
-            #     _futures = {
-            #         executor.submit(check_alive, url)
-            #     }
-                # _futures.append(executor.submit(check_alive, url))
-
-                # for future in concurrent.futures.as_completed(_futures):
-                #     print(future.result())
-
-            # print(_futures)
-
-        # csv_name = 'dataset_'+str(idx) + '.csv'
-        # _futures = list()
-        # with BoundedThreadPoolExecutor(max_workers=THREAD) as executor: 
-
-        #     for url in sub_list:
-        #         _futures.append(executor.submit(check_alive, url))
-
-        #     for future in concurrent.futures.as_completed(_futures):
-        #         futures.put(future.result())
-        #         print(futures.qsize()) 
-
-        #         # second_log = tracemalloc.take_snapshot()    
-        #         # stats = second_log.compare_to(first_log, 'lineno')
-        #         # for stat in stats[:10]:
-        #         #     logger.info(stat)
-
-        # del _futures  
-
-    with open('dataset_queue.csv','w+', newline='',encoding='utf-8') as f:
+    total = 0
+    print("Writing to files!")
+    with open('dataset.csv','w+', newline='',encoding='utf-8') as f:
         writer = csv.writer(f)
         writer = csv.DictWriter(f, fieldnames = feature_names)
         writer.writeheader()
-        while not futures.empty():    
-            print(futures.qsize())    
-            try:
-                writer.writerow(futures.get())
-            except:
-                continue
+        with alive_bar(futures.qsize()) as bar:
+            while not futures.empty():    
+                # print(f"Url left writing in files: {futures.qsize()}")    
+                try:
+                    writer.writerow(futures.get())
+                    bar()
+                    total +=1
+                except:
+                    continue
 
-                    # item = futures.get()
-                    # if item != None:
-                    #     writer.writerow(item)
+    print(f"Only {total} urls alive")
 
-                    # second_log = tracemalloc.take_snapshot()
-                    # stats = second_log.compare_to(first_log, 'lineno')
-                    # for stat in stats[:10]:
-                    #     logger.info(stat)
-
-            # _futures.clear()
-            # gc.collect()
-            # gc.collect()
-            # wrappers = [a for a in gc.get_objects() if isinstance(a, functools._lru_cache_wrapper)]
-
-            # for wrapper in wrappers:
-            #     wrapper.cache_clear()
-            # time.sleep(3)
-                
-                    # print(future.result())
-        # print(alive_dataset)
-        # total = len(alive_dataset)
-        # csv_name = 'dataset_'+str(idx) + '.csv'
-        # with open(csv_name, 'a') as f:
-        #     for _data in alive_dataset:
-        #         print(f"{total} left")
-
-        #         writer = csv.writer(f)
-        #         writer.writerow(feature_names)
-        #         writer.writerow(_data)
-
-        #         total -=1
-
-        # time.sleep(3)
-        # gc.collect()
-        
-
-    # total =len(alive_dataset)
-    # data = [url for url in alive_dataset]
-    # cld_dataset = []
-    # with concurrent.futures.ProcessPoolExecutor(max_workers=os.cpu_count()-1) as executor:
-    #     future_proc = {executor.submit(append_data, url): url for url in data}
-    #     for future in concurrent.futures.as_completed(future_proc):
-    #         cld_dataset.extend(future.result())
-    # return cld_dataset
-    
 if __name__ == '__main__':
     main()
-    # cld_dataset = main()
-    # print(len(dataset))
-    # if isinstance(cld_dataset, list):
-        # big_data = pd.DataFrame(cld_dataset)
-    # big_data.to_csv("chongluadao_dataset.csv", index = False)

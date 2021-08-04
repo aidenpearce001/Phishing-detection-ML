@@ -214,7 +214,7 @@ class Extractor():
                 return 1
         except:
             return 1
-            print(f"DOMAIN {domain['domain_name']} ERROR")
+            # print(f"DOMAIN {domain['domain_name']} ERROR")
 
     # 14.Survival time of domain: The difference between termination time and creation time (Domain_Age)  
     @staticmethod
