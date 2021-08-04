@@ -74,7 +74,9 @@
 ![cld][cld-dashhboard]
 
 ### Model Deep Learning
-<h4> Get weights from https://drive.google.com/file/d/1RJHlJIvucqEdEhK_Go4hicbM-0Br3WmF/view?usp=sharing </h4>
+<ul>
+<li><h4> Get weights from https://drive.google.com/file/d/1RJHlJIvucqEdEhK_Go4hicbM-0Br3WmF/view?usp=sharing </h4></li>
+<ul>
 
 ### License
 Distributed under the MIT License. See `LICENSE` for more information.
