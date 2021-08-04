@@ -2,3 +2,4 @@
 Generate Dataset/.env
 src/model/ckpt/
 __pycache__
+src/feedback/*.json

@@ -9,7 +9,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/aidenpearce001/Phishing-detection-ML">
-    <img src="images/logo.jpg" alt="Logo" width="200" height="200">
+    <img src="src/images/logo.jpg" alt="Logo" width="200" height="200">
   </a>
 
   <h3 align="center">Chongluadao</h3>
@@ -139,7 +139,7 @@ Thanks goes to these wonderful people
 [license-url]: https://github.com/aidenpearce001/Phishing-detection-ML/blob/main/LICENSE
 [project-shield]: https://img.shields.io/badge/Project-chongluadao-green?style=for-the-badge&logo=appveyor
 [project-url]: https://www.facebook.com/chongluadao.vn
-[cld-home]: images/home.PNG
-[cld-check]: images/check.PNG
-[cld-dashhboard]: images/dashboard.PNG
+[cld-home]: src/images/home.PNG
+[cld-check]: src/images/check.PNG
+[cld-dashhboard]: src/images/dashboard.PNG
 

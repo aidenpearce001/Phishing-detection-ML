@@ -12,10 +12,12 @@
   
 	<!-- Vendors Style-->
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/vendors_css.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
 	  
 	<!-- Style-->  
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/skin_color.css') }}" />
+
 	<script src="https://cdn.amcharts.com/lib/4/core.js"></script>
 	<script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
 	<script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
@@ -140,7 +142,7 @@
 							{% for urlb in url_based %}
 								{
 								type: "{{urlb}}",
-								percent: "{{ Importances[urlb]*100}}"
+								percent: "{{ importances[urlb]*100}}"
 							}, 
 							{% endfor %}
 							]
@@ -151,7 +153,7 @@
 							{% for domainb in domain_based %}
 								{
 								type: "{{domainb}}",
-								percent: "{{ Importances[domainb]*100}}"
+								percent: "{{ importances[domainb]*100}}"
 							}, 
 							{% endfor %}
 							]
@@ -162,7 +164,7 @@
 							{% for contentb in content_based %}
 								{
 								type: "{{contentb}}",
-								percent: "{{ Importances[contentb]*100}}"
+								percent: "{{ importances[contentb]*100}}"
 							}, 
 							{% endfor %}
 							]
@@ -198,18 +200,7 @@
 			  </div>
 			  <!-- /.box -->
 			</div>
-			<div class="col-lg-6 col-12">          
-			  <div class="box">
-				<div class="box-header with-border">
-				  <h4 class="box-title">New detections by day</h4>
-				</div>
-				<!-- /.box-header -->
-				<div class="box-body">
-					<div id="linechart" style="height: 350px"></div>
-				</div>
-			  </div>
-
-			</div>
+			
 		  </div>
 
 		</section>

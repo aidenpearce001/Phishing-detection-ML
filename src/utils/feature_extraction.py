@@ -432,7 +432,8 @@ class Extractor():
             try:
                 response = requests.get(url, headers=headers, timeout=3)
                 break
-            except:
+            except Exception as e:
+                print(e)
                 if max_retries > 0:
                     max_retries -= 1
                     print(f"Retrying for {url}. Retries left: {max_retries}")
@@ -442,7 +443,7 @@ class Extractor():
 
         features = []
         print("RESPONSE", response.status_code)
-        if response.status_code not in range(600,600):
+        if response.status_code not in range(400,600):
             url = url.rstrip()
             
             """Invalid Index(['Have_IP', 'time_get_redirect', 'trusted_ca', 'eval', 'unescape',
