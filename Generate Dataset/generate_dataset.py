@@ -3,7 +3,6 @@ import pandas as pd
 import requests
 # import concurrent.futures
 import os
-import sys
 from feature_extraction import Extractor
 import csv
 from queue import Queue
@@ -13,12 +12,9 @@ from alive_progress import alive_bar
 import logging
 import gc  
 import psutil
-import tracemalloc
 
 #some mtfk suggest using this cause simultaneously process several million data, then a queue of workers will take up all the free memory
 from bounded_pool_executor import BoundedThreadPoolExecutor
-
-sys.tracebacklimit = 0
 
 class CustomFormatter(logging.Formatter):
 
@@ -129,10 +125,6 @@ def task_handler(task_q,item):
     task_q.put(check_alive(item))
     task_q.task_done()
 
-    snapshot = tracemalloc.take_snapshot()
-    for stat in snapshot.statistics("lineno"):
-        logging.info(stat[:5])
-
     gc.collect()
 
 
@@ -141,7 +133,6 @@ def main():
 
     futures = Queue()
     dataset = list(get_dataset())
-    tracemalloc.start(5)
 
     print(f"Checking {len(dataset)} urls")
     with BoundedThreadPoolExecutor(max_workers=THREAD) as executor: 
