@@ -101,8 +101,8 @@ def whitelist():
     return dataset 
 
 def get_dataset():
-    dataset = blacklist() | whitelist() # Merge blacklist and whitelist
-
+    # dataset = blacklist() | whitelist() # Merge blacklist and whitelist
+    dataset = blacklist()
     return dataset
 
 def check_alive(data):
@@ -135,8 +135,8 @@ def main():
     dataset = list(get_dataset())
 
     print(f"Checking {len(dataset)} urls")
-    with BoundedThreadPoolExecutor(max_workers=THREAD) as executor: 
-        with alive_bar(len(dataset)) as bar:
+    with alive_bar(len(dataset)) as bar:
+        with BoundedThreadPoolExecutor(max_workers=THREAD) as executor: 
             for url in dataset:
                 executor.submit(task_handler, futures, url)
                 bar()  
