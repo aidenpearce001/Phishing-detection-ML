@@ -240,18 +240,50 @@ def comparison():
         print(request.form)
         f = request.files['file']
 
+        _DATA = list()
+
         if f:
-            for _ in glob.glob("*.csv"):
+            for _ in glob.glob(UPLOAD_FOLDER+"/*.csv"):
                 os.remove(_)
             filename = secure_filename(f.filename)
             f.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
             df = pd.read_csv(UPLOAD_FOLDER+'/'+filename)
-            print(df.head())
 
-            return render_template('dashboard-model.html', dataset=df.head())
+            line = 0
+            for idx,value in enumerate(df['url']):
+                print(line)
+                url_prepped = preprocess_url(value, tokenizer)
+                prediction = model.predict(url_prepped)
+                
+                if prediction > 0.5:
+                   your_model = "&#10008"
+                else:
+                    your_model = "&#10004"
+
+                if df['labels'][idx] == 1:
+                    cld_model = "&#10008"
+                elif df['labels'][idx] == 0:
+                    cld_model = "&#10004"
+                _DATA.append( (cld_model, value, your_model ))
+                
+                line +=1
+
+            print(_DATA)
+            print(1)
+            ls = [_[0] for _ in _DATA]
+
+            return str(ls)
+
+            return redirect(url_for('dashboard'))
+            # return render_template('dashboard-model.html', data=_ls)
             
+    else:
+        df = pd.read_csv(UPLOAD_FOLDER+'/testing.csv')
 
-    return render_template('dashboard-model.html')
+        data = list()
+        for i in df['labels']:
+            data.append(i)
+        return render_template('dashboard-model.html',data=data)
     
 @app.route("/feedback", methods=["GET","POST"])
 def feedback():

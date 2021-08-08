@@ -102,8 +102,9 @@
 							  <input type="file" id="file-upload" name="myfile" multiple accept=".csv"/>
 							</div>
 							</div>
-							<button id="upload" class="upload__button" data-toggle="modal" data-target="#exampleModal">
-							  <div class="upload__button__text">Upload</div>
+							<!-- <button id="upload" class="upload__button" data-toggle="modal" data-target="#exampleModal"> -->
+								<button id="upload" class="upload__button"></button>
+								<div class="upload__button__text">Upload</div>
 							</button>
 							<div class="upload__hint">Uploading...</div>
 							<div class="upload__progress">
@@ -190,12 +191,17 @@
 				<div class="box-body">
 					<div class="container-scroll custom-scrollbar">
 						<div class="scroll-parent">
-							<div class="div5">
-								<h3>test</h3>
+							<div class="div5" style="color:lightgreen">
+								<h3>CLD model</h3>
+								{% for _ in data %}
+									<p>{{_}}</p>
+								{% endfor %}
+								<!-- <p>&#10004;</p> -->
+								
 							</div>
 							<div class="div6">
 								<h3 style="text-align:center">Beautiful Custom Scrollbar</h3>
-								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt ipsa sapiente expedita aperiam iste suscipit cum voluptates voluptatibus facilis incidunt perferendis dolore iure iusto, minima culpa id velit consequatur quae?</p>
+								<p style="background-color: lightgreen;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt ipsa sapiente expedita aperiam iste suscipit cum voluptates voluptatibus facilis incidunt perferendis dolore iure iusto, minima culpa id velit consequatur quae?</p>
 								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt ipsa sapiente expedita aperiam iste suscipit cum voluptates voluptatibus facilis incidunt perferendis dolore iure iusto, minima culpa id velit consequatur quae?</p>
 								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt ipsa sapiente expedita aperiam iste suscipit cum voluptates voluptatibus facilis incidunt perferendis dolore iure iusto, minima culpa id velit consequatur quae?</p>
 								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt ipsa sapiente expedita aperiam iste suscipit cum voluptates voluptatibus facilis incidunt perferendis dolore iure iusto, minima culpa id velit consequatur quae?</p>
@@ -203,7 +209,9 @@
 								<!-- <p style="margin-bottom: 0;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt ipsa sapiente expedita aperiam iste suscipit cum voluptates voluptatibus facilis incidunt perferendis dolore iure iusto, minima culpa id velit consequatur quae?</p> -->
 							</div>
 							<div class="div7">
-								<h3>test</h3>
+								<h3>Your Model</h3>
+								<!-- <p>&#10008;</p> -->
+							
 							</div>
 						</div>
 					</div>	
