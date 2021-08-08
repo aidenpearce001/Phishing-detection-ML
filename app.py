@@ -11,6 +11,7 @@ import tensorflow as tf
 import seaborn as sns
 import matplotlib
 from flask import Flask, redirect, url_for, render_template, request,jsonify
+from werkzeug.utils import secure_filename
 import json
 import pickle
 import joblib
@@ -19,6 +20,7 @@ from model import ConvModel
 from dotenv import load_dotenv
 import pymongo
 import os
+import glob
 
 #for color 
 from matplotlib.colors import Normalize
@@ -67,6 +69,9 @@ with tf.device('/cpu:0'):
 
 app = Flask(__name__)
 app.config["CACHE_TYPE"] = "null"
+UPLOAD_FOLDER = 'uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER 
+
 client = pymongo.MongoClient(MONGODB)
 db = client['chongluadao']
 
@@ -231,6 +236,20 @@ def dashboard():
 
 @app.route('/comparison', methods=["GET","POST"])
 def comparison():
+    if request.method == 'POST':
+        print(request.form)
+        f = request.files['file']
+
+        if f:
+            for _ in glob.glob("*.csv"):
+                os.remove(_)
+            filename = secure_filename(f.filename)
+            f.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
+            df = pd.read_csv(UPLOAD_FOLDER+'/'+filename)
+            print(df.head())
+
+            return render_template('dashboard-model.html', dataset=df.head())
+            
 
     return render_template('dashboard-model.html')
     

@@ -120,8 +120,8 @@ def check_alive(data):
         return _dict
 
 def task_handler(task_q,item):
-    # print("has been check %d: %0.3f MB" %
-    #           (task_q.qsize(), psutil.Process().memory_info().rss / 1e6))
+    print("has been check %d: %0.3f MB" %
+              (task_q.qsize(), psutil.Process().memory_info().rss / 1e6))
     task_q.put(check_alive(item))
     task_q.task_done()
 
@@ -135,11 +135,11 @@ def main():
     dataset = list(get_dataset())
 
     print(f"Checking {len(dataset)} urls")
-    with alive_bar(len(dataset)) as bar:
-        with BoundedThreadPoolExecutor(max_workers=THREAD) as executor: 
-            for url in dataset:
-                executor.submit(task_handler, futures, url)
-                bar()  
+    # with alive_bar(len(dataset)) as bar:
+    with BoundedThreadPoolExecutor(max_workers=THREAD) as executor: 
+        for url in dataset:
+            executor.submit(task_handler, futures, url)
+                # bar()  
 
     total = 0
     print("Writing to files!")

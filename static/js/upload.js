@@ -1,3 +1,5 @@
+var _validFileExtensions = [".csv"];    
+
 "use strict";
 let sleep = (time) => new Promise(resolve => setTimeout(resolve, time));
 let upload = document.querySelector(".upload");
@@ -35,3 +37,25 @@ function showFileName( event ) {
   
 }
 
+$(function() {
+    $('#upload').click(function() {
+    event.preventDefault();
+    let form_data = new FormData($('#uploadform')[0]);
+    // console.log($('#uploadform')[0]);
+    form_data.append("file", $('input[type=file]')[0].files[0])
+
+    console.log(form_data);
+    $.ajax({
+        type : "POST",
+        url : "/comparison",
+        contentType: false,
+        cache: false,
+        processData: false,
+        data: form_data,
+        success: function(data) {
+            // alert(val);
+            console.log(data);
+        }
+    })
+    })
+});
