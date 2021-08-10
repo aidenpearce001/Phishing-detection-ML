@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify, render_template
 import time
 import os
 from model import RandomForest, ConvModel
-
+import re
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
@@ -55,6 +55,15 @@ features =  {
 
 predictor = Blueprint('predictor', __name__)
 
+# Preprocess the url before putting in the predictor
+def preprocess_url(url): 
+    regex_str = r"(http(s)?:\/\/)(([a-z0-9\-ßàÁâãóôþüúðæåïçèõöÿýòäœêëìíøùîûñé]+\.)+[a-z\-]{2,63})" 
+    match = re.search(regex_str, url) 
+    if match is not None: 
+        s, e = match.span() # Start and end of match 
+        return url[s:e] 
+    else: 
+        return url
 
 
 @predictor.route('/', methods=["GET","POST"])
@@ -67,6 +76,7 @@ def survey():
             return jsonify({'notvalid' : 'Cannot connect to website. Your url might be incorrect, or the website is down'})
 
         if(isinstance(url, str)):
+            url = preprocess_url(url)
 
             prediction = model.predict(url)
             if(prediction is not None):
